@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>LUDO-MANIA</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+    <main id="app">
+
+
+        <!-- ==================================================
+             1. PANTALLA DE ADVERTENCIA
+             ================================================== -->
+
+        <section
+            id="warning-screen"
+            class="screen"
+        >
+
+            <h1>
+                ADVERTENCIA
+            </h1>
+
+
+            <p>
+                Este proyecto fue desarrollado exclusivamente
+                con fines educativos y escolares.
+            </p>
+
+
+            <p>
+                No utiliza dinero real ni apuestas reales.
+            </p>
+
+
+            <button id="warning-button">
+                CONTINUAR
+            </button>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             2. PANTALLA DE INICIO
+             ================================================== -->
+
+        <section
+            id="start-screen"
+            class="screen hidden"
+        >
+
+            <h1>
+                LUDO-MANIA
+            </h1>
+
+
+            <button id="start-button">
+                START
+            </button>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             3. PANTALLA DE SELECCIÓN
+             ================================================== -->
+
+        <section
+            id="character-screen"
+            class="screen hidden"
+        >
+
+            <h1>
+                SELECCIONÁ TU PERSONAJE
+            </h1>
+
+
+
+            <!-- ==================================================
+                 SELECTOR DE PERSONAJES
+                 ================================================== -->
+
+            <div id="character-selector">
+
+
+                <div
+                    class="character-option"
+                    data-character="0"
+                >
+
+                    <img
+                        src="assets/images/logo1.png"
+                        alt="Personaje 1"
+                    >
+
+                </div>
+
+
+
+                <div
+                    class="character-option"
+                    data-character="1"
+                >
+
+                    <img
+                        src="assets/images/logo2.png"
+                        alt="Personaje 2"
+                    >
+
+                </div>
+
+
+
+                <div
+                    class="character-option"
+                    data-character="2"
+                >
+
+                    <img
+                        src="assets/images/logo3.png"
+                        alt="Personaje 3"
+                    >
+
+                </div>
+
+
+
+                <div
+                    class="character-option"
+                    data-character="3"
+                >
+
+                    <img
+                        src="assets/images/logo4.png"
+                        alt="Personaje 4"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 PANEL PRINCIPAL
+                 ================================================== -->
+
+            <div id="character-card">
+
+
+                <!-- Personaje grande -->
+
+                <div id="character-container">
+
+                    <img
+                        id="character-image"
+                        src=""
+                        alt="Personaje seleccionado"
+                    >
+
+                </div>
+
+
+
+                <!-- Información -->
+
+                <div id="character-info">
+
+                    <h2 id="character-name"></h2>
+
+
+                    <p id="character-description">
+                        Personaje seleccionado.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 BOTÓN VISUAL DE SELECCIÓN
+                 ================================================== -->
+
+            <div id="character-select-button">
+
+                ¡SELECCIONÁ A TU PERSONAJE!
+
+            </div>
+
+
+
+            <p id="character-instruction">
+
+                PRESIONÁ ENTER PARA SELECCIONAR
+
+            </p>
+
+
+        </section>
+
+
+
+        <!-- ==================================================
+             4. PANTALLA DE NOMBRE
+             ================================================== -->
+
+        <section
+            id="name-screen"
+            class="screen hidden"
+        >
+
+
+            <h1>
+                INGRESÁ TU NOMBRE
+            </h1>
+
+
+
+            <!-- ==================================================
+                 FOTO DE PERFIL
+                 ================================================== -->
+
+            <div id="selected-character-profile">
+
+                <img
+                    id="name-character-image"
+                    src=""
+                    alt="Foto del personaje seleccionado"
+                >
+
+            </div>
+
+
+
+            <p id="name-character-label">
+
+                PERSONAJE SELECCIONADO
+
+            </p>
+
+
+
+            <!-- ==================================================
+                 NOMBRE DEL JUGADOR
+                 ================================================== -->
+
+            <input
+                type="text"
+                id="player-name"
+                maxlength="3"
+                placeholder="AAA"
+                autocomplete="off"
+            >
+
+
+
+            <p>
+                MÁXIMO 3 CARACTERES
+            </p>
+
+
+
+            <button id="name-button">
+
+                CONTINUAR
+
+            </button>
+
+
+        </section>
+
+
+
+        <!-- ==================================================
+             5. PANTALLA DE JUEGO
+             ================================================== -->
+
+        <section
+            id="game-screen"
+            class="screen hidden"
+        >
+
+
+
+            <!-- ==================================================
+                 PANEL IZQUIERDO
+                 PERSONAJE + PUNTAJE
+                 ================================================== -->
+
+            <div id="game-left-panel">
+
+
+                <!-- ==================================================
+                     PERSONAJE
+                     ================================================== -->
+
+                <div id="game-character">
+
+                    <img
+                        id="game-character-image"
+                        src=""
+                        alt="Personaje seleccionado"
+                    >
+
+                </div>
+
+
+
+                <!-- ==================================================
+                     PUNTAJE
+                     ================================================== -->
+
+                <div id="score">
+
+                    <span class="score-title">
+                        PUNTUACIÓN
+                    </span>
+
+
+                    <span id="score-value">
+                        0
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+
+           <!-- ==================================================
+     RODILLOS
+     ================================================== -->
+
+<div id="reels">
+
+    <!-- RODILLO 1 -->
+    <div class="reel" id="reel-1">
+
+        <div class="reel-symbol">
+            <img src="assets/images/naranja.png" alt="Símbolo">
+        </div>
+
+        <div class="reel-symbol">
+            <img src="assets/images/manzana.png" alt="Símbolo">
+        </div>
+
+        <div class="reel-symbol">
+            <img src="assets/images/limon.png" alt="Símbolo">
+        </div>
+
+    </div>
+
+
+    <!-- RODILLO 2 -->
+    <div class="reel" id="reel-2">
+
+        <div class="reel-symbol">
+            <img src="assets/images/trebol.png" alt="Símbolo">
+        </div>
+
+        <div class="reel-symbol">
+            <img src="assets/images/pluma.png" alt="Símbolo">
+        </div>
+
+        <div class="reel-symbol">
+            <img src="assets/images/siete.png" alt="Símbolo">
+        </div>
+
+    </div>
+
+
+    <!-- RODILLO 3 -->
+    <div class="reel" id="reel-3">
+
+        <div class="reel-symbol">
+            <img src="assets/images/cereza.png" alt="Símbolo">
+        </div>
+
+        <div class="reel-symbol">
+            <img src="assets/images/diamante.png" alt="Símbolo">
+        </div>
+
+        <div class="reel-symbol">
+            <img src="assets/images/siete.png" alt="Símbolo">
+        </div>
+
+    </div>
+
+</div>
+
+
+            <!-- ==================================================
+                 PANEL DERECHO
+                 FICHAS + SPIN
+                 ================================================== -->
+
+            <div id="game-right-panel">
+
+
+
+                <!-- ==================================================
+                     FICHAS
+                     ================================================== -->
+
+                <div id="chips">
+
+
+                    <span class="chip">
+
+                        <img
+                            src="assets/images/ficha.png"
+                            alt="Ficha"
+                        >
+
+                    </span>
+
+
+
+                    <span class="chip">
+
+                        <img
+                            src="assets/images/ficha.png"
+                            alt="Ficha"
+                        >
+
+                    </span>
+
+
+
+                    <span class="chip">
+
+                        <img
+                            src="assets/images/ficha.png"
+                            alt="Ficha"
+                        >
+
+                    </span>
+
+
+                </div>
+
+
+
+                <!-- ==================================================
+                     BOTÓN SPIN
+                     ================================================== -->
+
+                <button id="spin-button">
+
+                    SPIN!!!
+
+                </button>
+
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 MENSAJE DEL JUEGO
+                 ================================================== -->
+
+            <p id="game-message">
+
+                PRESIONÁ ENTER PARA JUGAR
+
+            </p>
+
+
+        </section>
+
+
+
+        <!-- ==================================================
+             6. PANTALLA DE SCORE
+             ================================================== -->
+
+        <section
+            id="end-screen"
+            class="screen hidden"
+        >
+
+
+            <h1>
+                SCORE
+            </h1>
+
+
+            <p>
+                PUNTUACIÓN FINAL
+            </p>
+
+
+
+            <div id="final-score">
+
+                0
+
+            </div>
+
+
+
+            <p id="final-character"></p>
+
+
+
+            <button id="ranking-button">
+
+                VER RANKING
+
+            </button>
+
+
+        </section>
+
+
+
+        <!-- ==================================================
+             7. PANTALLA DE RANKING
+             ================================================== -->
+
+        <section
+            id="ranking-screen"
+            class="screen hidden"
+        >
+
+
+            <h1>
+                RANKING
+            </h1>
+
+
+
+            <div id="ranking-list">
+
+                <p>
+                    El ranking aparecerá aquí.
+                </p>
+
+            </div>
+
+
+
+            <button id="restart-button">
+
+                VOLVER A JUGAR
+
+            </button>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ==================================================
+         JAVASCRIPT
+         ================================================== -->
+
+    <script src="js/app.js"></script>
+
+
+</body>
+
+</html>

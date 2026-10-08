@@ -1,0 +1,2968 @@
+/* ==================================================
+   LUDO-MANIA
+   ESTÉTICA ARCADE / MÁQUINA RECREATIVA
+   ================================================== */
+
+
+/* ==================================================
+   PALETA
+   ================================================== */
+
+:root {
+
+    --background: #101827;
+    --background-purple: #172554;
+
+    --purple-dark: #172554;
+    --purple: #38BDF8;
+    --purple-light: #38BDF8;
+
+    --cyan: #38BDF8;
+    --cyan-dark: #38BDF8;
+
+    --pink: #38BDF8;
+    --pink-dark: #172554;
+
+    --yellow: #FACC15;
+    --yellow-light: #FACC15;
+    --yellow-dark: #FACC15;
+
+    --red: #EF4444;
+    --red-light: #EF4444;
+    --red-dark: #EF4444;
+
+    --white: #F8FAFC;
+    --gray: #CBD5E1;
+
+    --black: #101827;
+}
+
+
+/* ==================================================
+   RESETEO
+   ================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* ==================================================
+   BODY
+   ================================================== */
+
+body {
+
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            #172554 0%,
+            #172554 35%,
+            #101827 75%
+        );
+
+    color: var(--white);
+
+    font-family: Arial, sans-serif;
+
+}
+
+
+/* ==================================================
+   PANTALLAS
+   ================================================== */
+
+.screen {
+
+    min-height: 100vh;
+
+    padding: 35px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 20px;
+
+    position: relative;
+
+    overflow: hidden;
+
+}
+
+
+/* ==================================================
+   OCULTAR
+   ================================================== */
+
+.hidden {
+    display: none !important;
+}
+
+
+/* ==================================================
+   LUCES GENERALES DEL FONDO
+   ================================================== */
+
+.screen::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 450px;
+    height: 450px;
+
+    left: -250px;
+    top: 20%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 40, 200, 0.28) 0%,
+            rgba(255, 40, 200, 0.12) 30%,
+            transparent 70%
+        );
+
+    filter: blur(10px);
+
+    pointer-events: none;
+
+}
+
+
+.screen::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    right: -280px;
+    bottom: 5%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(25, 230, 255, 0.25) 0%,
+            rgba(25, 230, 255, 0.10) 30%,
+            transparent 70%
+        );
+
+    filter: blur(15px);
+
+    pointer-events: none;
+
+}
+
+
+/* ==================================================
+   TÍTULOS GENERALES
+   ================================================== */
+
+h1 {
+
+    position: relative;
+
+    z-index: 5;
+
+    color: var(--white);
+
+    font-size: 48px;
+
+    font-weight: 900;
+
+    letter-spacing: 4px;
+
+    text-align: center;
+
+    text-shadow:
+        0 3px 0 var(--black),
+        0 0 8px var(--purple-light),
+        0 0 18px var(--purple);
+
+}
+
+
+/* ==================================================
+   TEXTOS
+   ================================================== */
+
+p {
+
+    position: relative;
+
+    z-index: 5;
+
+    color: var(--gray);
+
+    font-size: 18px;
+
+    line-height: 1.5;
+
+    text-align: center;
+
+}
+
+
+/* ==================================================
+   BOTONES GENERALES
+   ================================================== */
+
+button {
+
+    position: relative;
+
+    z-index: 10;
+
+    padding: 15px 40px;
+
+    border: 4px solid var(--black);
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            var(--red-light),
+            var(--red)
+        );
+
+    color: var(--white);
+
+    font-size: 20px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 5px 0 var(--red-dark),
+        0 0 15px rgba(242, 47, 37, 0.5);
+
+    transition:
+        transform 0.12s ease,
+        filter 0.15s ease,
+        box-shadow 0.15s ease;
+
+}
+
+
+button:hover {
+
+    filter: brightness(1.12);
+
+    transform: scale(1.04);
+
+}
+
+
+button:active {
+
+    transform: translateY(4px);
+
+    box-shadow:
+        0 1px 0 var(--red-dark),
+        0 0 10px rgba(242, 47, 37, 0.5);
+
+}
+
+
+/* ==================================================
+   PANTALLA DE ADVERTENCIA
+   ================================================== */
+
+#warning-screen {
+
+    background:
+        radial-gradient(
+            circle at center,
+            #271044 0%,
+            #0A0711 70%
+        );
+
+}
+
+
+#warning-screen h1 {
+
+    color: var(--yellow);
+
+    text-shadow:
+        0 3px 0 var(--black),
+        0 0 12px var(--yellow),
+        0 0 25px rgba(255, 210, 28, 0.5);
+
+}
+
+
+#warning-screen p {
+
+    max-width: 700px;
+
+}
+
+
+/* ==================================================
+   PANTALLA START
+   ================================================== */
+
+#start-screen {
+
+    background:
+        radial-gradient(
+            circle at center,
+            #3B0A63 0%,
+            #172554 38%,
+            #101827 80%
+        );
+
+}
+
+
+#start-screen h1 {
+
+    font-size: clamp(50px, 7vw, 85px);
+
+    letter-spacing: 8px;
+
+    color: var(--white);
+
+    text-shadow:
+        0 4px 0 var(--black),
+        0 0 10px var(--cyan),
+        0 0 25px var(--purple),
+        0 0 45px var(--pink);
+
+}
+
+
+#start-button {
+
+    min-width: 250px;
+
+    padding: 18px 55px;
+
+    border: 5px solid var(--black);
+
+    border-radius: 40px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            var(--red-light),
+            var(--red)
+        );
+
+    color: var(--white);
+
+    font-size: 30px;
+
+    font-weight: 900;
+
+    letter-spacing: 4px;
+
+    box-shadow:
+        0 7px 0 var(--red-dark),
+        0 0 15px rgba(242, 47, 37, 0.8),
+        0 0 30px rgba(242, 47, 37, 0.35);
+
+}
+
+
+/* ==================================================
+   PANTALLA DE SELECCIÓN
+   ================================================== */
+
+#character-screen {
+
+    justify-content: flex-start;
+
+    padding-top: 35px;
+
+    gap: 18px;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            #31075A 0%,
+            #172554 45%,
+            #101827 85%
+        );
+
+    border-left: 12px solid transparent;
+
+    border-right: 12px solid transparent;
+
+}
+
+
+/* ==================================================
+   DECORACIÓN LATERAL
+   ================================================== */
+
+#character-screen::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    width: 85px;
+
+    height: 100%;
+
+    background-color: rgba(4, 2, 10, 0.6);
+
+    border-right: 3px solid var(--purple);
+
+    box-shadow:
+        inset -10px 0 20px rgba(124, 45, 255, 0.25);
+
+}
+
+
+#character-screen::after {
+
+    content: "";
+
+    position: absolute;
+
+    right: 0;
+
+    top: 0;
+
+    width: 85px;
+
+    height: 100%;
+
+    background:
+        radial-gradient(
+            circle,
+            var(--yellow) 0px,
+            var(--yellow) 5px,
+            transparent 7px
+        );
+
+    background-size: 25px 25px;
+
+    opacity: 0.8;
+
+}
+
+
+/* ==================================================
+   TÍTULO DE SELECCIÓN
+   ================================================== */
+
+#character-screen > h1 {
+
+    font-size: clamp(32px, 4vw, 55px);
+
+    margin-bottom: 5px;
+
+    text-shadow:
+        0 3px 0 var(--black),
+        0 0 8px var(--cyan),
+        0 0 18px var(--purple),
+        0 0 30px rgba(255, 40, 200, 0.5);
+
+}
+
+
+/* ==================================================
+   SELECTOR SUPERIOR
+   ================================================== */
+
+#character-selector {
+
+    position: relative;
+
+    z-index: 10;
+
+    width: min(700px, 85vw);
+
+    height: 115px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 30px;
+
+    padding: 10px 45px;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            #FFF36B 0%,
+            #FACC15 55%,
+            #F59E0B 100%
+        );
+
+    border: 5px solid #FF9D00;
+
+    border-radius: 60%;
+
+    box-shadow:
+
+        0 5px 0 #8C5800,
+
+        0 0 10px #FACC15,
+
+        0 0 25px rgba(255, 210, 28, 0.7),
+
+        0 0 50px rgba(255, 150, 0, 0.3);
+
+}
+
+
+#character-selector::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 8px;
+
+    left: 10%;
+
+    width: 80%;
+
+    height: 25px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.35);
+
+    filter: blur(5px);
+
+    pointer-events: none;
+
+}
+
+
+/* ==================================================
+   AVATARES CIRCULARES
+   ================================================== */
+
+.character-option {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: 78px;
+
+    height: 78px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: 50%;
+
+    background-color: #050505;
+
+    border: 4px solid var(--white);
+
+    overflow: hidden;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+
+}
+
+
+.character-option img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+}
+
+
+/* Personaje activo */
+
+.character-option.active {
+
+    transform: scale(1.22);
+
+    border-color: var(--cyan);
+
+    box-shadow:
+        0 0 8px var(--cyan),
+        0 0 18px var(--cyan),
+        0 0 30px rgba(25, 230, 255, 0.8);
+
+}
+
+
+.character-option:hover {
+
+    transform: scale(1.08);
+
+    border-color: var(--yellow-light);
+
+    box-shadow:
+        0 0 10px var(--yellow),
+        0 0 20px rgba(255, 210, 28, 0.7);
+
+}
+
+
+.character-option.active:hover {
+
+    transform: scale(1.25);
+
+    border-color: var(--cyan);
+
+}
+
+
+/* ==================================================
+   TARJETA PRINCIPAL
+   ================================================== */
+
+#character-card {
+
+    position: relative;
+
+    z-index: 8;
+
+    width: min(950px, 86vw);
+
+    min-height: 430px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 50px;
+
+    padding: 35px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(42, 7, 80, 0.98),
+            rgba(9, 4, 20, 0.98)
+        );
+
+    border: 5px solid var(--cyan);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 0 10px var(--cyan),
+        0 0 25px rgba(25, 230, 255, 0.55),
+        inset 0 0 25px rgba(124, 45, 255, 0.25);
+
+}
+
+
+#character-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 10px;
+
+    border: 2px solid rgba(181, 108, 255, 0.25);
+
+    border-radius: 10px;
+
+    pointer-events: none;
+
+}
+
+
+/* ==================================================
+   IMAGEN GRANDE DE SELECCIÓN
+   ================================================== */
+
+#character-container {
+
+    flex-shrink: 0;
+
+    width: 340px;
+
+    height: 340px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background:
+        radial-gradient(
+            circle,
+            #F8FAFC 0%,
+            #EEEEEE 65%,
+            #C7C7C7 100%
+        );
+
+    border: 5px solid #777777;
+
+    border-radius: 28px;
+
+    overflow: hidden;
+
+    box-shadow:
+        inset 0 0 25px rgba(0, 0, 0, 0.3),
+        0 0 12px rgba(255, 255, 255, 0.25),
+        0 7px 12px rgba(0, 0, 0, 0.5);
+
+}
+
+
+#character-image {
+
+    width: 310px;
+
+    height: 310px;
+
+    object-fit: contain;
+
+}
+
+
+/* ==================================================
+   INFORMACIÓN DEL PERSONAJE
+   ================================================== */
+
+#character-info {
+
+    flex: 1;
+
+    align-self: stretch;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: flex-start;
+
+    gap: 22px;
+
+}
+
+
+#character-name {
+
+    display: inline-block;
+
+    padding: 10px 35px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            var(--red-light),
+            var(--red)
+        );
+
+    border: 4px solid var(--black);
+
+    border-radius: 28px;
+
+    color: var(--white);
+
+    font-size: 34px;
+
+    font-weight: 900;
+
+    box-shadow:
+        0 5px 0 var(--red-dark),
+        0 0 15px rgba(242, 47, 37, 0.6);
+
+}
+
+
+#character-description {
+
+    max-width: 450px;
+
+    color: var(--white);
+
+    font-size: 18px;
+
+    line-height: 1.55;
+
+    text-align: left;
+
+}
+
+
+/* ==================================================
+   BOTÓN VISUAL DE SELECCIÓN
+   ================================================== */
+
+#character-select-button {
+
+    position: relative;
+
+    z-index: 10;
+
+    min-width: 460px;
+
+    padding: 14px 40px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            var(--red-light),
+            var(--red)
+        );
+
+    border: 5px solid var(--black);
+
+    border-radius: 40px;
+
+    color: var(--white);
+
+    font-size: 25px;
+
+    font-weight: 900;
+
+    text-align: center;
+
+    box-shadow:
+        0 6px 0 var(--red-dark),
+        0 0 15px rgba(242, 47, 37, 0.65),
+        0 0 25px rgba(242, 47, 37, 0.25);
+
+}
+
+
+/* ==================================================
+   INSTRUCCIÓN
+   ================================================== */
+
+#character-instruction {
+
+    color: var(--cyan);
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-shadow:
+        0 0 8px rgba(25, 230, 255, 0.7);
+
+}
+
+
+/* ==================================================
+   PANTALLA DE NOMBRE
+   ================================================== */
+
+#name-screen {
+
+    justify-content: center;
+
+    gap: 18px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #172554 0%,
+            #172554 45%,
+            #101827 100%
+        );
+
+}
+
+
+#name-screen h1 {
+
+    font-size: clamp(35px, 5vw, 55px);
+
+    text-shadow:
+        0 3px 0 var(--black),
+        0 0 10px var(--cyan),
+        0 0 22px var(--purple);
+
+}
+
+
+/* ==================================================
+   FOTO CIRCULAR DEL PERSONAJE
+   ================================================== */
+
+#selected-character-profile {
+
+    position: relative;
+
+    z-index: 5;
+
+    width: 180px;
+
+    height: 180px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #F8FAFC 0%,
+            #E5E5E5 65%,
+            #BDBDBD 100%
+        );
+
+    border: 6px solid var(--cyan);
+
+    overflow: hidden;
+
+    box-shadow:
+        0 0 10px var(--cyan),
+        0 0 25px var(--cyan),
+        0 0 45px rgba(25, 230, 255, 0.45),
+        inset 0 0 15px rgba(0, 0, 0, 0.3);
+
+}
+
+
+#name-character-image {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+}
+
+
+#name-character-label {
+
+    color: var(--cyan);
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    text-shadow:
+        0 0 8px rgba(25, 230, 255, 0.7);
+
+}
+
+
+/* ==================================================
+   CAMPO DE NOMBRE
+   ================================================== */
+
+#player-name {
+
+    position: relative;
+
+    z-index: 5;
+
+    width: 220px;
+
+    height: 65px;
+
+    padding: 10px 20px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #172554,
+            #10051D
+        );
+
+    border: 4px solid var(--purple-light);
+
+    border-radius: 15px;
+
+    color: var(--white);
+
+    font-size: 32px;
+
+    font-weight: 900;
+
+    text-align: center;
+
+    text-transform: uppercase;
+
+    letter-spacing: 6px;
+
+    outline: none;
+
+    box-shadow:
+        0 0 10px rgba(181, 108, 255, 0.5),
+        inset 0 0 10px rgba(0, 0, 0, 0.5);
+
+}
+
+
+#player-name:focus {
+
+    border-color: var(--yellow);
+
+    box-shadow:
+        0 0 10px var(--yellow),
+        0 0 25px rgba(255, 210, 28, 0.5),
+        inset 0 0 10px rgba(0, 0, 0, 0.5);
+
+}
+
+
+/* ==================================================
+   AYUDA NOMBRE
+   ================================================== */
+
+#name-screen > p:not(#name-character-label) {
+
+    color: var(--gray);
+
+    font-size: 14px;
+
+    letter-spacing: 1px;
+
+}
+
+
+/* ==================================================
+   BOTÓN CONTINUAR
+   ================================================== */
+
+#name-confirm-button {
+
+    min-width: 230px;
+
+    padding: 14px 40px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            var(--red-light),
+            var(--red)
+        );
+
+    border: 5px solid var(--black);
+
+    border-radius: 35px;
+
+    color: var(--white);
+
+    font-size: 22px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    box-shadow:
+        0 6px 0 var(--red-dark),
+        0 0 15px rgba(242, 47, 37, 0.65);
+
+}
+
+
+/* ==================================================
+   PANTALLA DE JUEGO
+   ================================================== */
+
+#game-screen {
+
+    min-height: 100vh;
+
+    padding: 30px;
+
+    display: grid;
+
+    grid-template-columns:
+        250px
+        minmax(520px, 700px)
+        220px;
+
+    grid-template-rows:
+        1fr
+        auto;
+
+    justify-content: center;
+
+    align-items: center;
+
+    column-gap: 35px;
+
+    row-gap: 15px;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            #172554 0%,
+            #172554 45%,
+            #101827 100%
+        );
+
+}
+
+
+/* ==================================================
+   PANEL IZQUIERDO
+   ================================================== */
+
+#game-left-panel {
+
+    grid-column: 1;
+
+    grid-row: 1;
+
+    width: 250px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 25px;
+
+}
+
+
+/* ==================================================
+   PERSONAJE
+   ================================================== */
+
+#game-character {
+
+    width: 230px;
+
+    height: 230px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #F8FAFC,
+            #E2E2E2
+        );
+
+    border: 6px solid var(--red);
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+
+        0 0 10px var(--red),
+
+        0 0 25px rgba(242, 47, 37, 0.55),
+
+        0 7px 0 var(--red-dark);
+
+}
+
+
+#game-character-image {
+
+    width: 215px;
+
+    height: 215px;
+
+    object-fit: contain;
+
+    display: block;
+
+    filter:
+        drop-shadow(
+            0 0 8px
+            rgba(181, 108, 255, 0.45)
+        );
+
+}
+
+
+/* ==================================================
+   PUNTAJE
+   ================================================== */
+
+#score {
+
+    width: 230px;
+
+    min-height: 105px;
+
+    padding: 12px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #FFB000,
+            #F07800
+        );
+
+    border: 5px solid var(--black);
+
+    border-radius: 20px;
+
+    box-shadow:
+
+        0 5px 0 #8C4800,
+
+        0 0 15px
+        rgba(255, 174, 0, 0.65);
+
+}
+
+
+.score-title {
+
+    color: var(--white);
+
+    font-size: 22px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 2px 0 #8C4800;
+
+}
+
+
+#score-value {
+
+    margin-top: 3px;
+
+    color: var(--white);
+
+    font-size: 36px;
+
+    font-weight: 900;
+
+    text-shadow:
+
+        0 2px 0 #8C4800,
+
+        0 0 8px var(--yellow);
+
+}
+
+
+/* ==================================================
+   RODILLOS - CONTENEDOR
+   ================================================== */
+
+#reels {
+
+    position: relative;
+
+    z-index: 5;
+
+    grid-column: 2;
+
+    grid-row: 1;
+
+    width: 100%;
+
+    height: 410px;
+
+    padding: 18px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: stretch;
+
+    gap: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #FF8A00,
+            #FFB000 50%,
+            #FF7900
+        );
+
+    border: 6px solid var(--cyan);
+
+    border-radius: 18px;
+
+    box-shadow:
+
+        0 0 10px var(--cyan),
+
+        0 0 25px
+        rgba(25, 230, 255, 0.7),
+
+        inset 0 0 20px
+        rgba(255, 255, 255, 0.2),
+
+        0 8px 0 #00758A;
+
+}
+
+
+/* ==================================================
+   RODILLO INDIVIDUAL
+   ================================================== */
+
+.reel {
+
+    position: relative;
+
+    width: calc((100% - 24px) / 3);
+
+    height: 100%;
+
+    display: grid;
+
+    grid-template-rows: repeat(3, 1fr);
+
+    align-items: stretch;
+
+    justify-items: stretch;
+
+    background:
+        linear-gradient(
+            to right,
+            #CFCFCF,
+            #F8FAFC 12%,
+            #F5F5F5 88%,
+            #CFCFCF
+        );
+
+    border: 4px solid #555555;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+    box-shadow:
+
+        inset 8px 0 12px
+        rgba(0, 0, 0, 0.15),
+
+        inset -8px 0 12px
+        rgba(0, 0, 0, 0.15),
+
+        0 4px 0 #555555;
+
+}
+
+
+/* ==================================================
+   CADA CELDA DEL RODILLO
+   ================================================== */
+
+.reel-symbol {
+
+    position: relative;
+
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    overflow: hidden;
+
+    z-index: 4;
+
+    border-bottom: 2px solid rgba(80, 80, 80, 0.20);
+
+}
+
+
+/* Quitamos la línea inferior de la última celda */
+
+.reel-symbol:last-child {
+
+    border-bottom: none;
+
+}
+
+
+/* ==================================================
+   IMAGEN DEL SÍMBOLO
+   ================================================== */
+
+.reel-symbol img {
+
+    width: 80px;
+
+    height: 80px;
+
+    object-fit: contain;
+
+    display: block;
+
+    filter:
+        drop-shadow(
+            0 0 5px
+            rgba(0, 0, 0, 0.35)
+        );
+
+    transition:
+        transform 0.1s ease,
+        filter 0.1s ease;
+
+}
+
+
+/* ==================================================
+   SÍMBOLO ACTIVO
+   ================================================== */
+
+.active-symbol {
+
+    position: relative;
+
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 6;
+
+}
+
+
+/* ==================================================
+   IMAGEN ACTIVA
+   ================================================== */
+
+.active-symbol img {
+
+    width: 85px;
+
+    height: 85px;
+
+    object-fit: contain;
+
+    display: block;
+
+    filter:
+        drop-shadow(
+            0 0 8px
+            rgba(255, 210, 28, 0.7)
+        );
+
+}
+
+/* ==================================================
+   CASILLAS DE LOS SÍMBOLOS
+   ================================================== */
+
+/*
+   Cada rodillo funciona como una ventana vertical.
+   Los símbolos se mantienen centrados y no se superponen.
+*/
+
+.reel-symbol {
+
+    position: relative;
+
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    flex-shrink: 0;
+
+    z-index: 4;
+
+}
+
+
+/* Imagen del símbolo */
+
+.reel-symbol img {
+
+    width: 85px;
+
+    height: 85px;
+
+    object-fit: contain;
+
+    display: block;
+
+    filter:
+        drop-shadow(
+            0 0 5px
+            rgba(0, 0, 0, 0.35)
+        );
+
+}
+
+
+/* Símbolo que queda seleccionado */
+
+.active-symbol {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 6;
+
+}
+
+
+/* Imagen dentro del símbolo activo */
+
+.active-symbol img {
+
+    width: 90px;
+
+    height: 90px;
+
+    object-fit: contain;
+
+    display: block;
+
+    filter:
+        drop-shadow(
+            0 0 8px rgba(255, 210, 28, 0.7)
+        );
+
+}
+
+
+/* ==================================================
+   VENTANA CENTRAL DE RESULTADO
+   ================================================== */
+
+#reels::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 10px;
+
+    right: 10px;
+
+    top: 50%;
+
+    height: 105px;
+
+    transform: translateY(-50%);
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.02),
+            rgba(255, 210, 28, 0.10),
+            rgba(255, 255, 255, 0.02)
+        );
+
+    border-top: 4px solid var(--red);
+
+    border-bottom: 4px solid var(--red);
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 0 8px rgba(242, 47, 37, 0.8),
+        0 0 18px rgba(242, 47, 37, 0.35);
+
+    pointer-events: none;
+
+    z-index: 20;
+
+}
+
+
+/* ==================================================
+   BORDE INTERNO DE LA VENTANA
+   ================================================== */
+
+#reels::after {
+
+    content: "";
+
+    position: absolute;
+
+    left: 17px;
+
+    right: 17px;
+
+    top: 50%;
+
+    height: 75px;
+
+    transform: translateY(-50%);
+
+    border: 2px solid rgba(255, 210, 28, 0.55);
+
+    border-radius: 8px;
+
+    box-shadow:
+        0 0 8px rgba(255, 210, 28, 0.25);
+
+    pointer-events: none;
+
+    z-index: 21;
+
+}
+
+/* ==================================================
+   ANIMACIÓN DE GIRO
+   ================================================== */
+
+/*
+   Cuando el rodillo está girando:
+   - El contenedor vibra ligeramente.
+   - Los símbolos se mueven verticalmente.
+   - La animación es rápida para dar sensación de velocidad.
+*/
+
+.reel.spinning {
+
+    animation:
+        reel-shake
+        0.08s
+        linear
+        infinite;
+
+}
+
+
+/* ==================================================
+   VIBRACIÓN DEL RODILLO
+   ================================================== */
+
+@keyframes reel-shake {
+
+    0% {
+        transform: translateY(-3px);
+    }
+
+    50% {
+        transform: translateY(3px);
+    }
+
+    100% {
+        transform: translateY(-3px);
+    }
+
+}
+
+
+/* ==================================================
+   MOVIMIENTO DE LOS SÍMBOLOS
+   ================================================== */
+
+/*
+   El símbolo entra desde arriba,
+   atraviesa rápidamente la ventana
+   y sale por abajo.
+*/
+
+@keyframes symbol-spin {
+
+    0% {
+
+        transform:
+            translateY(-180px)
+            scale(0.85);
+
+        opacity: 0.2;
+
+    }
+
+    25% {
+
+        opacity: 0.8;
+
+    }
+
+    50% {
+
+        transform:
+            translateY(0)
+            scale(1);
+
+        opacity: 1;
+
+    }
+
+    75% {
+
+        opacity: 0.8;
+
+    }
+
+    100% {
+
+        transform:
+            translateY(180px)
+            scale(0.85);
+
+        opacity: 0.2;
+
+    }
+
+}
+
+
+/* ==================================================
+   SÍMBOLO GIRANDO
+   ================================================== */
+
+.reel-symbol.spinning-symbol {
+
+    overflow: hidden;
+
+}
+
+
+/* ==================================================
+   ANIMACIÓN DE LOS 3 RODILLOS
+   ================================================== */
+
+.reel.spinning .reel-symbol img {
+
+    animation:
+        symbol-spin
+        0.12s
+        linear
+        infinite;
+
+    filter:
+        blur(1.5px)
+        drop-shadow(
+            0 0 8px
+            rgba(255, 210, 28, 0.7)
+        );
+
+}
+
+
+/* ==================================================
+   MOVIMIENTO DEL SÍMBOLO
+   ================================================== */
+
+@keyframes symbol-spin {
+
+    0% {
+
+        transform:
+            translateY(-35px)
+            scale(0.85);
+
+        opacity: 0.35;
+
+    }
+
+    50% {
+
+        transform:
+            translateY(0)
+            scale(1);
+
+        opacity: 1;
+
+    }
+
+    100% {
+
+        transform:
+            translateY(35px)
+            scale(0.85);
+
+        opacity: 0.35;
+
+    }
+
+}
+
+
+/* ==================================================
+   MOVIMIENTO DEL RODILLO COMPLETO
+   ================================================== */
+
+.reel.spinning {
+
+    animation:
+        reel-shake
+        0.08s
+        linear
+        infinite;
+
+}
+
+
+@keyframes reel-shake {
+
+    0% {
+
+        transform:
+            translateY(-3px);
+
+    }
+
+    50% {
+
+        transform:
+            translateY(3px);
+
+    }
+
+    100% {
+
+        transform:
+            translateY(-3px);
+
+    }
+
+}
+
+
+/* ==================================================
+   EFECTO DE VELOCIDAD
+   ================================================== */
+
+/*
+   Mientras gira, hacemos que el símbolo
+   tenga un pequeño desenfoque de movimiento.
+*/
+
+.reel.spinning .reel-symbol img {
+
+    filter:
+        blur(1px)
+        drop-shadow(
+            0 0 8px
+            rgba(255, 210, 28, 0.8)
+        );
+
+}
+
+
+/* ==================================================
+   RESULTADO FINAL
+   ================================================== */
+
+/*
+   Cuando el rodillo deja de girar,
+   el símbolo vuelve a verse nítido.
+*/
+
+.reel:not(.spinning) .reel-symbol img {
+
+    filter:
+        drop-shadow(
+            0 0 5px
+            rgba(0, 0, 0, 0.35)
+        );
+
+}
+
+
+/* ==================================================
+   DESTELLO AL DETENERSE
+   ================================================== */
+
+/*
+   Si tu JavaScript agrega la clase "stopped",
+   el rodillo tendrá un pequeño destello.
+*/
+
+.reel.stopped {
+
+    animation:
+        reel-stop-flash
+        0.35s
+        ease-out;
+
+}
+
+
+@keyframes reel-stop-flash {
+
+    0% {
+
+        box-shadow:
+
+            inset 8px 0 12px
+            rgba(0, 0, 0, 0.15),
+
+            inset -8px 0 12px
+            rgba(0, 0, 0, 0.15),
+
+            0 4px 0 #555555;
+
+    }
+
+    50% {
+
+        box-shadow:
+
+            inset 8px 0 12px
+            rgba(0, 0, 0, 0.15),
+
+            inset -8px 0 12px
+            rgba(0, 0, 0, 0.15),
+
+            0 4px 0 #555555,
+
+            0 0 20px var(--yellow),
+
+            0 0 35px rgba(255, 210, 28, 0.8);
+
+    }
+
+    100% {
+
+        box-shadow:
+
+            inset 8px 0 12px
+            rgba(0, 0, 0, 0.15),
+
+            inset -8px 0 12px
+            rgba(0, 0, 0, 0.15),
+
+            0 4px 0 #555555;
+
+    }
+
+}
+
+/* ==================================================
+   PANEL DERECHO
+   ================================================== */
+
+#game-right-panel {
+
+    grid-column: 3;
+
+    grid-row: 1;
+
+    width: 220px;
+
+    min-height: 410px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+
+/* ==================================================
+   CONTENEDOR DE FICHAS
+   ================================================== */
+
+#chips {
+
+    width: 220px;
+
+    min-height: 235px;
+
+    padding: 20px 15px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #13062A,
+            #101827
+        );
+
+    border: 6px solid var(--cyan);
+
+    border-radius: 15px;
+
+    box-shadow:
+
+        0 0 10px var(--cyan),
+
+        0 0 25px
+        rgba(25, 230, 255, 0.5),
+
+        inset 0 0 20px
+        rgba(124, 45, 255, 0.25);
+
+}
+
+
+/* ==================================================
+   FICHA
+   ================================================== */
+
+.chip {
+
+    width: 68px;
+
+    height: 68px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.chip img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+
+    display: block;
+
+}
+
+
+/* ==================================================
+   BOTÓN SPIN
+   ================================================== */
+
+#spin-button {
+
+    width: 220px;
+
+    min-height: 135px;
+
+    padding: 20px;
+
+    border: 7px solid var(--black);
+
+    border-radius: 25px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            var(--red-light),
+            var(--red)
+        );
+
+    color: var(--white);
+
+    font-size: 36px;
+
+    font-weight: 900;
+
+    letter-spacing: 2px;
+
+    text-shadow:
+        0 3px 0 var(--red-dark);
+
+    box-shadow:
+
+        0 9px 0 var(--red-dark),
+
+        0 0 15px var(--red),
+
+        0 0 30px
+        rgba(242, 47, 37, 0.55);
+
+}
+
+
+#spin-button:hover {
+
+    filter: brightness(1.15);
+
+    transform: scale(1.04);
+
+    box-shadow:
+
+        0 9px 0 var(--red-dark),
+
+        0 0 20px var(--red),
+
+        0 0 40px
+        rgba(242, 47, 37, 0.6);
+
+}
+
+
+#spin-button:active {
+
+    transform: translateY(8px);
+
+    box-shadow:
+        0 1px 0 var(--red-dark),
+        0 0 15px var(--red);
+
+}
+
+
+/* ==================================================
+   BOTÓN SPIN DESHABILITADO
+   ================================================== */
+
+#spin-button:disabled {
+
+    opacity: 0.55;
+
+    cursor: not-allowed;
+
+    filter:
+        grayscale(0.4);
+
+    transform: none;
+
+}
+/* ==================================================
+   MENSAJE
+   ================================================== */
+
+#game-message {
+
+    grid-column: 2;
+
+    grid-row: 2;
+
+    align-self: end;
+
+    margin-bottom: -5px;
+
+    color: var(--cyan);
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 0 8px
+        rgba(25, 230, 255, 0.7);
+
+}
+/* ==================================================
+   FIN DEL JUEGO
+   ================================================== */
+
+#end-screen {
+
+    background:
+        radial-gradient(
+            circle at center,
+            #3A0A61,
+            #13041F 55%,
+            #101827
+        );
+
+}
+
+
+#final-score {
+
+    color: var(--yellow);
+
+    font-size: 80px;
+
+    font-weight: 900;
+
+    text-shadow:
+        0 0 8px var(--yellow),
+        0 0 20px var(--yellow),
+        0 0 40px rgba(255, 210, 28, 0.6);
+
+}
+
+
+#final-character {
+
+    color: var(--cyan);
+
+    font-size: 22px;
+
+    text-shadow:
+        0 0 8px rgba(25, 230, 255, 0.6);
+
+}
+
+
+/* ==================================================
+   RANKING
+   ================================================== */
+
+#ranking-list {
+
+    width: min(600px, 90vw);
+
+    min-height: 200px;
+
+    padding: 25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--purple-dark),
+            #0D0718
+        );
+
+    border: 4px solid var(--yellow);
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 0 15px rgba(255, 210, 28, 0.4);
+
+}
+
+
+#ranking-list p {
+
+    color: var(--gray);
+
+}
+
+
+/* ==================================================
+   RESPONSIVE
+   ================================================== */
+
+@media (max-width: 1100px) {
+
+   @media (max-width: 1100px) {
+
+    #game-screen {
+
+        grid-template-columns:
+            180px
+            minmax(400px, 1fr)
+            170px;
+
+        column-gap: 15px;
+
+    }
+
+
+    #game-left-panel {
+
+        width: 180px;
+
+    }
+
+
+    #game-character {
+
+        width: 170px;
+
+        height: 170px;
+
+    }
+
+
+    #game-character-image {
+
+        width: 155px;
+
+        height: 155px;
+
+    }
+
+
+    #score {
+
+        width: 170px;
+
+    }
+
+
+    .score-title {
+
+        font-size: 17px;
+
+    }
+
+
+    #score-value {
+
+        font-size: 30px;
+
+    }
+
+
+    #reels {
+
+        height: 330px;
+
+    }
+
+
+    .reel-symbol img {
+
+        width: 80px;
+
+        height: 80px;
+
+    }
+
+
+    #chips {
+
+        width: 170px;
+
+    }
+
+
+    .chip {
+
+        width: 52px;
+
+        height: 52px;
+
+    }
+
+
+    #spin-button {
+
+        width: 170px;
+
+        min-height: 115px;
+
+        font-size: 28px;
+
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    #character-card {
+
+        flex-direction: column;
+
+        width: 90vw;
+
+    }
+
+
+    #character-info {
+
+        align-items: center;
+
+        text-align: center;
+
+    }
+
+
+    #character-description {
+
+        text-align: center;
+
+    }
+
+
+    #character-container {
+
+        width: 280px;
+
+        height: 280px;
+
+    }
+
+
+    #character-image {
+
+        width: 250px;
+
+        height: 250px;
+
+    }
+
+
+    #character-select-button {
+
+        min-width: 80vw;
+
+        font-size: 20px;
+
+    }
+
+
+    #character-selector {
+
+        gap: 12px;
+
+    }
+
+
+    .character-option {
+
+        width: 60px;
+
+        height: 60px;
+
+    }
+
+
+    /* ==========================================
+       JUEGO
+       ========================================== */
+
+    #game-screen {
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: center;
+
+        align-items: center;
+
+        gap: 15px;
+
+        padding: 20px;
+
+    }
+
+
+    #game-left-panel {
+
+        width: auto;
+
+        display: flex;
+
+        flex-direction: row;
+
+        align-items: center;
+
+        gap: 15px;
+
+    }
+
+
+    #game-character {
+
+        width: 150px;
+
+        height: 150px;
+
+    }
+
+
+    #game-character-image {
+
+        width: 135px;
+
+        height: 135px;
+
+    }
+
+
+    #score {
+
+        width: 150px;
+
+        min-height: 90px;
+
+    }
+
+
+    #reels {
+
+        order: 2;
+
+        width: 90vw;
+
+        height: 300px;
+
+    }
+
+
+    .reel-symbol img {
+
+        width: 65px;
+
+        height: 65px;
+
+    }
+
+
+    #game-right-panel {
+
+        order: 3;
+
+        width: auto;
+
+        min-height: auto;
+
+        flex-direction: row;
+
+        gap: 15px;
+
+    }
+
+
+    #chips {
+
+        width: auto;
+
+        min-height: auto;
+
+        flex-direction: row;
+
+        border: none;
+
+        background: transparent;
+
+        box-shadow: none;
+
+        padding: 0;
+
+    }
+
+
+    .chip {
+
+        width: 50px;
+
+        height: 50px;
+
+    }
+
+
+    #spin-button {
+
+        width: 180px;
+
+        min-height: 90px;
+
+        font-size: 28px;
+
+    }
+
+
+    #game-message {
+
+        order: 4;
+
+    }
+
+}
+
+
+    /* ------------------------------------------
+       JUEGO EN PANTALLAS PEQUEÑAS
+       ------------------------------------------ */
+
+    #game-screen {
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: center;
+
+        gap: 15px;
+
+    }
+
+
+    #game-character {
+
+        width: 180px;
+
+        height: 180px;
+
+        order: 1;
+
+    }
+
+
+    #game-character-image {
+
+        width: 165px;
+
+        height: 165px;
+
+    }
+
+
+    #reels {
+
+        order: 2;
+
+        min-height: 300px;
+
+        width: 90vw;
+
+    }
+
+
+    .reel {
+
+        min-width: 0;
+
+        width: 30%;
+
+        height: 250px;
+
+    }
+
+
+    .reel img {
+
+        width: 75px;
+
+        height: 75px;
+
+    }
+
+
+    #chips {
+
+        order: 3;
+
+        min-height: auto;
+
+        flex-direction: row;
+
+        width: auto;
+
+        border: none;
+
+        background: transparent;
+
+        box-shadow: none;
+
+    }
+
+
+    #score {
+
+        order: 4;
+
+        width: auto;
+
+    }
+
+
+    #game-message {
+
+        order: 5;
+
+    }
+
+
+    #spin-button {
+
+        order: 6;
+
+        width: 220px;
+
+        min-height: 100px;
+
+        font-size: 30px;
+
+    }
+
+}
+
+
+/* =========================================================
+   NUEVO SISTEMA DE GIRO DE LOS RODILLOS
+   ========================================================= */
+
+/*
+   Cada rodillo tiene 3 símbolos visibles.
+   Los símbolos se desplazan verticalmente mientras giran.
+*/
+
+.reel {
+    position: relative;
+    overflow: hidden;
+}
+
+/* ---------------------------------------------------------
+   MOVIMIENTO DE LAS 3 FILAS
+   --------------------------------------------------------- */
+
+.reel.spinning .reel-symbol {
+    animation: reel-symbol-move 0.18s linear infinite;
+}
+
+/*
+   Cada fila empieza ligeramente desfasada.
+   Esto evita que las tres imágenes parezcan
+   estar pegadas entre sí.
+*/
+
+.reel.spinning .reel-symbol:nth-child(1) {
+    animation-delay: -0.06s;
+}
+
+.reel.spinning .reel-symbol:nth-child(2) {
+    animation-delay: -0.12s;
+}
+
+.reel.spinning .reel-symbol:nth-child(3) {
+    animation-delay: -0.18s;
+}
+
+
+/* ---------------------------------------------------------
+   ANIMACIÓN VERTICAL
+   --------------------------------------------------------- */
+
+@keyframes reel-symbol-move {
+
+    0% {
+        transform: translateY(-45px);
+        opacity: 0.35;
+    }
+
+    25% {
+        transform: translateY(-15px);
+        opacity: 0.65;
+    }
+
+    50% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    75% {
+        transform: translateY(15px);
+        opacity: 0.65;
+    }
+
+    100% {
+        transform: translateY(45px);
+        opacity: 0.35;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   DESENFOQUE DURANTE EL GIRO
+   --------------------------------------------------------- */
+
+.reel.spinning .reel-symbol img {
+
+    filter:
+        blur(3px)
+        drop-shadow(
+            0 0 9px
+            rgba(255, 210, 28, 0.75)
+        );
+
+    transform: scale(0.95);
+
+}
+
+
+/*
+   Cuando deja de girar, vuelve inmediatamente
+   a verse nítido.
+*/
+
+.reel:not(.spinning) .reel-symbol img {
+
+    filter:
+        drop-shadow(
+            0 0 5px
+            rgba(0, 0, 0, 0.35)
+        );
+
+    transform: scale(1);
+
+}
+
+
+/* ---------------------------------------------------------
+   VIBRACIÓN DEL RODILLO
+   --------------------------------------------------------- */
+
+.reel.spinning {
+    animation: reel-vibration 0.07s linear infinite;
+}
+
+@keyframes reel-vibration {
+
+    0% {
+        transform: translateY(-2px);
+    }
+
+    50% {
+        transform: translateY(2px);
+    }
+
+    100% {
+        transform: translateY(-2px);
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   EFECTO AL DETENERSE
+   --------------------------------------------------------- */
+
+.reel.stopped {
+    animation: reel-stop 0.25s ease-out;
+}
+
+@keyframes reel-stop {
+
+    0% {
+        transform: translateY(2px);
+    }
+
+    40% {
+        transform: translateY(-2px);
+    }
+
+    70% {
+        transform: translateY(1px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+
+}
+
+
+/* ==================================================
+   TABLA DE RANKING
+   ================================================== */
+
+#ranking-list {
+    width: 90%;
+    max-width: 900px;
+    margin: 30px auto;
+    overflow-x: auto;
+}
+
+
+#ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 22px;
+}
+
+
+#ranking-table th {
+    padding: 15px;
+    border-bottom: 4px solid #555555;
+    font-weight: bold;
+}
+
+
+#ranking-table td {
+    padding: 14px;
+    border-bottom: 2px solid #777777;
+}
+
+
+#ranking-table tr {
+    transition: transform 0.2s ease;
+}
+
+
+#ranking-table tr:hover {
+    transform: scale(1.02);
+}
