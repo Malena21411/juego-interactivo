@@ -635,67 +635,31 @@ function showRandomReels() {
 // ==================================================
 
 function saveRankingEntry() {
-
-    if (!playerName ||
-        !selectedCharacter) {
-
+    if (!playerName || !selectedCharacter) {
         return;
-
     }
-
 
     const entry = {
-
-        name:
-            playerName,
-
-        character:
-            selectedCharacter.name,
-
-        score:
-            score
-
+        name: playerName,
+        character: selectedCharacter.name,
+        score: score
     };
 
-
-    // Agregar partida
-
+    // Actualizamos localmente para fluidez visual
     ranking.push(entry);
+    ranking.sort((a, b) => b.score - a.score);
 
-
-    // Ordenar de mayor a menor
-
-    ranking.sort((a, b) => {
-
-        return b.score - a.score;
-
-    });
-
-
-    // Guardar en navegador
-
-    try {
-
-        localStorage.setItem(
-            "ranking",
-            JSON.stringify(ranking)
-        );
-
-    } catch (error) {
-
-        console.error(
-            "No se pudo guardar el ranking:",
-            error
-        );
-
-    }
-
-
-    console.log(
-        "Partida guardada:",
-        entry
-    );
-
+    // Enviamos el puntaje a nuestra Base de Datos (app.py)
+    fetch('http://127.0.0.1:5000/api/guardar_partida', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(entry)
+    })
+    .then(response => response.json())
+    .then(data => console.log("Partida guardada en BD:", data))
+    .catch(error => console.error("Error conectando con la BD:", error));
 }
 
 
@@ -704,157 +668,59 @@ function saveRankingEntry() {
 // ==================================================
 
 function renderRanking() {
+    if (!rankingList) return;
 
-    if (!rankingList) {
+    rankingList.innerHTML = "<p>Cargando ranking oficial desde la base de datos...</p>";
 
-        console.warn(
-            "No existe #ranking-list en el HTML."
-        );
+    // Pedimos el ranking actualizado al servidor
+    fetch('http://127.0.0.1:5000/api/ranking')
+        .then(response => response.json())
+        .then(data => {
+            ranking = data; // Sobreescribimos con los datos reales de la BD
+            dibujarTablaRanking();
+        })
+        .catch(error => {
+            console.error("Error obteniendo ranking:", error);
+            rankingList.innerHTML = "<p>⚠️ No se pudo conectar a la Base de Datos. Recuerda ejecutar app.py en tu terminal.</p>";
+        });
+}
 
-        return;
-
-    }
-
-
-    // No hay partidas
-
+function dibujarTablaRanking() {
     if (ranking.length === 0) {
-
-        rankingList.innerHTML =
-            "<p>Todavía no hay partidas registradas.</p>";
-
+        rankingList.innerHTML = "<p>Todavía no hay partidas registradas.</p>";
         return;
-
     }
 
+    const table = document.createElement("table");
+    table.id = "ranking-table";
 
-    // Crear tabla
-
-    const table =
-        document.createElement("table");
-
-    table.id =
-        "ranking-table";
-
-
-    // ==================================================
-    // CABECERA
-    // ==================================================
-
-    const thead =
-        document.createElement("thead");
-
-    const headerRow =
-        document.createElement("tr");
-
-
-    const headers = [
-        "#",
-        "NOMBRE",
-        "PERSONAJE",
-        "PUNTOS"
-    ];
-
-
-    headers.forEach(headerText => {
-
-        const th =
-            document.createElement("th");
-
-        th.textContent =
-            headerText;
-
+    // Cabecera
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
+    ["#", "NOMBRE", "PERSONAJE", "PUNTOS"].forEach(text => {
+        const th = document.createElement("th");
+        th.textContent = text;
         headerRow.appendChild(th);
-
     });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
 
-
-    thead.appendChild(
-        headerRow
-    );
-
-    table.appendChild(
-        thead
-    );
-
-
-    // ==================================================
-    // CUERPO
-    // ==================================================
-
-    const tbody =
-        document.createElement("tbody");
-
-
+    // Cuerpo
+    const tbody = document.createElement("tbody");
     ranking.forEach((entry, index) => {
-
-        const row =
-            document.createElement("tr");
-
-
-        const positionCell =
-            document.createElement("td");
-
-        positionCell.textContent =
-            index + 1;
-
-
-        const nameCell =
-            document.createElement("td");
-
-        nameCell.textContent =
-            entry.name;
-
-
-        const characterCell =
-            document.createElement("td");
-
-        characterCell.textContent =
-            entry.character;
-
-
-        const scoreCell =
-            document.createElement("td");
-
-        scoreCell.textContent =
-            entry.score;
-
-
-        row.appendChild(
-            positionCell
-        );
-
-        row.appendChild(
-            nameCell
-        );
-
-        row.appendChild(
-            characterCell
-        );
-
-        row.appendChild(
-            scoreCell
-        );
-
-
-        tbody.appendChild(
-            row
-        );
-
+        const row = document.createElement("tr");
+        
+        [index + 1, entry.name, entry.character, entry.score].forEach(value => {
+            const td = document.createElement("td");
+            td.textContent = value;
+            row.appendChild(td);
+        });
+        
+        tbody.appendChild(row);
     });
+    table.appendChild(tbody);
 
-
-    table.appendChild(
-        tbody
-    );
-
-
-    // Reemplazar contenido anterior
-
-    rankingList.replaceChildren(
-        table
-    );
-
+    rankingList.replaceChildren(table);
 }
 
 

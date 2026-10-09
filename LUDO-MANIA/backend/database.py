@@ -84,7 +84,102 @@ def crear_base_datos():
     
     print(f"Exito! Base de datos creada en: {DB_PATH}")
 
+def inicializar_catalogo():
+    """
+    Inserta los personajes y símbolos iniciales (el 'menú') 
+    solo si las tablas están vacías.
+    """
+    conexion = sqlite3.connect(DB_PATH)
+    cursor = conexion.cursor()
+    
+    # 1. Insertar Personajes
+    # Primero revisamos si ya hay personajes (para no duplicarlos si ejecutas esto 2 veces)
+    cursor.execute("SELECT COUNT(*) FROM Personaje")
+    if cursor.fetchone()[0] == 0:
+        personajes = [
+            ("Personaje 1", "assets/images/logo1.png"),
+            ("Personaje 2", "assets/images/logo2.png"),
+            ("Personaje 3", "assets/images/logo3.png"),
+            ("Personaje 4", "assets/images/logo4.png")
+        ]
+        # executemany inserta todos los elementos de la lista de una sola vez
+        cursor.executemany("INSERT INTO Personaje (nombre, ruta_imagen) VALUES (?, ?)", personajes)
+        print("- Catálogo de personajes cargado.")
+
+    # 2. Insertar Símbolos
+    cursor.execute("SELECT COUNT(*) FROM Simbolo")
+    if cursor.fetchone()[0] == 0:
+        simbolos = [
+            ("trébol", "assets/images/trebol.png", 10),
+            ("siete", "assets/images/siete.png", 50),
+            ("pluma", "assets/images/pluma.png", 20),
+            ("naranja", "assets/images/naranja.png", 5),
+            ("limón", "assets/images/limon.png", 5),
+            ("manzana", "assets/images/manzana.png", 5),
+            ("cereza", "assets/images/cereza.png", 15),
+            ("diamante", "assets/images/diamante.png", 100)
+        ]
+        cursor.executemany("INSERT INTO Simbolo (nombre, ruta_imagen, valor_puntos) VALUES (?, ?, ?)", simbolos)
+        print("- Catálogo de símbolos cargado.")
+
+    conexion.commit()
+    conexion.close()
+
+def guardar_partida(nombre_jugador, nombre_personaje, puntos):
+    conexion = sqlite3.connect(DB_PATH)
+    cursor = conexion.cursor()
+    
+    # 1. Obtener o crear jugador
+    cursor.execute("SELECT id_jugador FROM Jugador WHERE nombre = ?", (nombre_jugador,))
+    resultado = cursor.fetchone()
+    if resultado:
+        id_jugador = resultado[0]
+    else:
+        cursor.execute("INSERT INTO Jugador (nombre) VALUES (?)", (nombre_jugador,))
+        id_jugador = cursor.lastrowid
+        
+    # 2. Obtener id del personaje
+    cursor.execute("SELECT id_personaje FROM Personaje WHERE nombre = ?", (nombre_personaje,))
+    res_personaje = cursor.fetchone()
+    id_personaje = res_personaje[0] if res_personaje else 1
+    
+    # 3. Guardar la partida
+    cursor.execute("INSERT INTO Partida (id_jugador, id_personaje, puntuacion_final) VALUES (?, ?, ?)", 
+                   (id_jugador, id_personaje, puntos))
+    
+    conexion.commit()
+    conexion.close()
+
+def obtener_ranking():
+    conexion = sqlite3.connect(DB_PATH)
+    cursor = conexion.cursor()
+    
+    # Cruzamos las tablas para obtener los datos legibles
+    query = '''
+        SELECT J.nombre, P.nombre, PA.puntuacion_final 
+        FROM Partida PA
+        JOIN Jugador J ON PA.id_jugador = J.id_jugador
+        JOIN Personaje P ON PA.id_personaje = P.id_personaje
+        ORDER BY PA.puntuacion_final DESC
+        LIMIT 10
+    '''
+    cursor.execute(query)
+    resultados = cursor.fetchall()
+    conexion.close()
+    
+    # Convertimos los resultados a un formato que el frontend entienda (JSON)
+    ranking = []
+    for r in resultados:
+        ranking.append({
+            "name": r[0],
+            "character": r[1],
+            "score": r[2]
+        })
+    return ranking
+
 # Esta condición verifica si estamos ejecutando este archivo directamente.
-# Si es así, llama a la función para crear la base de datos.
+# Si es así, llama a las funciones para preparar todo.
 if __name__ == '__main__':
     crear_base_datos()
+    inicializar_catalogo()
+    print("¡Base de datos y catálogos listos para usar!")
