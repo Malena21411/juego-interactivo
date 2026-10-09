@@ -2267,6 +2267,7 @@ button:active {
 }
 
 
+#final-player-name,
 #final-character {
 
     color: var(--cyan);

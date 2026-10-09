@@ -267,6 +267,10 @@ let carouselInterval = null;
 
 let playerName = "";
 
+let playerId = null;
+
+let registrandoJugador = false;
+
 let remainingChips = 3;
 
 let score = 0;
@@ -635,11 +639,12 @@ function showRandomReels() {
 // ==================================================
 
 function saveRankingEntry() {
-    if (!playerName || !selectedCharacter) {
+    if (!playerName || !playerId || !selectedCharacter) {
         return;
     }
 
     const entry = {
+        player_id: playerId,
         name: playerName,
         character: selectedCharacter.name,
         score: score
@@ -650,7 +655,7 @@ function saveRankingEntry() {
     ranking.sort((a, b) => b.score - a.score);
 
     // Enviamos el puntaje a nuestra Base de Datos (app.py)
-    fetch('http://127.0.0.1:5000/api/guardar_partida', {
+    fetch('/api/guardar_partida', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -673,7 +678,7 @@ function renderRanking() {
     rankingList.innerHTML = "<p>Cargando ranking oficial desde la base de datos...</p>";
 
     // Pedimos el ranking actualizado al servidor
-    fetch('http://127.0.0.1:5000/api/ranking')
+    fetch('/api/ranking')
         .then(response => response.json())
         .then(data => {
             ranking = data; // Sobreescribimos con los datos reales de la BD
@@ -681,7 +686,7 @@ function renderRanking() {
         })
         .catch(error => {
             console.error("Error obteniendo ranking:", error);
-            rankingList.innerHTML = "<p>⚠️ No se pudo conectar a la Base de Datos. Recuerda ejecutar app.py en tu terminal.</p>";
+            rankingList.innerHTML = "<p>⚠️ No se pudo conectar a la Base de Datos. Abre el juego con JUGAR.bat (no abras el HTML a mano).</p>";
         });
 }
 
@@ -867,6 +872,10 @@ function selectCharacter() {
 
 function confirmPlayerName() {
 
+    if (registrandoJugador) {
+        return;
+    }
+
     let name =
         playerNameInput.value
             .trim()
@@ -897,14 +906,50 @@ function confirmPlayerName() {
         );
 
 
-    playerName =
-        name;
+    registrandoJugador = true;
+    if (nameButton) {
+        nameButton.disabled = true;
+    }
+
+    fetch("/api/registrar_jugador", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name: name })
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (!data || data.status === "error") {
+                throw new Error(data && data.message ? data.message : "No se pudo registrar");
+            }
+
+            playerId = data.id_jugador;
+            playerName = data.display_name;
+
+            console.log(
+                "Nombre del jugador:",
+                playerName
+            );
+
+            comenzarPartida();
+        })
+        .catch((error) => {
+            console.error("Error registrando jugador:", error);
+            alert("No se pudo registrar el jugador. Dejá el servidor encendido con JUGAR.bat.");
+            playerNameInput.focus();
+        })
+        .finally(() => {
+            registrandoJugador = false;
+            if (nameButton) {
+                nameButton.disabled = false;
+            }
+        });
+
+}
 
 
-    console.log(
-        "Nombre del jugador:",
-        playerName
-    );
+function comenzarPartida() {
 
 
     // ==================================================
@@ -1861,6 +1906,18 @@ function endGame() {
     // MOSTRAR PERSONAJE
     // ==================================================
 
+    const finalPlayerName =
+        document.getElementById("final-player-name");
+
+    if (finalPlayerName) {
+
+        finalPlayerName.textContent =
+            "Jugador: " +
+            playerName;
+
+    }
+
+
     if (
         finalCharacter &&
         selectedCharacter
@@ -1943,6 +2000,9 @@ if (restartButton) {
 
             playerName =
                 "";
+
+            playerId =
+                null;
 
             selectedCharacter =
                 null;

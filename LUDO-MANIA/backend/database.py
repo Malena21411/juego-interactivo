@@ -13,6 +13,7 @@ def crear_base_datos():
     """
     # 1. Nos conectamos a la base de datos.
     # Si el archivo ludo_mania.db no existe, SQLite lo crea automáticamente.
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
     conexion = sqlite3.connect(DB_PATH)
     
     # 2. Creamos un cursor.
@@ -27,9 +28,11 @@ def crear_base_datos():
     CREATE TABLE IF NOT EXISTS Jugador (
         id_jugador INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre TEXT NOT NULL CHECK(length(nombre) <= 3), -- Máximo 3 letras (ej: AAA)
+        numero INTEGER NOT NULL DEFAULT 1, -- Distingue a dos personas con el mismo nombre
         fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
     )
     ''')
+    _asegurar_columna_numero(cursor)
 
     # ==========================================
     # TABLA 2: PERSONAJE
@@ -84,6 +87,61 @@ def crear_base_datos():
     
     print(f"Exito! Base de datos creada en: {DB_PATH}")
 
+
+def _asegurar_columna_numero(cursor):
+    """
+    Si la base ya existía sin el campo numero, lo agrega
+    sin borrar las partidas anteriores.
+    """
+    columnas = [fila[1] for fila in cursor.execute("PRAGMA table_info(Jugador)").fetchall()]
+    if "numero" not in columnas:
+        cursor.execute("ALTER TABLE Jugador ADD COLUMN numero INTEGER NOT NULL DEFAULT 1")
+    cursor.execute(
+        "CREATE UNIQUE INDEX IF NOT EXISTS idx_jugador_nombre_numero ON Jugador (nombre, numero)"
+    )
+
+
+def nombre_visible(nombre, numero):
+    """AAA se ve como AAA. El segundo AAA se ve como AAA #2."""
+    if not numero or numero <= 1:
+        return nombre
+    return f"{nombre} #{numero}"
+
+
+def registrar_jugador(nombre_jugador):
+    """
+    Crea siempre un jugador nuevo.
+    Si el nombre ya existe, le asigna el siguiente número.
+    """
+    nombre_jugador = (nombre_jugador or "").strip().upper()[:3]
+    if not nombre_jugador:
+        return None
+
+    conexion = sqlite3.connect(DB_PATH)
+    cursor = conexion.cursor()
+
+    cursor.execute(
+        "SELECT COALESCE(MAX(numero), 0) FROM Jugador WHERE nombre = ?",
+        (nombre_jugador,),
+    )
+    siguiente = cursor.fetchone()[0] + 1
+
+    cursor.execute(
+        "INSERT INTO Jugador (nombre, numero) VALUES (?, ?)",
+        (nombre_jugador, siguiente),
+    )
+    id_jugador = cursor.lastrowid
+
+    conexion.commit()
+    conexion.close()
+
+    return {
+        "id_jugador": id_jugador,
+        "nombre": nombre_jugador,
+        "numero": siguiente,
+        "display_name": nombre_visible(nombre_jugador, siguiente),
+    }
+
 def inicializar_catalogo():
     """
     Inserta los personajes y símbolos iniciales (el 'menú') 
@@ -125,30 +183,30 @@ def inicializar_catalogo():
     conexion.commit()
     conexion.close()
 
-def guardar_partida(nombre_jugador, nombre_personaje, puntos):
+def guardar_partida(id_jugador, nombre_personaje, puntos):
     conexion = sqlite3.connect(DB_PATH)
     cursor = conexion.cursor()
-    
-    # 1. Obtener o crear jugador
-    cursor.execute("SELECT id_jugador FROM Jugador WHERE nombre = ?", (nombre_jugador,))
-    resultado = cursor.fetchone()
-    if resultado:
-        id_jugador = resultado[0]
-    else:
-        cursor.execute("INSERT INTO Jugador (nombre) VALUES (?)", (nombre_jugador,))
-        id_jugador = cursor.lastrowid
-        
+
+    # 1. Comprobar que el jugador exista (ya se registró al poner el nombre)
+    cursor.execute("SELECT id_jugador FROM Jugador WHERE id_jugador = ?", (id_jugador,))
+    if not cursor.fetchone():
+        conexion.close()
+        return False
+
     # 2. Obtener id del personaje
     cursor.execute("SELECT id_personaje FROM Personaje WHERE nombre = ?", (nombre_personaje,))
     res_personaje = cursor.fetchone()
     id_personaje = res_personaje[0] if res_personaje else 1
-    
-    # 3. Guardar la partida
-    cursor.execute("INSERT INTO Partida (id_jugador, id_personaje, puntuacion_final) VALUES (?, ?, ?)", 
-                   (id_jugador, id_personaje, puntos))
-    
+
+    # 3. Guardar la partida ligada a ESE jugador, no al nombre suelto
+    cursor.execute(
+        "INSERT INTO Partida (id_jugador, id_personaje, puntuacion_final) VALUES (?, ?, ?)",
+        (id_jugador, id_personaje, puntos),
+    )
+
     conexion.commit()
     conexion.close()
+    return True
 
 def obtener_ranking():
     conexion = sqlite3.connect(DB_PATH)
@@ -156,7 +214,7 @@ def obtener_ranking():
     
     # Cruzamos las tablas para obtener los datos legibles
     query = '''
-        SELECT J.nombre, P.nombre, PA.puntuacion_final 
+        SELECT J.nombre, J.numero, P.nombre, PA.puntuacion_final
         FROM Partida PA
         JOIN Jugador J ON PA.id_jugador = J.id_jugador
         JOIN Personaje P ON PA.id_personaje = P.id_personaje
@@ -166,14 +224,14 @@ def obtener_ranking():
     cursor.execute(query)
     resultados = cursor.fetchall()
     conexion.close()
-    
+
     # Convertimos los resultados a un formato que el frontend entienda (JSON)
     ranking = []
     for r in resultados:
         ranking.append({
-            "name": r[0],
-            "character": r[1],
-            "score": r[2]
+            "name": nombre_visible(r[0], r[1]),
+            "character": r[2],
+            "score": r[3]
         })
     return ranking
 
