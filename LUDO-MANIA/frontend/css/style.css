@@ -2267,7 +2267,6 @@ button:active {
 }
 
 
-#final-player-name,
 #final-character {
 
     color: var(--cyan);
@@ -2966,4 +2965,1546 @@ button:active {
 
 #ranking-table tr:hover {
     transform: scale(1.02);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   LUDO-MANIA — ESTILO ARCADE
+   Colores inspirados en la imagen de referencia
+   ========================================================= */
+
+:root {
+    --background: #080018;
+    --background-purple: #100022;
+
+    --purple-dark: #080018;
+    --purple: #6D00C7;
+    --purple-light: #A000E8;
+
+    --cyan: #00C8FF;
+    --cyan-dark: #008ED8;
+
+    --pink: #FF006A;
+    --pink-dark: #B90045;
+
+    --yellow: #FFD500;
+    --yellow-light: #FFF9A8;
+    --yellow-dark: #FF9D00;
+
+    --red: #FF1608;
+    --red-light: #FF6548;
+    --red-dark: #C90016;
+
+    --white: #FFFFFF;
+    --gray: #D9D7DE;
+    --black: #050008;
+}
+
+/* =========================================================
+   ESTILOS GENERALES
+   ========================================================= */
+
+body {
+    background: #080018;
+    color: var(--white);
+}
+
+.screen::before,
+.screen::after {
+    display: none;
+}
+
+h1 {
+    color: #FFFFFF;
+    text-shadow: 0 3px 0 #000000;
+}
+
+p {
+    color: #FFFFFF;
+}
+
+button {
+    border: 5px solid #050008;
+    border-radius: 32px;
+
+    background: linear-gradient(
+        to bottom,
+        #FF6548 0%,
+        #FF2B18 48%,
+        #FF0808 100%
+    );
+
+    color: #FFFFFF;
+
+    box-shadow:
+        0 6px 0 #000000,
+        inset 0 4px 0 rgba(255, 255, 255, 0.20);
+
+    transition:
+        transform 0.12s ease,
+        filter 0.15s ease;
+}
+
+button:hover {
+    filter: brightness(1.08);
+}
+
+button:active {
+    transform: translateY(4px);
+}
+
+/* =========================================================
+   FONDO DE LAS PANTALLAS
+   ========================================================= */
+
+#warning-screen,
+#start-screen,
+#name-screen,
+#end-screen,
+#game-screen {
+    background: #080018;
+}
+
+#start-screen::before,
+#start-screen::after {
+    display: none;
+}
+
+/* =========================================================
+   PANTALLA DE INICIO
+   ========================================================= */
+
+#start-screen h1 {
+    color: #FFFFFF;
+
+    text-shadow:
+        0 4px 0 #000000,
+        0 0 10px #A000E8,
+        0 0 24px rgba(255, 213, 0, 0.45);
+}
+
+#start-button,
+#name-confirm-button {
+    background: linear-gradient(
+        to bottom,
+        #FF6548,
+        #FF2517 55%,
+        #F00014
+    );
+
+    border: 5px solid #050008;
+    border-radius: 35px;
+
+    color: #FFFFFF;
+
+    box-shadow:
+        0 6px 0 #000000,
+        inset 0 4px 0 rgba(255, 255, 255, 0.20);
+}
+
+/* =========================================================
+   PANTALLA DE SELECCIÓN
+   ========================================================= */
+
+#character-screen {
+    min-height: 100vh;
+    padding: 15px 25px 30px;
+    gap: 0;
+
+    justify-content: flex-start;
+
+    background: #080018;
+    border: none;
+}
+
+#character-screen::before,
+#character-screen::after {
+    display: none;
+}
+
+#character-screen > h1 {
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+/* =========================================================
+   SELECTOR SUPERIOR AMARILLO
+   ========================================================= */
+
+#character-selector {
+    position: relative;
+    z-index: 12;
+
+    width: min(880px, 90vw);
+    height: 165px;
+    flex-shrink: 0;
+
+    margin-bottom: -90px;
+    padding: 10px 55px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(15px, 3vw, 42px);
+
+    background: linear-gradient(
+        to bottom,
+        #FF9200 0%,
+        #FFBD00 48%,
+        #FFF9A8 100%
+    );
+
+    border: 6px solid #FF6A00;
+    border-radius: 50%;
+
+    box-shadow: none;
+}
+
+#character-selector::before {
+    top: 10px;
+    left: 15%;
+    width: 70%;
+    height: 22px;
+
+    background: rgba(255, 255, 255, 0.18);
+    filter: blur(6px);
+}
+
+/* =========================================================
+   AVATARES CIRCULARES
+   ========================================================= */
+
+.character-option {
+    position: relative;
+    z-index: 2;
+
+    width: 130px;
+    height: 130px;
+    flex-shrink: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #080808;
+    border: 4px solid #181818;
+    border-radius: 50%;
+
+    overflow: hidden;
+    box-shadow: none;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.character-option img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.character-option.active {
+    border-color: #FFFFFF;
+    box-shadow: none;
+    transform: scale(1.02);
+}
+
+.character-option:hover {
+    border-color: #FFFFFF;
+    box-shadow: none;
+    transform: scale(1.06);
+}
+
+.character-option.active:hover {
+    border-color: #FFFFFF;
+    transform: scale(1.06);
+}
+
+/* =========================================================
+   PANEL PRINCIPAL
+   ========================================================= */
+
+#character-card {
+    position: relative;
+    z-index: 5;
+
+    width: min(1415px, 96vw);
+    min-height: 580px;
+    flex-shrink: 0;
+
+    margin-top: 0;
+    padding: 125px 55px 35px;
+
+    display: flex;
+    align-items: center;
+    gap: 45px;
+
+    background:
+        linear-gradient(#080018, #080018) padding-box,
+        linear-gradient(
+            to bottom,
+            #FF6500 0%,
+            #FF003C 52%,
+            #D500FF 76%,
+            #00C8FF 100%
+        ) border-box;
+
+    border: 8px solid transparent;
+    border-radius: 28px;
+
+    box-shadow: none;
+}
+
+#character-card::before {
+    display: none;
+}
+
+/* =========================================================
+   MARCO DE LA IMAGEN
+   ========================================================= */
+
+#character-container {
+    width: 480px;
+    height: 535px;
+    flex-shrink: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(
+        145deg,
+        #FFFFFF 0%,
+        #F3F3F3 70%,
+        #FFFFFF 100%
+    );
+
+    border: 18px solid #66616F;
+    border-radius: 52px;
+
+    overflow: hidden;
+
+    box-shadow:
+        inset 0 0 0 1px #FFFFFF;
+}
+
+#character-image {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+
+    object-fit: contain;
+}
+
+/* =========================================================
+   INFORMACIÓN DEL PERSONAJE
+   ========================================================= */
+
+#character-info {
+    flex: 1;
+    min-width: 0;
+    align-self: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    gap: 18px;
+}
+
+/* Nombre en botón rojo */
+
+#character-name {
+    display: inline-block;
+
+    padding: 10px 35px;
+
+    background: linear-gradient(
+        to bottom,
+        #FF6548 0%,
+        #FF321B 55%,
+        #FF1008 100%
+    );
+
+    border: 6px solid #050008;
+    border-radius: 42px;
+
+    color: #FFFFFF;
+    font-size: clamp(28px, 3vw, 48px);
+    font-weight: 900;
+
+    box-shadow:
+        0 4px 0 #000000,
+        inset 0 5px 0 rgba(255, 255, 255, 0.22);
+
+    text-shadow: none;
+}
+
+/* Descripción */
+
+#character-description {
+    max-width: 620px;
+
+    color: #FFFFFF;
+    font-size: clamp(17px, 1.65vw, 26px);
+    line-height: 1.25;
+
+    text-align: left;
+}
+
+/* =========================================================
+   BOTÓN INFERIOR DE SELECCIÓN
+   ========================================================= */
+
+#character-select-button {
+    position: relative;
+    z-index: 10;
+
+    width: min(930px, 90vw);
+    min-width: 0;
+
+    margin-top: 30px;
+    padding: 20px 30px;
+
+    background: linear-gradient(
+        to bottom,
+        #FF5546 0%,
+        #FF2517 48%,
+        #F00014 100%
+    );
+
+    border: 7px solid #050008;
+    border-radius: 80px;
+
+    color: #FFFFFF;
+
+    font-size: clamp(22px, 3vw, 46px);
+    font-weight: 900;
+    text-align: center;
+
+    box-shadow:
+        0 5px 0 #000000,
+        inset 0 5px 0 rgba(255, 255, 255, 0.18);
+
+    text-shadow: none;
+}
+
+#character-select-button:hover {
+    filter: brightness(1.08);
+}
+
+#character-instruction {
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+/* =========================================================
+   PANTALLA DE NOMBRE
+   ========================================================= */
+
+#player-name {
+    background: #100022;
+    color: #FFFFFF;
+    border: 4px solid #FF6A00;
+}
+
+#player-name:focus {
+    border-color: #FFD500;
+    box-shadow: 0 0 0 2px #FF6A00;
+}
+
+#selected-character-profile {
+    border-color: #FF6A00;
+    box-shadow: none;
+}
+
+#name-character-label {
+    color: #FFD500;
+    text-shadow: none;
+}
+
+/* =========================================================
+   PANTALLA DE JUEGO
+   ========================================================= */
+
+#game-character {
+    border-color: #FF1608;
+    box-shadow: none;
+}
+
+#score {
+    background: linear-gradient(
+        to bottom,
+        #FFBD00,
+        #FF8A00
+    );
+
+    border-color: #050008;
+    box-shadow: none;
+}
+
+#score-value {
+    color: #FFFFFF;
+    text-shadow: 0 2px 0 #8C4800;
+}
+
+/* Rodillos */
+
+#reels {
+    background: linear-gradient(
+        135deg,
+        #FF8A00,
+        #FFBD00 50%,
+        #FF6500
+    );
+
+    border-color: #FF6500;
+
+    box-shadow:
+        0 6px 0 #000000,
+        inset 0 0 12px rgba(255, 255, 255, 0.18);
+}
+
+.reel {
+    background: linear-gradient(
+        to right,
+        #BDBDBD,
+        #FFFFFF 15%,
+        #F3F3F3 50%,
+        #FFFFFF 85%,
+        #BDBDBD
+    );
+
+    border-color: #555555;
+    box-shadow: 0 3px 0 #333333;
+}
+
+#reels::before {
+    border-top-color: #FF1608;
+    border-bottom-color: #FF1608;
+
+    background: rgba(255, 213, 0, 0.08);
+
+    box-shadow:
+        0 0 8px rgba(255, 22, 8, 0.6);
+}
+
+#reels::after {
+    border-color: rgba(255, 213, 0, 0.7);
+}
+
+/* Fichas */
+
+#chips {
+    background: #100022;
+    border-color: #FF6500;
+    box-shadow: none;
+}
+
+/* Botón SPIN */
+
+#spin-button {
+    background: linear-gradient(
+        to bottom,
+        #FF6548,
+        #FF2517 55%,
+        #F00014
+    );
+
+    border-color: #050008;
+
+    box-shadow:
+        0 7px 0 #000000,
+        inset 0 4px 0 rgba(255, 255, 255, 0.20);
+}
+
+#spin-button:hover {
+    box-shadow:
+        0 7px 0 #000000,
+        inset 0 4px 0 rgba(255, 255, 255, 0.20);
+}
+
+#game-message {
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+/* =========================================================
+   PANTALLA FINAL Y RANKING
+   ========================================================= */
+
+#final-score {
+    color: #FFD500;
+    text-shadow: 0 2px 0 #000000;
+}
+
+#final-character {
+    color: #FFFFFF;
+    text-shadow: none;
+}
+
+#ranking-list {
+    background: #100022;
+    border-color: #FF6500;
+    box-shadow: none;
+}
+
+#ranking-table {
+    color: #FFFFFF;
+}
+
+#ranking-table th {
+    color: #FFD500;
+    border-bottom-color: #FF6500;
+}
+
+#ranking-table td {
+    color: #FFFFFF;
+    border-bottom-color: #4A3159;
+}
+
+#ranking-table tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* =========================================================
+   TABLETS
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    #character-screen {
+        padding: 12px 12px 25px;
+    }
+
+    #character-selector {
+        width: min(570px, 94vw);
+        height: 100px;
+
+        margin-bottom: -45px;
+        padding: 8px 20px;
+
+        gap: clamp(8px, 2vw, 18px);
+    }
+
+    .character-option {
+        width: clamp(52px, 11vw, 78px);
+        height: clamp(52px, 11vw, 78px);
+    }
+
+    #character-card {
+        width: 96vw;
+        min-height: 0;
+
+        padding: 75px 20px 25px;
+        gap: 22px;
+
+        border-width: 6px;
+        border-radius: 22px;
+    }
+
+    #character-container {
+        width: min(38vw, 300px);
+        height: min(55vw, 370px);
+
+        border-width: 10px;
+        border-radius: 30px;
+    }
+
+    #character-info {
+        gap: 15px;
+    }
+
+    #character-name {
+        padding: 8px 22px;
+        font-size: clamp(22px, 4vw, 34px);
+    }
+
+    #character-description {
+        font-size: clamp(14px, 2vw, 18px);
+    }
+
+    #character-select-button {
+        width: 90vw;
+
+        margin-top: 20px;
+        padding: 14px 12px;
+
+        font-size: clamp(18px, 3.4vw, 27px);
+    }
+}
+
+/* =========================================================
+   CELULARES
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    #character-card {
+        flex-direction: column;
+        padding: 65px 16px 22px;
+    }
+
+    #character-container {
+        width: min(78vw, 300px);
+        height: min(90vw, 360px);
+    }
+
+    #character-info {
+        width: 100%;
+        align-items: center;
+    }
+
+    #character-description {
+        text-align: center;
+    }
+
+    #character-selector {
+        height: 82px;
+        margin-bottom: -32px;
+
+        padding: 6px 12px;
+        gap: 8px;
+    }
+
+    .character-option {
+        width: clamp(45px, 13vw, 58px);
+        height: clamp(45px, 13vw, 58px);
+
+        border-width: 3px;
+    }
+
+    #character-name {
+        font-size: 25px;
+    }
+
+    #character-select-button {
+        width: 94vw;
+        font-size: 18px;
+    }
+}
+
+
+
+/* ==================================================
+CORRECCIÓN VISUAL — PANTALLA DE ADVERTENCIA
+================================================== */
+
+#warning-screen {
+min-height: 100vh;
+padding: 40px 24px;
+gap: 24px;
+justify-content: center;
+align-items: center;
+text-align: center;
+}
+
+/* Título más grande y visible */
+#warning-screen h1 {
+font-size: clamp(32px, 5vw, 52px);
+line-height: 1.2;
+letter-spacing: 3px;
+margin-bottom: 4px;
+}
+
+/* Texto explicativo más legible */
+#warning-screen p {
+width: 100%;
+max-width: 850px;
+font-size: clamp(15px, 2vw, 20px);
+line-height: 1.6;
+margin: 0;
+padding: 0 8px;
+}
+
+/* Botón CONTINUAR más grande */
+#warning-button {
+min-width: 190px;
+min-height: 54px;
+padding: 14px 32px;
+font-size: 18px;
+font-weight: 800;
+letter-spacing: 1px;
+border-radius: 30px;
+cursor: pointer;
+margin-top: 4px;
+}
+
+/* Adaptación para pantallas pequeñas */
+@media (max-width: 480px) {
+#warning-screen {
+padding: 28px 18px;
+gap: 20px;
+}
+
+#warning-screen h1 {
+    font-size: 32px;
+    letter-spacing: 2px;
+}
+
+#warning-screen p {
+    font-size: 15px;
+}
+
+#warning-button {
+    min-width: 175px;
+    min-height: 50px;
+    font-size: 16px;
+}
+
+}
+
+/* ==================================================
+   AJUSTE VISUAL — SELECCIÓN DE PERSONAJE
+   ================================================== */
+
+#character-screen {
+    min-height: 100vh;
+    height: 100vh;
+    padding: 18px 28px;
+    gap: 12px;
+    justify-content: flex-start;
+    overflow-y: auto;
+}
+
+/* Título */
+#character-screen h1 {
+    font-size: clamp(28px, 3.5vw, 48px);
+    letter-spacing: 3px;
+    line-height: 1.15;
+    margin: 0;
+}
+
+/* Franja con los cuatro iconos */
+#character-options {
+    max-width: 680px;
+    width: min(80%, 680px);
+    padding: 12px 20px;
+    gap: 18px;
+}
+
+/* Iconos de los personajes */
+.character-option {
+    width: clamp(65px, 8vw, 100px);
+    height: clamp(65px, 8vw, 100px);
+    flex-shrink: 0;
+}
+
+.character-option img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Panel principal: imagen e información */
+#character-card {
+    width: min(100%, 850px);
+    gap: 28px;
+    align-items: center;
+    margin: 8px auto;
+}
+
+/* Marco e ilustración del personaje */
+#character-container {
+    width: clamp(220px, 30vw, 340px);
+    height: clamp(260px, 42vh, 390px);
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+#character-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Información del personaje */
+#character-info {
+    gap: 12px;
+}
+
+#character-name {
+    font-size: clamp(22px, 3vw, 34px);
+    padding: 12px 24px;
+    letter-spacing: 1px;
+}
+
+#character-description {
+    font-size: clamp(14px, 1.5vw, 18px);
+    line-height: 1.4;
+}
+
+/* Indicaciones de selección */
+#character-select-button {
+    font-size: clamp(16px, 1.8vw, 22px);
+    padding: 12px 24px;
+    margin-top: 4px;
+}
+
+#character-instruction {
+    font-size: clamp(12px, 1.3vw, 16px);
+    margin: 0;
+}
+
+/* Pantallas bajas o ventanas pequeñas */
+@media (max-height: 760px) {
+    #character-screen {
+        padding-top: 12px;
+        gap: 8px;
+    }
+
+    #character-card {
+        margin: 4px auto;
+    }
+
+    #character-container {
+        height: 280px;
+        width: 240px;
+    }
+
+    #character-options {
+        padding: 8px 16px;
+    }
+}
+
+/* Adaptación a móviles */
+@media (max-width: 600px) {
+    #character-screen {
+        height: auto;
+        min-height: 100vh;
+        padding: 20px 14px;
+    }
+
+    #character-card {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    #character-container {
+        width: min(75vw, 280px);
+        height: 280px;
+    }
+
+    #character-options {
+        width: 100%;
+        gap: 8px;
+    }
+}
+
+/* ==================================================
+   AJUSTE FINAL — PANTALLA DE SELECCIÓN
+   ================================================== */
+
+#character-screen {
+    height: 100vh;
+    min-height: 0;
+    padding: 10px 22px 14px;
+    gap: 0;
+    overflow: hidden;
+    align-items: center;
+}
+
+/* Título un poco más compacto */
+#character-screen > h1 {
+    font-size: clamp(28px, 4vw, 44px);
+    line-height: 1.1;
+    margin: 0 0 6px;
+}
+
+/* Óvalo amarillo más pequeño */
+#character-selector {
+    width: min(680px, 78vw);
+    height: 112px;
+    padding: 8px 35px;
+    gap: clamp(12px, 2vw, 26px);
+    border-width: 5px;
+    margin-bottom: -62px;
+}
+
+/* Iconos más pequeños para acompañar el óvalo */
+.character-option {
+    width: clamp(65px, 7vw, 94px);
+    height: clamp(65px, 7vw, 94px);
+    border-width: 4px;
+}
+
+/* Marco exterior más compacto y elevado */
+#character-card {
+    width: min(1180px, 94vw);
+    min-height: 0;
+    flex: 1;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 85px 48px 18px;
+    gap: 32px;
+    border-width: 6px;
+    border-radius: 24px;
+    overflow: hidden;
+}
+
+/* Marco de la ilustración */
+#character-container {
+    width: clamp(220px, 28vw, 330px);
+    height: min(42vh, 340px);
+    border-width: 12px;
+    border-radius: 38px;
+}
+
+/* Información del personaje */
+#character-info {
+    gap: 12px;
+}
+
+#character-name {
+    font-size: clamp(24px, 2.5vw, 36px);
+    padding: 8px 24px;
+}
+
+#character-description {
+    font-size: clamp(15px, 1.4vw, 20px);
+}
+
+/* Botón inferior más pequeño y cercano */
+#character-select-button {
+    width: min(720px, 85vw);
+    margin-top: 10px;
+    padding: 12px 22px;
+    font-size: clamp(18px, 2vw, 28px);
+    border-width: 5px;
+}
+
+#character-instruction {
+    margin: 5px 0 0;
+    font-size: clamp(12px, 1.2vw, 15px);
+}
+
+/* Ventanas de poca altura */
+@media (max-height: 760px) {
+    #character-screen {
+        padding-top: 6px;
+        padding-bottom: 8px;
+    }
+
+    #character-screen > h1 {
+        font-size: clamp(25px, 3.5vw, 36px);
+    }
+
+    #character-selector {
+        height: 88px;
+        margin-bottom: -48px;
+    }
+
+    .character-option {
+        width: 68px;
+        height: 68px;
+    }
+
+    #character-card {
+        padding-top: 65px;
+        padding-bottom: 12px;
+        gap: 24px;
+    }
+
+    #character-container {
+        height: min(36vh, 265px);
+        width: clamp(190px, 23vw, 270px);
+    }
+
+    #character-select-button {
+        margin-top: 6px;
+        padding: 9px 18px;
+    }
+}
+
+
+
+
+
+
+
+
+/* ==================================================
+   CORRECCIÓN DEFINITIVA — PANEL DE PERSONAJES
+   ================================================== */
+
+/* Marco principal: imagen a la izquierda e información a la derecha */
+#character-screen #character-card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 32px !important;
+    box-sizing: border-box !important;
+}
+
+/* Marco de la ilustración, ligeramente más grande */
+#character-screen #character-container {
+    width: clamp(250px, 31vw, 360px) !important;
+    height: min(45vh, 370px) !important;
+    min-width: 0 !important;
+    flex: 0 1 360px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+/* Imagen completa, sin desbordarse ni deformarse */
+#character-screen #character-image {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    padding: 0 !important;
+    object-fit: contain !important;
+    object-position: center !important;
+}
+
+/* Columna derecha: nombre y descripción centrados */
+#character-screen #character-info {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: 480px !important;
+    align-self: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 14px !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+}
+
+/* Botón rojo con el nombre */
+#character-screen #character-name {
+    display: block !important;
+    width: fit-content !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 9px 22px !important;
+    box-sizing: border-box !important;
+    font-size: clamp(22px, 2.5vw, 34px) !important;
+    text-align: center !important;
+    overflow-wrap: anywhere !important;
+}
+
+/* Texto "Personaje seleccionado." */
+#character-screen #character-description {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    font-size: clamp(15px, 1.5vw, 19px) !important;
+    line-height: 1.4 !important;
+    text-align: center !important;
+    overflow-wrap: anywhere !important;
+    box-sizing: border-box !important;
+}
+
+/* Adaptación para ventanas bajas */
+@media (max-height: 760px) {
+    #character-screen #character-container {
+        width: clamp(230px, 27vw, 310px) !important;
+        height: min(39vh, 290px) !important;
+        flex-basis: 310px !important;
+    }
+
+    #character-screen #character-card {
+        gap: 24px !important;
+    }
+}
+
+/* Adaptación para móviles */
+@media (max-width: 600px) {
+    #character-screen #character-card {
+        flex-direction: column !important;
+        gap: 14px !important;
+    }
+
+    #character-screen #character-container {
+        width: min(78vw, 300px) !important;
+        height: 260px !important;
+        flex: 0 1 260px !important;
+    }
+
+    #character-screen #character-info {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+
+
+
+
+
+/* ==================================================
+   PANEL DE PERSONAJES — AJUSTE DE TAMAÑO Y POSICIÓN
+   ================================================== */
+
+/* Distribución del marco principal */
+#character-screen #character-card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 36px !important;
+    box-sizing: border-box !important;
+}
+
+/* Ilustración izquierda: más grande, sin salir del marco */
+#character-screen #character-container {
+    width: clamp(280px, 34vw, 400px) !important;
+    height: min(49vh, 410px) !important;
+    min-width: 0 !important;
+    flex: 0 1 400px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+#character-screen #character-image {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    padding: 0 !important;
+    object-fit: contain !important;
+    object-position: center !important;
+}
+
+/* Panel derecho: subir el nombre y la descripción */
+#character-screen #character-info {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: 480px !important;
+    align-self: flex-start !important;
+    transform: translateY(35px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+}
+
+/* Botón rojo con el nombre del personaje */
+#character-screen #character-name {
+    display: block !important;
+    width: fit-content !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 10px 24px !important;
+    box-sizing: border-box !important;
+    font-size: clamp(24px, 2.7vw, 36px) !important;
+    text-align: center !important;
+    overflow-wrap: anywhere !important;
+}
+
+/* Descripción debajo del nombre */
+#character-screen #character-description {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    font-size: clamp(16px, 1.6vw, 20px) !important;
+    line-height: 1.4 !important;
+    text-align: center !important;
+    overflow-wrap: anywhere !important;
+    box-sizing: border-box !important;
+}
+
+/* Ventanas de poca altura */
+@media (max-height: 800px) {
+    #character-screen #character-container {
+        width: clamp(250px, 30vw, 340px) !important;
+        height: min(43vh, 320px) !important;
+        flex-basis: 340px !important;
+    }
+
+    #character-screen #character-card {
+        gap: 28px !important;
+    }
+
+    #character-screen #character-info {
+        transform: translateY(22px) !important;
+    }
+}
+
+/* Móviles: mantener el diseño vertical */
+@media (max-width: 600px) {
+    #character-screen #character-card {
+        flex-direction: column !important;
+        gap: 14px !important;
+    }
+
+    #character-screen #character-container {
+        width: min(82vw, 320px) !important;
+        height: 280px !important;
+        flex: 0 1 280px !important;
+    }
+
+    #character-screen #character-info {
+        width: 100% !important;
+        max-width: 100% !important;
+        align-self: center !important;
+        transform: none !important;
+    }
+}
+
+
+
+
+
+/* ==================================================
+   AJUSTE — ILUSTRACIONES Y ÓVALO AMARILLO
+   ================================================== */
+
+/* Mover el marco de la ilustración hacia la izquierda
+   y darle un poco más de espacio */
+#character-screen #character-container {
+    width: clamp(270px, 33vw, 380px) !important;
+    height: min(47vh, 390px) !important;
+    flex: 0 1 380px !important;
+    margin-left: -12px !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+/* Aprovechar mejor el espacio interior sin deformar la imagen */
+#character-screen #character-image {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    object-position: center !important;
+}
+
+/* Mantener espacio entre la ilustración y la información */
+#character-screen #character-card {
+    gap: 28px !important;
+}
+
+/* Agrandar el óvalo amarillo para que entren los cuatro círculos */
+#character-screen #character-selector {
+    width: min(780px, 84vw) !important;
+    min-width: 0 !important;
+    height: 128px !important;
+    padding: 10px 42px !important;
+    gap: clamp(14px, 2.2vw, 28px) !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+}
+
+/* Asegurar que los círculos queden dentro del óvalo */
+#character-screen #character-selector .character-option {
+    width: clamp(68px, 7.5vw, 96px) !important;
+    height: clamp(68px, 7.5vw, 96px) !important;
+    flex: 0 0 auto !important;
+    box-sizing: border-box !important;
+}
+
+/* Ajustes para ventanas con poca altura */
+@media (max-height: 760px) {
+    #character-screen #character-container {
+        width: clamp(245px, 29vw, 330px) !important;
+        height: min(40vh, 300px) !important;
+        flex-basis: 330px !important;
+        margin-left: -10px !important;
+    }
+
+    #character-screen #character-selector {
+        width: min(740px, 84vw) !important;
+        height: 100px !important;
+        padding: 7px 32px !important;
+        gap: 16px !important;
+    }
+
+    #character-screen #character-selector .character-option {
+        width: 70px !important;
+        height: 70px !important;
+    }
+}
+
+/* En móviles, evitar que el marco se desplace lateralmente */
+@media (max-width: 600px) {
+    #character-screen #character-container {
+        width: min(82vw, 310px) !important;
+        height: 280px !important;
+        flex-basis: 280px !important;
+        margin-left: 0 !important;
+    }
+
+    #character-screen #character-selector {
+        width: min(96%, 440px) !important;
+        height: auto !important;
+        min-height: 88px !important;
+        padding: 8px 12px !important;
+        gap: 8px !important;
+    }
+
+    #character-screen #character-selector .character-option {
+        width: clamp(48px, 14vw, 68px) !important;
+        height: clamp(48px, 14vw, 68px) !important;
+    }
+}
+
+
+
+
+
+/* =========================================
+   REDUCIR MARCO EXTERIOR DE PERSONAJES
+   ========================================= */
+
+/* Marco que contiene la ilustración y la información */
+#character-screen #character-card {
+    width: min(1000px, 88vw) !important;
+    max-width: 1000px !important;
+    padding: 65px 32px 18px !important;
+    gap: 24px !important;
+    box-sizing: border-box !important;
+    border-radius: 24px !important;
+    margin: 0 auto !important;
+}
+
+/* Marco de la ilustración */
+#character-screen #character-container {
+    width: clamp(230px, 27vw, 320px) !important;
+    height: min(40vh, 320px) !important;
+    flex: 0 1 320px !important;
+    margin-left: 0 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+/* Imagen completa dentro de su marco */
+#character-screen #character-image {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    object-position: center !important;
+}
+
+/* Mantener nombre y descripción centrados a la derecha */
+#character-screen #character-info {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: 440px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+}
+
+/* Ventanas con poca altura */
+@media (max-height: 760px) {
+    #character-screen #character-card {
+        padding: 55px 28px 12px !important;
+        gap: 20px !important;
+    }
+
+    #character-screen #character-container {
+        width: clamp(210px, 24vw, 280px) !important;
+        height: min(35vh, 260px) !important;
+        flex-basis: 280px !important;
+    }
+}
+
+/* Móviles */
+@media (max-width: 600px) {
+    #character-screen #character-card {
+        width: 94vw !important;
+        padding: 55px 16px 16px !important;
+        gap: 14px !important;
+    }
+
+    #character-screen #character-container {
+        width: min(82vw, 280px) !important;
+        height: 250px !important;
+        flex-basis: 250px !important;
+    }
+
+    #character-screen #character-info {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+
+
+
+
+
+/* =========================================
+   AGRANDAR ILUSTRACIONES DE LOS PERSONAJES
+   ========================================= */
+
+/* Marco de la ilustración */
+#character-screen #character-container {
+    width: clamp(270px, 32vw, 380px) !important;
+    height: min(48vh, 390px) !important;
+    flex: 0 1 380px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+}
+
+/* Imagen ampliada, sin deformarse ni salir del marco */
+#character-screen #character-image {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    object-position: center !important;
+}
+
+/* Ventanas de poca altura */
+@media (max-height: 760px) {
+    #character-screen #character-container {
+        width: clamp(250px, 29vw, 340px) !important;
+        height: min(42vh, 320px) !important;
+        flex-basis: 340px !important;
+    }
+}
+
+/* Móviles */
+@media (max-width: 600px) {
+    #character-screen #character-container {
+        width: min(82vw, 320px) !important;
+        height: 290px !important;
+        flex-basis: 290px !important;
+    }
 }
