@@ -3,2967 +3,1194 @@
    ESTÉTICA ARCADE / MÁQUINA RECREATIVA
    ================================================== */
 
+/* PALETA */
 
-/* ==================================================
-   PALETA
-   ================================================== */
-
-:root {
-
-    --background: #101827;
-    --background-purple: #172554;
-
-    --purple-dark: #172554;
-    --purple: #38BDF8;
-    --purple-light: #38BDF8;
-
-    --cyan: #38BDF8;
-    --cyan-dark: #38BDF8;
-
-    --pink: #38BDF8;
-    --pink-dark: #172554;
-
-    --yellow: #FACC15;
-    --yellow-light: #FACC15;
-    --yellow-dark: #FACC15;
-
-    --red: #EF4444;
-    --red-light: #EF4444;
-    --red-dark: #EF4444;
-
-    --white: #F8FAFC;
-    --gray: #CBD5E1;
-
-    --black: #101827;
+:root{
+    --background:#080018; --background-purple:#100022;
+    --purple-dark:#080018; --purple:#6D00C7; --purple-light:#A000E8;
+    --cyan:#00C8FF; --cyan-dark:#008ED8;
+    --pink:#FF006A; --pink-dark:#B90045;
+    --yellow:#FFD500; --yellow-light:#FFF9A8; --yellow-dark:#FF9D00;
+    --red:#FF1608; --red-light:#FF6548; --red-dark:#C90016;
+    --white:#FFFFFF; --gray:#D9D7DE; --black:#050008;
 }
-
 
-/* ==================================================
-   RESETEO
-   ================================================== */
+/* RESETEO */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    margin:0; padding:0; box-sizing:border-box;
 }
-
-
-/* ==================================================
-   BODY
-   ================================================== */
-
-body {
-
-    min-height: 100vh;
-
-    background:
-        radial-gradient(
-            circle at 50% 45%,
-            #172554 0%,
-            #172554 35%,
-            #101827 75%
-        );
-
-    color: var(--white);
 
-    font-family: Arial, sans-serif;
+/* BODY */
 
+body{
+    min-height:100vh;
+    background:radial-gradient(circle at 50% 45%,#172554 0%,#172554 35%,#101827 75%);
+    color:var(--white);
+    font-family:Arial,sans-serif;
 }
 
+/* PANTALLAS */
 
-/* ==================================================
-   PANTALLAS
-   ================================================== */
-
-.screen {
-
-    min-height: 100vh;
-
-    padding: 35px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
-
-    gap: 20px;
-
-    position: relative;
-
-    overflow: hidden;
-
+.screen{
+    min-height:100vh; padding:35px;
+    display:flex; flex-direction:column; justify-content:center;
+    align-items:center; gap:20px;
+    position:relative; overflow:hidden;
 }
-
 
-/* ==================================================
-   OCULTAR
-   ================================================== */
-
-.hidden {
-    display: none !important;
+.hidden{
+    display:none !important;
 }
-
-
-/* ==================================================
-   LUCES GENERALES DEL FONDO
-   ================================================== */
-
-.screen::before {
 
-    content: "";
+/* LUCES GENERALES DEL FONDO */
 
-    position: absolute;
-
-    width: 450px;
-    height: 450px;
-
-    left: -250px;
-    top: 20%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255, 40, 200, 0.28) 0%,
-            rgba(255, 40, 200, 0.12) 30%,
-            transparent 70%
-        );
-
-    filter: blur(10px);
-
-    pointer-events: none;
-
+.screen::before{
+    content:""; position:absolute;
+    width:450px; height:450px;
+    left:-250px; top:20%;
+    background:radial-gradient(circle,rgba(255,40,200,0.28) 0%,rgba(255,40,200,0.12) 30%,transparent 70%);
+    filter:blur(10px); pointer-events:none;
 }
-
-
-.screen::after {
 
-    content: "";
-
-    position: absolute;
-
-    width: 500px;
-    height: 500px;
-
-    right: -280px;
-    bottom: 5%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(25, 230, 255, 0.25) 0%,
-            rgba(25, 230, 255, 0.10) 30%,
-            transparent 70%
-        );
-
-    filter: blur(15px);
-
-    pointer-events: none;
-
+.screen::after{
+    content:""; position:absolute;
+    width:500px; height:500px;
+    right:-280px; bottom:5%;
+    background:radial-gradient(circle,rgba(25,230,255,0.25) 0%,rgba(25,230,255,0.10) 30%,transparent 70%);
+    filter:blur(15px); pointer-events:none;
 }
-
 
-/* ==================================================
-   TÍTULOS GENERALES
-   ================================================== */
+/* TÍTULOS Y TEXTOS GENERALES */
 
-h1 {
-
-    position: relative;
-
-    z-index: 5;
-
-    color: var(--white);
-
-    font-size: 48px;
-
-    font-weight: 900;
-
-    letter-spacing: 4px;
-
-    text-align: center;
-
-    text-shadow:
-        0 3px 0 var(--black),
-        0 0 8px var(--purple-light),
-        0 0 18px var(--purple);
-
+h1{
+    position:relative; z-index:5;
+    color:var(--white); font-size:48px; font-weight:900;
+    letter-spacing:4px; text-align:center;
+    text-shadow:0 3px 0 var(--black),0 0 8px var(--purple-light),0 0 18px var(--purple);
 }
-
-
-/* ==================================================
-   TEXTOS
-   ================================================== */
-
-p {
-
-    position: relative;
-
-    z-index: 5;
-
-    color: var(--gray);
-
-    font-size: 18px;
 
-    line-height: 1.5;
-
-    text-align: center;
-
+p{
+    position:relative; z-index:5;
+    color:var(--gray); font-size:18px; line-height:1.5; text-align:center;
 }
-
-
-/* ==================================================
-   BOTONES GENERALES
-   ================================================== */
-
-button {
-
-    position: relative;
-
-    z-index: 10;
-
-    padding: 15px 40px;
-
-    border: 4px solid var(--black);
-
-    border-radius: 30px;
-
-    background:
-        linear-gradient(
-            to bottom,
-            var(--red-light),
-            var(--red)
-        );
-
-    color: var(--white);
-
-    font-size: 20px;
-
-    font-weight: bold;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 5px 0 var(--red-dark),
-        0 0 15px rgba(242, 47, 37, 0.5);
 
-    transition:
-        transform 0.12s ease,
-        filter 0.15s ease,
-        box-shadow 0.15s ease;
+/* BOTONES GENERALES */
 
+button{
+    position:relative; z-index:10;
+    padding:15px 40px;
+    border:4px solid var(--black); border-radius:30px;
+    background:linear-gradient(to bottom,var(--red-light),var(--red));
+    color:var(--white); font-size:20px; font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 5px 0 var(--red-dark),0 0 15px rgba(242,47,37,0.5);
+    transition:transform 0.12s ease,filter 0.15s ease,box-shadow 0.15s ease;
 }
 
-
-button:hover {
-
-    filter: brightness(1.12);
-
-    transform: scale(1.04);
-
+button:hover{
+    filter:brightness(1.12); transform:scale(1.04);
 }
-
-
-button:active {
-
-    transform: translateY(4px);
-
-    box-shadow:
-        0 1px 0 var(--red-dark),
-        0 0 10px rgba(242, 47, 37, 0.5);
 
+button:active{
+    transform:translateY(4px);
+    box-shadow:0 1px 0 var(--red-dark),0 0 10px rgba(242,47,37,0.5);
 }
 
+/* PANTALLA DE ADVERTENCIA */
 
-/* ==================================================
-   PANTALLA DE ADVERTENCIA
-   ================================================== */
-
-#warning-screen {
-
-    background:
-        radial-gradient(
-            circle at center,
-            #271044 0%,
-            #0A0711 70%
-        );
-
+#warning-screen{
+    background:radial-gradient(circle at center,#271044 0%,#0A0711 70%);
 }
-
 
-#warning-screen h1 {
-
-    color: var(--yellow);
-
-    text-shadow:
-        0 3px 0 var(--black),
-        0 0 12px var(--yellow),
-        0 0 25px rgba(255, 210, 28, 0.5);
-
+#warning-screen h1{
+    color:var(--yellow);
+    text-shadow:0 3px 0 var(--black),0 0 12px var(--yellow),0 0 25px rgba(255,210,28,0.5);
 }
-
 
-#warning-screen p {
-
-    max-width: 700px;
-
+#warning-screen p{
+    max-width:700px;
 }
-
-
-/* ==================================================
-   PANTALLA START
-   ================================================== */
 
-#start-screen {
+/* PANTALLA START */
 
-    background:
-        radial-gradient(
-            circle at center,
-            #3B0A63 0%,
-            #172554 38%,
-            #101827 80%
-        );
-
+#start-screen{
+    background:radial-gradient(circle at center,#3B0A63 0%,#172554 38%,#101827 80%);
 }
-
-
-#start-screen h1 {
-
-    font-size: clamp(50px, 7vw, 85px);
 
-    letter-spacing: 8px;
-
-    color: var(--white);
-
-    text-shadow:
-        0 4px 0 var(--black),
-        0 0 10px var(--cyan),
-        0 0 25px var(--purple),
-        0 0 45px var(--pink);
-
+#start-screen h1{
+    font-size:clamp(50px,7vw,85px); letter-spacing:8px;
+    color:var(--white);
+    text-shadow:0 4px 0 var(--black),0 0 10px var(--cyan),0 0 25px var(--purple),0 0 45px var(--pink);
 }
-
-
-#start-button {
-
-    min-width: 250px;
-
-    padding: 18px 55px;
-
-    border: 5px solid var(--black);
 
-    border-radius: 40px;
-
-    background:
-        linear-gradient(
-            to bottom,
-            var(--red-light),
-            var(--red)
-        );
-
-    color: var(--white);
-
-    font-size: 30px;
-
-    font-weight: 900;
-
-    letter-spacing: 4px;
-
-    box-shadow:
-        0 7px 0 var(--red-dark),
-        0 0 15px rgba(242, 47, 37, 0.8),
-        0 0 30px rgba(242, 47, 37, 0.35);
-
+#start-button{
+    min-width:250px; padding:18px 55px;
+    border:5px solid var(--black); border-radius:40px;
+    background:linear-gradient(to bottom,var(--red-light),var(--red));
+    color:var(--white); font-size:30px; font-weight:900; letter-spacing:4px;
+    box-shadow:0 7px 0 var(--red-dark),0 0 15px rgba(242,47,37,0.8),0 0 30px rgba(242,47,37,0.35);
 }
-
 
-/* ==================================================
-   PANTALLA DE SELECCIÓN
-   ================================================== */
+/* PANTALLA DE SELECCIÓN */
 
-#character-screen {
-
-    justify-content: flex-start;
-
-    padding-top: 35px;
-
-    gap: 18px;
-
-    background:
-        radial-gradient(
-            ellipse at center,
-            #31075A 0%,
-            #172554 45%,
-            #101827 85%
-        );
-
-    border-left: 12px solid transparent;
-
-    border-right: 12px solid transparent;
-
+#character-screen{
+    justify-content:flex-start; padding-top:35px; gap:18px;
+    background:radial-gradient(ellipse at center,#31075A 0%,#172554 45%,#101827 85%);
+    border-left:12px solid transparent; border-right:12px solid transparent;
 }
-
 
-/* ==================================================
-   DECORACIÓN LATERAL
-   ================================================== */
-
-#character-screen::before {
-
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-
-    top: 0;
-
-    width: 85px;
-
-    height: 100%;
-
-    background-color: rgba(4, 2, 10, 0.6);
-
-    border-right: 3px solid var(--purple);
-
-    box-shadow:
-        inset -10px 0 20px rgba(124, 45, 255, 0.25);
-
+#character-screen::before{
+    content:""; position:absolute;
+    left:0; top:0; width:85px; height:100%;
+    background-color:rgba(4,2,10,0.6);
+    border-right:3px solid var(--purple);
+    box-shadow:inset -10px 0 20px rgba(124,45,255,0.25);
 }
-
-
-#character-screen::after {
-
-    content: "";
-
-    position: absolute;
-
-    right: 0;
 
-    top: 0;
-
-    width: 85px;
-
-    height: 100%;
-
-    background:
-        radial-gradient(
-            circle,
-            var(--yellow) 0px,
-            var(--yellow) 5px,
-            transparent 7px
-        );
-
-    background-size: 25px 25px;
-
-    opacity: 0.8;
-
+#character-screen::after{
+    content:""; position:absolute;
+    right:0; top:0; width:85px; height:100%;
+    background:radial-gradient(circle,var(--yellow) 0px,var(--yellow) 5px,transparent 7px);
+    background-size:25px 25px; opacity:0.8;
 }
-
-
-/* ==================================================
-   TÍTULO DE SELECCIÓN
-   ================================================== */
 
-#character-screen > h1 {
-
-    font-size: clamp(32px, 4vw, 55px);
-
-    margin-bottom: 5px;
-
-    text-shadow:
-        0 3px 0 var(--black),
-        0 0 8px var(--cyan),
-        0 0 18px var(--purple),
-        0 0 30px rgba(255, 40, 200, 0.5);
-
+#character-screen > h1{
+    font-size:clamp(32px,4vw,55px); margin-bottom:5px;
+    text-shadow:0 3px 0 var(--black),0 0 8px var(--cyan),0 0 18px var(--purple),0 0 30px rgba(255,40,200,0.5);
 }
-
-
-/* ==================================================
-   SELECTOR SUPERIOR
-   ================================================== */
-
-#character-selector {
-
-    position: relative;
 
-    z-index: 10;
-
-    width: min(700px, 85vw);
-
-    height: 115px;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    gap: 30px;
-
-    padding: 10px 45px;
-
-    background:
-        radial-gradient(
-            ellipse at center,
-            #FFF36B 0%,
-            #FACC15 55%,
-            #F59E0B 100%
-        );
-
-    border: 5px solid #FF9D00;
-
-    border-radius: 60%;
-
-    box-shadow:
-
-        0 5px 0 #8C5800,
-
-        0 0 10px #FACC15,
-
-        0 0 25px rgba(255, 210, 28, 0.7),
-
-        0 0 50px rgba(255, 150, 0, 0.3);
-
+#character-selector{
+    position:relative; z-index:10;
+    width:min(700px,85vw); height:115px;
+    display:flex; justify-content:center; align-items:center; gap:30px;
+    padding:10px 45px;
+    background:radial-gradient(ellipse at center,#FFF36B 0%,#FACC15 55%,#F59E0B 100%);
+    border:5px solid #FF9D00; border-radius:60%;
+    box-shadow:0 5px 0 #8C5800,0 0 10px #FACC15,0 0 25px rgba(255,210,28,0.7),0 0 50px rgba(255,150,0,0.3);
 }
 
-
-#character-selector::before {
-
-    content: "";
-
-    position: absolute;
-
-    top: 8px;
-
-    left: 10%;
-
-    width: 80%;
-
-    height: 25px;
-
-    border-radius: 50%;
-
-    background:
-        rgba(255, 255, 255, 0.35);
-
-    filter: blur(5px);
-
-    pointer-events: none;
-
+#character-selector::before{
+    content:""; position:absolute;
+    top:8px; left:10%; width:80%; height:25px;
+    border-radius:50%; background:rgba(255,255,255,0.35);
+    filter:blur(5px); pointer-events:none;
 }
-
-
-/* ==================================================
-   AVATARES CIRCULARES
-   ================================================== */
-
-.character-option {
-
-    position: relative;
 
-    z-index: 2;
-
-    width: 78px;
-
-    height: 78px;
-
-    flex-shrink: 0;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    border-radius: 50%;
-
-    background-color: #050505;
-
-    border: 4px solid var(--white);
-
-    overflow: hidden;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.25s ease,
-        border-color 0.25s ease,
-        box-shadow 0.25s ease;
-
+.character-option{
+    position:relative; z-index:2;
+    width:78px; height:78px; flex-shrink:0;
+    display:flex; justify-content:center; align-items:center;
+    border-radius:50%; background-color:#050505;
+    border:4px solid var(--white); overflow:hidden; cursor:pointer;
+    transition:transform 0.25s ease,border-color 0.25s ease,box-shadow 0.25s ease;
 }
-
-
-.character-option img {
-
-    width: 100%;
 
-    height: 100%;
-
-    object-fit: cover;
-
-    display: block;
-
+.character-option img{
+    width:100%; height:100%; object-fit:cover; display:block;
 }
-
 
-/* Personaje activo */
-
-.character-option.active {
+.character-option.active{
+    transform:scale(1.22); border-color:var(--cyan);
+    box-shadow:0 0 8px var(--cyan),0 0 18px var(--cyan),0 0 30px rgba(25,230,255,0.8);
+}
 
-    transform: scale(1.22);
+.character-option:hover{
+    transform:scale(1.08); border-color:var(--yellow-light);
+    box-shadow:0 0 10px var(--yellow),0 0 20px rgba(255,210,28,0.7);
+}
 
-    border-color: var(--cyan);
+.character-option.active:hover{
+    transform:scale(1.25); border-color:var(--cyan);
+}
 
-    box-shadow:
-        0 0 8px var(--cyan),
-        0 0 18px var(--cyan),
-        0 0 30px rgba(25, 230, 255, 0.8);
+/* TARJETA PRINCIPAL */
 
+#character-card{
+    position:relative; z-index:8;
+    width:min(950px,86vw); min-height:430px;
+    display:flex; align-items:center; gap:50px; padding:35px;
+    background:linear-gradient(135deg,rgba(42,7,80,0.98),rgba(9,4,20,0.98));
+    border:5px solid var(--cyan); border-radius:18px;
+    box-shadow:0 0 10px var(--cyan),0 0 25px rgba(25,230,255,0.55),inset 0 0 25px rgba(124,45,255,0.25);
 }
 
-
-.character-option:hover {
+#character-card::before{
+    content:""; position:absolute; inset:10px;
+    border:2px solid rgba(181,108,255,0.25); border-radius:10px;
+    pointer-events:none;
+}
 
-    transform: scale(1.08);
+#character-container{
+    flex-shrink:0; width:340px; height:340px;
+    display:flex; justify-content:center; align-items:center;
+    background:radial-gradient(circle,#F8FAFC 0%,#EEEEEE 65%,#C7C7C7 100%);
+    border:5px solid #777777; border-radius:28px; overflow:hidden;
+    box-shadow:inset 0 0 25px rgba(0,0,0,0.3),0 0 12px rgba(255,255,255,0.25),0 7px 12px rgba(0,0,0,0.5);
+}
 
-    border-color: var(--yellow-light);
+#character-image{
+    width:310px; height:310px; object-fit:contain;
+}
 
-    box-shadow:
-        0 0 10px var(--yellow),
-        0 0 20px rgba(255, 210, 28, 0.7);
+#character-info{
+    flex:1; align-self:stretch;
+    display:flex; flex-direction:column; justify-content:center;
+    align-items:flex-start; gap:22px;
+}
 
+#character-name{
+    display:inline-block; padding:10px 35px;
+    background:linear-gradient(to bottom,var(--red-light),var(--red));
+    border:4px solid var(--black); border-radius:28px;
+    color:var(--white); font-size:34px; font-weight:900;
+    box-shadow:0 5px 0 var(--red-dark),0 0 15px rgba(242,47,37,0.6);
 }
 
+#character-description{
+    max-width:450px; color:var(--white);
+    font-size:18px; line-height:1.55; text-align:left;
+}
 
-.character-option.active:hover {
+#character-select-button{
+    position:relative; z-index:10;
+    min-width:460px; padding:14px 40px;
+    background:linear-gradient(to bottom,var(--red-light),var(--red));
+    border:5px solid var(--black); border-radius:40px;
+    color:var(--white); font-size:25px; font-weight:900; text-align:center;
+    box-shadow:0 6px 0 var(--red-dark),0 0 15px rgba(242,47,37,0.65),0 0 25px rgba(242,47,37,0.25);
+}
 
-    transform: scale(1.25);
+#character-instruction{
+    color:var(--cyan); font-size:15px; font-weight:bold; letter-spacing:2px;
+    text-shadow:0 0 8px rgba(25,230,255,0.7);
+}
 
-    border-color: var(--cyan);
+/* PANTALLA DE NOMBRE */
 
+#name-screen{
+    justify-content:center; gap:18px;
+    background:radial-gradient(circle at center,#172554 0%,#172554 45%,#101827 100%);
 }
 
+#name-screen h1{
+    font-size:clamp(35px,5vw,55px);
+    text-shadow:0 3px 0 var(--black),0 0 10px var(--cyan),0 0 22px var(--purple);
+}
 
-/* ==================================================
-   TARJETA PRINCIPAL
-   ================================================== */
+#selected-character-profile{
+    position:relative; z-index:5;
+    width:180px; height:180px;
+    display:flex; justify-content:center; align-items:center;
+    border-radius:50%;
+    background:radial-gradient(circle,#F8FAFC 0%,#E5E5E5 65%,#BDBDBD 100%);
+    border:6px solid var(--cyan); overflow:hidden;
+    box-shadow:0 0 10px var(--cyan),0 0 25px var(--cyan),0 0 45px rgba(25,230,255,0.45),inset 0 0 15px rgba(0,0,0,0.3);
+}
 
-#character-card {
+#name-character-image{
+    width:100%; height:100%; object-fit:cover; display:block;
+}
 
-    position: relative;
+#name-character-label{
+    color:var(--cyan); font-size:14px; font-weight:bold; letter-spacing:2px;
+    text-shadow:0 0 8px rgba(25,230,255,0.7);
+}
 
-    z-index: 8;
+#player-name{
+    position:relative; z-index:5;
+    width:220px; height:65px; padding:10px 20px;
+    background:linear-gradient(to bottom,#172554,#10051D);
+    border:4px solid var(--purple-light); border-radius:15px;
+    color:var(--white); font-size:32px; font-weight:900;
+    text-align:center; text-transform:uppercase; letter-spacing:6px;
+    outline:none;
+    box-shadow:0 0 10px rgba(181,108,255,0.5),inset 0 0 10px rgba(0,0,0,0.5);
+}
 
-    width: min(950px, 86vw);
+#player-name:focus{
+    border-color:var(--yellow);
+    box-shadow:0 0 10px var(--yellow),0 0 25px rgba(255,210,28,0.5),inset 0 0 10px rgba(0,0,0,0.5);
+}
 
-    min-height: 430px;
+#name-screen > p:not(#name-character-label){
+    color:var(--gray); font-size:14px; letter-spacing:1px;
+}
 
-    display: flex;
+#name-confirm-button{
+    min-width:230px; padding:14px 40px;
+    background:linear-gradient(to bottom,var(--red-light),var(--red));
+    border:5px solid var(--black); border-radius:35px;
+    color:var(--white); font-size:22px; font-weight:900; letter-spacing:2px;
+    box-shadow:0 6px 0 var(--red-dark),0 0 15px rgba(242,47,37,0.65);
+}
 
-    align-items: center;
+/* PANTALLA DE JUEGO */
 
-    gap: 50px;
+#game-screen{
+    min-height:100vh; padding:30px;
+    display:grid;
+    grid-template-columns:250px minmax(520px,700px) 220px;
+    grid-template-rows:1fr auto;
+    justify-content:center; align-items:center;
+    column-gap:35px; row-gap:15px;
+    background:radial-gradient(ellipse at center,#172554 0%,#172554 45%,#101827 100%);
+}
 
-    padding: 35px;
+#game-left-panel{
+    grid-column:1; grid-row:1;
+    width:250px;
+    display:flex; flex-direction:column; justify-content:center;
+    align-items:center; gap:25px;
+}
 
-    background:
-        linear-gradient(
-            135deg,
-            rgba(42, 7, 80, 0.98),
-            rgba(9, 4, 20, 0.98)
-        );
+#game-character{
+    width:230px; height:230px;
+    display:flex; justify-content:center; align-items:center;
+    background:linear-gradient(145deg,#F8FAFC,#E2E2E2);
+    border:6px solid var(--red); border-radius:18px; overflow:hidden;
+    box-shadow:0 0 10px var(--red),0 0 25px rgba(242,47,37,0.55),0 7px 0 var(--red-dark);
+}
 
-    border: 5px solid var(--cyan);
+#game-character-image{
+    width:215px; height:215px; object-fit:contain; display:block;
+    filter:drop-shadow(0 0 8px rgba(181,108,255,0.45));
+}
 
-    border-radius: 18px;
+#score{
+    width:230px; min-height:105px; padding:12px;
+    display:flex; flex-direction:column; justify-content:center; align-items:center;
+    background:linear-gradient(to bottom,#FFB000,#F07800);
+    border:5px solid var(--black); border-radius:20px;
+    box-shadow:0 5px 0 #8C4800,0 0 15px rgba(255,174,0,0.65);
+}
 
-    box-shadow:
-        0 0 10px var(--cyan),
-        0 0 25px rgba(25, 230, 255, 0.55),
-        inset 0 0 25px rgba(124, 45, 255, 0.25);
+.score-title{
+    color:var(--white); font-size:22px; font-weight:900; letter-spacing:1px;
+    text-shadow:0 2px 0 #8C4800;
+}
 
+#score-value{
+    margin-top:3px; color:var(--white);
+    font-size:36px; font-weight:900;
+    text-shadow:0 2px 0 #8C4800,0 0 8px var(--yellow);
 }
 
+/* RODILLOS - CONTENEDOR */
 
-#character-card::before {
+#reels{
+    position:relative; z-index:5;
+    grid-column:2; grid-row:1;
+    width:100%; height:410px; padding:18px;
+    display:flex; justify-content:center; align-items:stretch; gap:12px;
+    background:linear-gradient(135deg,#FF8A00,#FFB000 50%,#FF7900);
+    border:6px solid var(--cyan); border-radius:18px;
+    box-shadow:0 0 10px var(--cyan),0 0 25px rgba(25,230,255,0.7),inset 0 0 20px rgba(255,255,255,0.2),0 8px 0 #00758A;
+}
 
-    content: "";
+/* RODILLO INDIVIDUAL */
 
-    position: absolute;
+.reel{
+    position:relative;
+    width:calc((100% - 24px) / 3); height:100%;
+    display:grid; grid-template-rows:repeat(3,1fr);
+    align-items:stretch; justify-items:stretch;
+    background:linear-gradient(to right,#CFCFCF,#F8FAFC 12%,#F5F5F5 88%,#CFCFCF);
+    border:4px solid #555555; border-radius:8px; overflow:hidden;
+    box-shadow:inset 8px 0 12px rgba(0,0,0,0.15),inset -8px 0 12px rgba(0,0,0,0.15),0 4px 0 #555555;
+}
 
-    inset: 10px;
+/* CADA CELDA DEL RODILLO */
 
-    border: 2px solid rgba(181, 108, 255, 0.25);
+.reel-symbol{
+    position:relative;
+    width:100%; height:100%;
+    display:flex; justify-content:center; align-items:center;
+    flex-shrink:0; z-index:4;
+    overflow:hidden;
+    border-bottom:2px solid rgba(80,80,80,0.20);
+}
 
-    border-radius: 10px;
+.reel-symbol:last-child{
+    border-bottom:none;
+}
 
-    pointer-events: none;
+/* IMAGEN DEL SÍMBOLO */
 
+.reel-symbol img{
+    width:85px; height:85px;
+    object-fit:contain; display:block;
+    filter:drop-shadow(0 0 5px rgba(0,0,0,0.35));
+    transition:transform 0.1s ease,filter 0.1s ease;
 }
 
+/* SÍMBOLO ACTIVO */
 
-/* ==================================================
-   IMAGEN GRANDE DE SELECCIÓN
-   ================================================== */
-
-#character-container {
+.active-symbol{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    display:flex; justify-content:center; align-items:center; z-index:6;
+}
 
-    flex-shrink: 0;
+.active-symbol img{
+    width:90px; height:90px;
+    object-fit:contain; display:block;
+    filter:drop-shadow(0 0 8px rgba(255,210,28,0.7));
+}
 
-    width: 340px;
+/* VENTANA CENTRAL DE RESULTADO */
 
-    height: 340px;
+#reels::before{
+    content:""; position:absolute;
+    left:10px; right:10px; top:50%; height:105px;
+    transform:translateY(-50%);
+    background:linear-gradient(to bottom,rgba(255,255,255,0.02),rgba(255,210,28,0.10),rgba(255,255,255,0.02));
+    border-top:4px solid var(--red); border-bottom:4px solid var(--red);
+    border-radius:10px;
+    box-shadow:0 0 8px rgba(242,47,37,0.8),0 0 18px rgba(242,47,37,0.35);
+    pointer-events:none; z-index:20;
+}
 
-    display: flex;
+#reels::after{
+    content:""; position:absolute;
+    left:17px; right:17px; top:50%; height:75px;
+    transform:translateY(-50%);
+    border:2px solid rgba(255,210,28,0.55); border-radius:8px;
+    box-shadow:0 0 8px rgba(255,210,28,0.25);
+    pointer-events:none; z-index:21;
+}
 
-    justify-content: center;
+.reel-symbol.spinning-symbol{
+    overflow:hidden;
+}
 
-    align-items: center;
+/* PANEL DERECHO */
 
-    background:
-        radial-gradient(
-            circle,
-            #F8FAFC 0%,
-            #EEEEEE 65%,
-            #C7C7C7 100%
-        );
+#game-right-panel{
+    grid-column:3; grid-row:1;
+    width:220px; min-height:410px;
+    display:flex; flex-direction:column; justify-content:space-between;
+    align-items:center;
+}
 
-    border: 5px solid #777777;
+#chips{
+    width:220px; min-height:235px; padding:20px 15px;
+    display:flex; flex-direction:column; justify-content:center;
+    align-items:center; gap:12px;
+    background:linear-gradient(145deg,#13062A,#101827);
+    border:6px solid var(--cyan); border-radius:15px;
+    box-shadow:0 0 10px var(--cyan),0 0 25px rgba(25,230,255,0.5),inset 0 0 20px rgba(124,45,255,0.25);
+}
 
-    border-radius: 28px;
+.chip{
+    width:68px; height:68px;
+    display:flex; justify-content:center; align-items:center;
+    border-radius:50%; overflow:hidden;
+    transition:opacity 0.2s ease,transform 0.2s ease;
+}
 
-    overflow: hidden;
+.chip img{
+    width:100%; height:100%; object-fit:contain; display:block;
+}
 
-    box-shadow:
-        inset 0 0 25px rgba(0, 0, 0, 0.3),
-        0 0 12px rgba(255, 255, 255, 0.25),
-        0 7px 12px rgba(0, 0, 0, 0.5);
+/* BOTÓN SPIN */
 
+#spin-button{
+    width:220px; min-height:135px; padding:20px;
+    border:7px solid var(--black); border-radius:25px;
+    background:linear-gradient(to bottom,var(--red-light),var(--red));
+    color:var(--white); font-size:36px; font-weight:900; letter-spacing:2px;
+    text-shadow:0 3px 0 var(--red-dark);
+    box-shadow:0 9px 0 var(--red-dark),0 0 15px var(--red),0 0 30px rgba(242,47,37,0.55);
 }
 
-
-#character-image {
+#spin-button:hover{
+    filter:brightness(1.15); transform:scale(1.04);
+    box-shadow:0 9px 0 var(--red-dark),0 0 20px var(--red),0 0 40px rgba(242,47,37,0.6);
+}
 
-    width: 310px;
+#spin-button:active{
+    transform:translateY(8px);
+    box-shadow:0 1px 0 var(--red-dark),0 0 15px var(--red);
+}
 
-    height: 310px;
+#spin-button:disabled{
+    opacity:0.55; cursor:not-allowed;
+    filter:grayscale(0.4); transform:none;
+}
 
-    object-fit: contain;
+/* MENSAJE DEL JUEGO */
 
+#game-message{
+    grid-column:2; grid-row:2;
+    align-self:end; margin-bottom:-5px;
+    color:var(--cyan); font-size:18px; font-weight:bold; letter-spacing:1px;
+    text-shadow:0 0 8px rgba(25,230,255,0.7);
 }
 
+/* FIN DEL JUEGO */
 
-/* ==================================================
-   INFORMACIÓN DEL PERSONAJE
-   ================================================== */
+#end-screen{
+    background:radial-gradient(circle at center,#3A0A61,#13041F 55%,#101827);
+}
 
-#character-info {
-
-    flex: 1;
-
-    align-self: stretch;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: flex-start;
-
-    gap: 22px;
-
-}
-
-
-#character-name {
-
-    display: inline-block;
-
-    padding: 10px 35px;
-
-    background:
-        linear-gradient(
-            to bottom,
-            var(--red-light),
-            var(--red)
-        );
-
-    border: 4px solid var(--black);
-
-    border-radius: 28px;
-
-    color: var(--white);
-
-    font-size: 34px;
-
-    font-weight: 900;
-
-    box-shadow:
-        0 5px 0 var(--red-dark),
-        0 0 15px rgba(242, 47, 37, 0.6);
-
-}
-
-
-#character-description {
-
-    max-width: 450px;
-
-    color: var(--white);
-
-    font-size: 18px;
-
-    line-height: 1.55;
-
-    text-align: left;
-
-}
-
-
-/* ==================================================
-   BOTÓN VISUAL DE SELECCIÓN
-   ================================================== */
-
-#character-select-button {
-
-    position: relative;
-
-    z-index: 10;
-
-    min-width: 460px;
-
-    padding: 14px 40px;
-
-    background:
-        linear-gradient(
-            to bottom,
-            var(--red-light),
-            var(--red)
-        );
-
-    border: 5px solid var(--black);
-
-    border-radius: 40px;
-
-    color: var(--white);
-
-    font-size: 25px;
-
-    font-weight: 900;
-
-    text-align: center;
-
-    box-shadow:
-        0 6px 0 var(--red-dark),
-        0 0 15px rgba(242, 47, 37, 0.65),
-        0 0 25px rgba(242, 47, 37, 0.25);
-
-}
-
-
-/* ==================================================
-   INSTRUCCIÓN
-   ================================================== */
-
-#character-instruction {
-
-    color: var(--cyan);
-
-    font-size: 15px;
-
-    font-weight: bold;
-
-    letter-spacing: 2px;
-
-    text-shadow:
-        0 0 8px rgba(25, 230, 255, 0.7);
-
-}
-
-
-/* ==================================================
-   PANTALLA DE NOMBRE
-   ================================================== */
-
-#name-screen {
-
-    justify-content: center;
-
-    gap: 18px;
-
-    background:
-        radial-gradient(
-            circle at center,
-            #172554 0%,
-            #172554 45%,
-            #101827 100%
-        );
-
-}
-
-
-#name-screen h1 {
-
-    font-size: clamp(35px, 5vw, 55px);
-
-    text-shadow:
-        0 3px 0 var(--black),
-        0 0 10px var(--cyan),
-        0 0 22px var(--purple);
-
-}
-
-
-/* ==================================================
-   FOTO CIRCULAR DEL PERSONAJE
-   ================================================== */
-
-#selected-character-profile {
-
-    position: relative;
-
-    z-index: 5;
-
-    width: 180px;
-
-    height: 180px;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            #F8FAFC 0%,
-            #E5E5E5 65%,
-            #BDBDBD 100%
-        );
-
-    border: 6px solid var(--cyan);
-
-    overflow: hidden;
-
-    box-shadow:
-        0 0 10px var(--cyan),
-        0 0 25px var(--cyan),
-        0 0 45px rgba(25, 230, 255, 0.45),
-        inset 0 0 15px rgba(0, 0, 0, 0.3);
-
-}
-
-
-#name-character-image {
-
-    width: 100%;
-
-    height: 100%;
-
-    object-fit: cover;
-
-    display: block;
-
-}
-
-
-#name-character-label {
-
-    color: var(--cyan);
-
-    font-size: 14px;
-
-    font-weight: bold;
-
-    letter-spacing: 2px;
-
-    text-shadow:
-        0 0 8px rgba(25, 230, 255, 0.7);
-
-}
-
-
-/* ==================================================
-   CAMPO DE NOMBRE
-   ================================================== */
-
-#player-name {
-
-    position: relative;
-
-    z-index: 5;
-
-    width: 220px;
-
-    height: 65px;
-
-    padding: 10px 20px;
-
-    background:
-        linear-gradient(
-            to bottom,
-            #172554,
-            #10051D
-        );
-
-    border: 4px solid var(--purple-light);
-
-    border-radius: 15px;
-
-    color: var(--white);
-
-    font-size: 32px;
-
-    font-weight: 900;
-
-    text-align: center;
-
-    text-transform: uppercase;
-
-    letter-spacing: 6px;
-
-    outline: none;
-
-    box-shadow:
-        0 0 10px rgba(181, 108, 255, 0.5),
-        inset 0 0 10px rgba(0, 0, 0, 0.5);
-
-}
-
-
-#player-name:focus {
-
-    border-color: var(--yellow);
-
-    box-shadow:
-        0 0 10px var(--yellow),
-        0 0 25px rgba(255, 210, 28, 0.5),
-        inset 0 0 10px rgba(0, 0, 0, 0.5);
-
-}
-
-
-/* ==================================================
-   AYUDA NOMBRE
-   ================================================== */
-
-#name-screen > p:not(#name-character-label) {
-
-    color: var(--gray);
-
-    font-size: 14px;
-
-    letter-spacing: 1px;
-
-}
-
-
-/* ==================================================
-   BOTÓN CONTINUAR
-   ================================================== */
-
-#name-confirm-button {
-
-    min-width: 230px;
-
-    padding: 14px 40px;
-
-    background:
-        linear-gradient(
-            to bottom,
-            var(--red-light),
-            var(--red)
-        );
-
-    border: 5px solid var(--black);
-
-    border-radius: 35px;
-
-    color: var(--white);
-
-    font-size: 22px;
-
-    font-weight: 900;
-
-    letter-spacing: 2px;
-
-    box-shadow:
-        0 6px 0 var(--red-dark),
-        0 0 15px rgba(242, 47, 37, 0.65);
-
-}
-
-
-/* ==================================================
-   PANTALLA DE JUEGO
-   ================================================== */
-
-#game-screen {
-
-    min-height: 100vh;
-
-    padding: 30px;
-
-    display: grid;
-
-    grid-template-columns:
-        250px
-        minmax(520px, 700px)
-        220px;
-
-    grid-template-rows:
-        1fr
-        auto;
-
-    justify-content: center;
-
-    align-items: center;
-
-    column-gap: 35px;
-
-    row-gap: 15px;
-
-    background:
-        radial-gradient(
-            ellipse at center,
-            #172554 0%,
-            #172554 45%,
-            #101827 100%
-        );
-
-}
-
-
-/* ==================================================
-   PANEL IZQUIERDO
-   ================================================== */
-
-#game-left-panel {
-
-    grid-column: 1;
-
-    grid-row: 1;
-
-    width: 250px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
-
-    gap: 25px;
-
-}
-
-
-/* ==================================================
-   PERSONAJE
-   ================================================== */
-
-#game-character {
-
-    width: 230px;
-
-    height: 230px;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    background:
-        linear-gradient(
-            145deg,
-            #F8FAFC,
-            #E2E2E2
-        );
-
-    border: 6px solid var(--red);
-
-    border-radius: 18px;
-
-    overflow: hidden;
-
-    box-shadow:
-
-        0 0 10px var(--red),
-
-        0 0 25px rgba(242, 47, 37, 0.55),
-
-        0 7px 0 var(--red-dark);
-
-}
-
-
-#game-character-image {
-
-    width: 215px;
-
-    height: 215px;
-
-    object-fit: contain;
-
-    display: block;
-
-    filter:
-        drop-shadow(
-            0 0 8px
-            rgba(181, 108, 255, 0.45)
-        );
-
-}
-
-
-/* ==================================================
-   PUNTAJE
-   ================================================== */
-
-#score {
-
-    width: 230px;
-
-    min-height: 105px;
-
-    padding: 12px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
-
-    background:
-        linear-gradient(
-            to bottom,
-            #FFB000,
-            #F07800
-        );
-
-    border: 5px solid var(--black);
-
-    border-radius: 20px;
-
-    box-shadow:
-
-        0 5px 0 #8C4800,
-
-        0 0 15px
-        rgba(255, 174, 0, 0.65);
-
-}
-
-
-.score-title {
-
-    color: var(--white);
-
-    font-size: 22px;
-
-    font-weight: 900;
-
-    letter-spacing: 1px;
-
-    text-shadow:
-        0 2px 0 #8C4800;
-
-}
-
-
-#score-value {
-
-    margin-top: 3px;
-
-    color: var(--white);
-
-    font-size: 36px;
-
-    font-weight: 900;
-
-    text-shadow:
-
-        0 2px 0 #8C4800,
-
-        0 0 8px var(--yellow);
-
-}
-
-
-/* ==================================================
-   RODILLOS - CONTENEDOR
-   ================================================== */
-
-#reels {
-
-    position: relative;
-
-    z-index: 5;
-
-    grid-column: 2;
-
-    grid-row: 1;
-
-    width: 100%;
-
-    height: 410px;
-
-    padding: 18px;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: stretch;
-
-    gap: 12px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #FF8A00,
-            #FFB000 50%,
-            #FF7900
-        );
-
-    border: 6px solid var(--cyan);
-
-    border-radius: 18px;
-
-    box-shadow:
-
-        0 0 10px var(--cyan),
-
-        0 0 25px
-        rgba(25, 230, 255, 0.7),
-
-        inset 0 0 20px
-        rgba(255, 255, 255, 0.2),
-
-        0 8px 0 #00758A;
-
-}
-
-
-/* ==================================================
-   RODILLO INDIVIDUAL
-   ================================================== */
-
-.reel {
-
-    position: relative;
-
-    width: calc((100% - 24px) / 3);
-
-    height: 100%;
-
-    display: grid;
-
-    grid-template-rows: repeat(3, 1fr);
-
-    align-items: stretch;
-
-    justify-items: stretch;
-
-    background:
-        linear-gradient(
-            to right,
-            #CFCFCF,
-            #F8FAFC 12%,
-            #F5F5F5 88%,
-            #CFCFCF
-        );
-
-    border: 4px solid #555555;
-
-    border-radius: 8px;
-
-    overflow: hidden;
-
-    box-shadow:
-
-        inset 8px 0 12px
-        rgba(0, 0, 0, 0.15),
-
-        inset -8px 0 12px
-        rgba(0, 0, 0, 0.15),
-
-        0 4px 0 #555555;
-
-}
-
-
-/* ==================================================
-   CADA CELDA DEL RODILLO
-   ================================================== */
-
-.reel-symbol {
-
-    position: relative;
-
-    width: 100%;
-
-    height: 100%;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    overflow: hidden;
-
-    z-index: 4;
-
-    border-bottom: 2px solid rgba(80, 80, 80, 0.20);
-
-}
-
-
-/* Quitamos la línea inferior de la última celda */
-
-.reel-symbol:last-child {
-
-    border-bottom: none;
-
-}
-
-
-/* ==================================================
-   IMAGEN DEL SÍMBOLO
-   ================================================== */
-
-.reel-symbol img {
-
-    width: 80px;
-
-    height: 80px;
-
-    object-fit: contain;
-
-    display: block;
-
-    filter:
-        drop-shadow(
-            0 0 5px
-            rgba(0, 0, 0, 0.35)
-        );
-
-    transition:
-        transform 0.1s ease,
-        filter 0.1s ease;
-
-}
-
-
-/* ==================================================
-   SÍMBOLO ACTIVO
-   ================================================== */
-
-.active-symbol {
-
-    position: relative;
-
-    width: 100%;
-
-    height: 100%;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    z-index: 6;
-
-}
-
-
-/* ==================================================
-   IMAGEN ACTIVA
-   ================================================== */
-
-.active-symbol img {
-
-    width: 85px;
-
-    height: 85px;
-
-    object-fit: contain;
-
-    display: block;
-
-    filter:
-        drop-shadow(
-            0 0 8px
-            rgba(255, 210, 28, 0.7)
-        );
-
-}
-
-/* ==================================================
-   CASILLAS DE LOS SÍMBOLOS
-   ================================================== */
-
-/*
-   Cada rodillo funciona como una ventana vertical.
-   Los símbolos se mantienen centrados y no se superponen.
-*/
-
-.reel-symbol {
-
-    position: relative;
-
-    width: 100%;
-
-    height: 100%;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    flex-shrink: 0;
-
-    z-index: 4;
-
-}
-
-
-/* Imagen del símbolo */
-
-.reel-symbol img {
-
-    width: 85px;
-
-    height: 85px;
-
-    object-fit: contain;
-
-    display: block;
-
-    filter:
-        drop-shadow(
-            0 0 5px
-            rgba(0, 0, 0, 0.35)
-        );
-
-}
-
-
-/* Símbolo que queda seleccionado */
-
-.active-symbol {
-
-    position: absolute;
-
-    inset: 0;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    z-index: 6;
-
-}
-
-
-/* Imagen dentro del símbolo activo */
-
-.active-symbol img {
-
-    width: 90px;
-
-    height: 90px;
-
-    object-fit: contain;
-
-    display: block;
-
-    filter:
-        drop-shadow(
-            0 0 8px rgba(255, 210, 28, 0.7)
-        );
-
-}
-
-
-/* ==================================================
-   VENTANA CENTRAL DE RESULTADO
-   ================================================== */
-
-#reels::before {
-
-    content: "";
-
-    position: absolute;
-
-    left: 10px;
-
-    right: 10px;
-
-    top: 50%;
-
-    height: 105px;
-
-    transform: translateY(-50%);
-
-    background:
-        linear-gradient(
-            to bottom,
-            rgba(255, 255, 255, 0.02),
-            rgba(255, 210, 28, 0.10),
-            rgba(255, 255, 255, 0.02)
-        );
-
-    border-top: 4px solid var(--red);
-
-    border-bottom: 4px solid var(--red);
-
-    border-radius: 10px;
-
-    box-shadow:
-        0 0 8px rgba(242, 47, 37, 0.8),
-        0 0 18px rgba(242, 47, 37, 0.35);
-
-    pointer-events: none;
-
-    z-index: 20;
-
-}
-
-
-/* ==================================================
-   BORDE INTERNO DE LA VENTANA
-   ================================================== */
-
-#reels::after {
-
-    content: "";
-
-    position: absolute;
-
-    left: 17px;
-
-    right: 17px;
-
-    top: 50%;
-
-    height: 75px;
-
-    transform: translateY(-50%);
-
-    border: 2px solid rgba(255, 210, 28, 0.55);
-
-    border-radius: 8px;
-
-    box-shadow:
-        0 0 8px rgba(255, 210, 28, 0.25);
-
-    pointer-events: none;
-
-    z-index: 21;
-
-}
-
-/* ==================================================
-   ANIMACIÓN DE GIRO
-   ================================================== */
-
-/*
-   Cuando el rodillo está girando:
-   - El contenedor vibra ligeramente.
-   - Los símbolos se mueven verticalmente.
-   - La animación es rápida para dar sensación de velocidad.
-*/
-
-.reel.spinning {
-
-    animation:
-        reel-shake
-        0.08s
-        linear
-        infinite;
-
-}
-
-
-/* ==================================================
-   VIBRACIÓN DEL RODILLO
-   ================================================== */
-
-@keyframes reel-shake {
-
-    0% {
-        transform: translateY(-3px);
-    }
-
-    50% {
-        transform: translateY(3px);
-    }
-
-    100% {
-        transform: translateY(-3px);
-    }
-
-}
-
-
-/* ==================================================
-   MOVIMIENTO DE LOS SÍMBOLOS
-   ================================================== */
-
-/*
-   El símbolo entra desde arriba,
-   atraviesa rápidamente la ventana
-   y sale por abajo.
-*/
-
-@keyframes symbol-spin {
-
-    0% {
-
-        transform:
-            translateY(-180px)
-            scale(0.85);
-
-        opacity: 0.2;
-
-    }
-
-    25% {
-
-        opacity: 0.8;
-
-    }
-
-    50% {
-
-        transform:
-            translateY(0)
-            scale(1);
-
-        opacity: 1;
-
-    }
-
-    75% {
-
-        opacity: 0.8;
-
-    }
-
-    100% {
-
-        transform:
-            translateY(180px)
-            scale(0.85);
-
-        opacity: 0.2;
-
-    }
-
-}
-
-
-/* ==================================================
-   SÍMBOLO GIRANDO
-   ================================================== */
-
-.reel-symbol.spinning-symbol {
-
-    overflow: hidden;
-
-}
-
-
-/* ==================================================
-   ANIMACIÓN DE LOS 3 RODILLOS
-   ================================================== */
-
-.reel.spinning .reel-symbol img {
-
-    animation:
-        symbol-spin
-        0.12s
-        linear
-        infinite;
-
-    filter:
-        blur(1.5px)
-        drop-shadow(
-            0 0 8px
-            rgba(255, 210, 28, 0.7)
-        );
-
-}
-
-
-/* ==================================================
-   MOVIMIENTO DEL SÍMBOLO
-   ================================================== */
-
-@keyframes symbol-spin {
-
-    0% {
-
-        transform:
-            translateY(-35px)
-            scale(0.85);
-
-        opacity: 0.35;
-
-    }
-
-    50% {
-
-        transform:
-            translateY(0)
-            scale(1);
-
-        opacity: 1;
-
-    }
-
-    100% {
-
-        transform:
-            translateY(35px)
-            scale(0.85);
-
-        opacity: 0.35;
-
-    }
-
-}
-
-
-/* ==================================================
-   MOVIMIENTO DEL RODILLO COMPLETO
-   ================================================== */
-
-.reel.spinning {
-
-    animation:
-        reel-shake
-        0.08s
-        linear
-        infinite;
-
-}
-
-
-@keyframes reel-shake {
-
-    0% {
-
-        transform:
-            translateY(-3px);
-
-    }
-
-    50% {
-
-        transform:
-            translateY(3px);
-
-    }
-
-    100% {
-
-        transform:
-            translateY(-3px);
-
-    }
-
-}
-
-
-/* ==================================================
-   EFECTO DE VELOCIDAD
-   ================================================== */
-
-/*
-   Mientras gira, hacemos que el símbolo
-   tenga un pequeño desenfoque de movimiento.
-*/
-
-.reel.spinning .reel-symbol img {
-
-    filter:
-        blur(1px)
-        drop-shadow(
-            0 0 8px
-            rgba(255, 210, 28, 0.8)
-        );
-
-}
-
-
-/* ==================================================
-   RESULTADO FINAL
-   ================================================== */
-
-/*
-   Cuando el rodillo deja de girar,
-   el símbolo vuelve a verse nítido.
-*/
-
-.reel:not(.spinning) .reel-symbol img {
-
-    filter:
-        drop-shadow(
-            0 0 5px
-            rgba(0, 0, 0, 0.35)
-        );
-
-}
-
-
-/* ==================================================
-   DESTELLO AL DETENERSE
-   ================================================== */
-
-/*
-   Si tu JavaScript agrega la clase "stopped",
-   el rodillo tendrá un pequeño destello.
-*/
-
-.reel.stopped {
-
-    animation:
-        reel-stop-flash
-        0.35s
-        ease-out;
-
-}
-
-
-@keyframes reel-stop-flash {
-
-    0% {
-
-        box-shadow:
-
-            inset 8px 0 12px
-            rgba(0, 0, 0, 0.15),
-
-            inset -8px 0 12px
-            rgba(0, 0, 0, 0.15),
-
-            0 4px 0 #555555;
-
-    }
-
-    50% {
-
-        box-shadow:
-
-            inset 8px 0 12px
-            rgba(0, 0, 0, 0.15),
-
-            inset -8px 0 12px
-            rgba(0, 0, 0, 0.15),
-
-            0 4px 0 #555555,
-
-            0 0 20px var(--yellow),
-
-            0 0 35px rgba(255, 210, 28, 0.8);
-
-    }
-
-    100% {
-
-        box-shadow:
-
-            inset 8px 0 12px
-            rgba(0, 0, 0, 0.15),
-
-            inset -8px 0 12px
-            rgba(0, 0, 0, 0.15),
-
-            0 4px 0 #555555;
-
-    }
-
-}
-
-/* ==================================================
-   PANEL DERECHO
-   ================================================== */
-
-#game-right-panel {
-
-    grid-column: 3;
-
-    grid-row: 1;
-
-    width: 220px;
-
-    min-height: 410px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-}
-
-
-/* ==================================================
-   CONTENEDOR DE FICHAS
-   ================================================== */
-
-#chips {
-
-    width: 220px;
-
-    min-height: 235px;
-
-    padding: 20px 15px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
-
-    gap: 12px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #13062A,
-            #101827
-        );
-
-    border: 6px solid var(--cyan);
-
-    border-radius: 15px;
-
-    box-shadow:
-
-        0 0 10px var(--cyan),
-
-        0 0 25px
-        rgba(25, 230, 255, 0.5),
-
-        inset 0 0 20px
-        rgba(124, 45, 255, 0.25);
-
-}
-
-
-/* ==================================================
-   FICHA
-   ================================================== */
-
-.chip {
-
-    width: 68px;
-
-    height: 68px;
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    border-radius: 50%;
-
-    overflow: hidden;
-
-    transition:
-        opacity 0.2s ease,
-        transform 0.2s ease;
-
-}
-
-
-.chip img {
-
-    width: 100%;
-
-    height: 100%;
-
-    object-fit: contain;
-
-    display: block;
-
-}
-
-
-/* ==================================================
-   BOTÓN SPIN
-   ================================================== */
-
-#spin-button {
-
-    width: 220px;
-
-    min-height: 135px;
-
-    padding: 20px;
-
-    border: 7px solid var(--black);
-
-    border-radius: 25px;
-
-    background:
-        linear-gradient(
-            to bottom,
-            var(--red-light),
-            var(--red)
-        );
-
-    color: var(--white);
-
-    font-size: 36px;
-
-    font-weight: 900;
-
-    letter-spacing: 2px;
-
-    text-shadow:
-        0 3px 0 var(--red-dark);
-
-    box-shadow:
-
-        0 9px 0 var(--red-dark),
-
-        0 0 15px var(--red),
-
-        0 0 30px
-        rgba(242, 47, 37, 0.55);
-
-}
-
-
-#spin-button:hover {
-
-    filter: brightness(1.15);
-
-    transform: scale(1.04);
-
-    box-shadow:
-
-        0 9px 0 var(--red-dark),
-
-        0 0 20px var(--red),
-
-        0 0 40px
-        rgba(242, 47, 37, 0.6);
-
-}
-
-
-#spin-button:active {
-
-    transform: translateY(8px);
-
-    box-shadow:
-        0 1px 0 var(--red-dark),
-        0 0 15px var(--red);
-
-}
-
-
-/* ==================================================
-   BOTÓN SPIN DESHABILITADO
-   ================================================== */
-
-#spin-button:disabled {
-
-    opacity: 0.55;
-
-    cursor: not-allowed;
-
-    filter:
-        grayscale(0.4);
-
-    transform: none;
-
-}
-/* ==================================================
-   MENSAJE
-   ================================================== */
-
-#game-message {
-
-    grid-column: 2;
-
-    grid-row: 2;
-
-    align-self: end;
-
-    margin-bottom: -5px;
-
-    color: var(--cyan);
-
-    font-size: 18px;
-
-    font-weight: bold;
-
-    letter-spacing: 1px;
-
-    text-shadow:
-        0 0 8px
-        rgba(25, 230, 255, 0.7);
-
-}
-/* ==================================================
-   FIN DEL JUEGO
-   ================================================== */
-
-#end-screen {
-
-    background:
-        radial-gradient(
-            circle at center,
-            #3A0A61,
-            #13041F 55%,
-            #101827
-        );
-
+#final-score{
+    color:var(--yellow); font-size:80px; font-weight:900;
+    text-shadow:0 0 8px var(--yellow),0 0 20px var(--yellow),0 0 40px rgba(255,210,28,0.6);
 }
-
-
-#final-score {
-
-    color: var(--yellow);
-
-    font-size: 80px;
-
-    font-weight: 900;
-
-    text-shadow:
-        0 0 8px var(--yellow),
-        0 0 20px var(--yellow),
-        0 0 40px rgba(255, 210, 28, 0.6);
-
-}
-
 
 #final-player-name,
-#final-character {
-
-    color: var(--cyan);
-
-    font-size: 22px;
-
-    text-shadow:
-        0 0 8px rgba(25, 230, 255, 0.6);
-
+#final-character{
+    color:var(--cyan); font-size:22px;
+    text-shadow:0 0 8px rgba(25,230,255,0.6);
 }
 
+/* RANKING */
+
+#ranking-list p{
+    color:var(--gray);
+}
+
+/* RESPONSIVE */
+
+@media (max-width:1100px){
+    #game-screen{
+        grid-template-columns:180px minmax(400px,1fr) 170px;
+        column-gap:15px;
+    }
+
+    #game-left-panel{ width:180px; }
+    #game-character{ width:170px; height:170px; }
+    #game-character-image{ width:155px; height:155px; }
+    #score{ width:170px; }
+    .score-title{ font-size:17px; }
+    #score-value{ font-size:30px; }
+    #reels{ height:330px; }
+    .reel-symbol img{ width:80px; height:80px; }
+    #chips{ width:170px; }
+    .chip{ width:52px; height:52px; }
+
+    #spin-button{
+        width:170px; min-height:115px; font-size:28px;
+    }
+}
+
+@media (max-width:800px){
+    #character-card{
+        flex-direction:column; width:90vw;
+    }
+
+    #character-info{
+        align-items:center; text-align:center;
+    }
+
+    #character-description{
+        text-align:center;
+    }
+
+    #character-container{
+        width:280px; height:280px;
+    }
+
+    #character-image{
+        width:250px; height:250px;
+    }
+
+    #character-select-button{
+        min-width:80vw; font-size:20px;
+    }
+
+    #character-selector{
+        gap:12px;
+    }
+
+    .character-option{
+        width:60px; height:60px;
+    }
+
+    /* JUEGO */
+    #game-screen{
+        display:flex; flex-direction:column; justify-content:center;
+        align-items:center; gap:15px; padding:20px;
+    }
+
+    #game-left-panel{
+        width:auto;
+        display:flex; flex-direction:row; align-items:center; gap:15px;
+    }
+
+    #game-character{
+        width:150px; height:150px;
+    }
+
+    #game-character-image{
+        width:135px; height:135px;
+    }
+
+    #score{
+        width:150px; min-height:90px;
+    }
+
+    #reels{
+        order:2; width:90vw; height:300px;
+    }
+
+    .reel-symbol img{
+        width:65px; height:65px;
+    }
+
+    #game-right-panel{
+        order:3; width:auto; min-height:auto;
+        flex-direction:row; gap:15px;
+    }
+
+    #chips{
+        width:auto; min-height:auto; flex-direction:row;
+        border:none; background:transparent; box-shadow:none; padding:0;
+    }
+
+    .chip{
+        width:50px; height:50px;
+    }
+
+    #spin-button{
+        width:180px; min-height:90px; font-size:28px;
+    }
+
+    #game-message{
+        order:4;
+    }
+}
+
+/* JUEGO EN PANTALLAS PEQUEÑAS */
+
+@media (max-width:1100px){
+    #game-screen{
+        display:flex; flex-direction:column; justify-content:center; gap:15px;
+    }
+
+    #game-character{
+        width:180px; height:180px; order:1;
+    }
+
+    #game-character-image{
+        width:165px; height:165px;
+    }
+
+    #reels{
+        order:2; min-height:300px; width:90vw;
+    }
+
+    .reel{
+        min-width:0; width:30%; height:250px;
+    }
+
+    .reel img{
+        width:75px; height:75px;
+    }
+
+    #chips{
+        order:3; min-height:auto; flex-direction:row; width:auto;
+        border:none; background:transparent; box-shadow:none;
+    }
+
+    #score{
+        order:4; width:auto;
+    }
+
+    #game-message{
+        order:5;
+    }
+
+    #spin-button{
+        order:6; width:220px; min-height:100px; font-size:30px;
+    }
+}
+
+/* NUEVO SISTEMA DE GIRO DE LOS RODILLOS */
+
+.reel.spinning .reel-symbol{
+    animation:reel-symbol-move 0.18s linear infinite;
+}
+
+.reel.spinning .reel-symbol:nth-child(1){ animation-delay:-0.06s; }
+.reel.spinning .reel-symbol:nth-child(2){ animation-delay:-0.12s; }
+.reel.spinning .reel-symbol:nth-child(3){ animation-delay:-0.18s; }
+
+@keyframes reel-symbol-move{
+    0%{ transform:translateY(-45px); opacity:0.35; }
+    25%{ transform:translateY(-15px); opacity:0.65; }
+    50%{ transform:translateY(0); opacity:1; }
+    75%{ transform:translateY(15px); opacity:0.65; }
+    100%{ transform:translateY(45px); opacity:0.35; }
+}
+
+/* DESENFOQUE DURANTE EL GIRO */
+
+.reel.spinning .reel-symbol img{
+    animation:symbol-spin 0.12s linear infinite;
+    filter:blur(3px) drop-shadow(0 0 9px rgba(255,210,28,0.75));
+    transform:scale(0.95);
+}
+
+.reel:not(.spinning) .reel-symbol img{
+    filter:drop-shadow(0 0 5px rgba(0,0,0,0.35));
+    transform:scale(1);
+}
+
+@keyframes symbol-spin{
+    0%{ transform:translateY(-35px) scale(0.85); opacity:0.35; }
+    50%{ transform:translateY(0) scale(1); opacity:1; }
+    100%{ transform:translateY(35px) scale(0.85); opacity:0.35; }
+}
+
+/* VIBRACIÓN DEL RODILLO */
+
+.reel.spinning{
+    animation:reel-vibration 0.07s linear infinite;
+}
+
+@keyframes reel-vibration{
+    0%{ transform:translateY(-2px); }
+    50%{ transform:translateY(2px); }
+    100%{ transform:translateY(-2px); }
+}
+
+/* EFECTO AL DETENERSE */
+
+.reel.stopped{
+    animation:reel-stop 0.25s ease-out;
+}
+
+@keyframes reel-stop{
+    0%{ transform:translateY(2px); }
+    40%{ transform:translateY(-2px); }
+    70%{ transform:translateY(1px); }
+    100%{ transform:translateY(0); }
+}
+
+/* TABLA DE RANKING */
+
+#ranking-list{
+    width:90%; max-width:900px; margin:30px auto;
+    min-height:200px; padding:25px;
+    overflow-x:auto;
+    background:linear-gradient(135deg,var(--purple-dark),#0D0718);
+    border:4px solid var(--yellow); border-radius:15px;
+    box-shadow:0 0 15px rgba(255,210,28,0.4);
+}
+
+#ranking-table{
+    width:100%; border-collapse:collapse;
+    text-align:center; font-size:22px;
+}
+
+#ranking-table th{
+    padding:15px; border-bottom:4px solid #555555; font-weight:bold;
+}
+
+#ranking-table td{
+    padding:14px; border-bottom:2px solid #777777;
+}
+
+#ranking-table tr{
+    transition:transform 0.2s ease;
+}
+
+#ranking-table tr:hover{
+    transform:scale(1.02);
+}
 
 /* ==================================================
-   RANKING
+   TEMA ARCADE (Implementar.txt optimizado)
    ================================================== */
 
-#ranking-list {
+body{ background:#080018; color:var(--white); }
+.screen::before, .screen::after{ display:none; }
+h1{ color:#FFFFFF; text-shadow:0 3px 0 #000000; }
+p{ color:#FFFFFF; }
+button{
+    border:5px solid #050008; border-radius:32px;
+    background:linear-gradient(to bottom,#FF6548 0%,#FF2B18 48%,#FF0808 100%);
+    color:#FFFFFF;
+    box-shadow:0 6px 0 #000000,inset 0 4px 0 rgba(255,255,255,0.20);
+    transition:transform 0.12s ease,filter 0.15s ease;
+}
+button:hover{ filter:brightness(1.08); }
+button:active{ transform:translateY(4px); }
+#warning-screen, #start-screen, #name-screen, #end-screen, #game-screen{ background:#080018; }
+#start-screen::before, #start-screen::after{ display:none; }
+#start-screen h1{
+    color:#FFFFFF;
+    text-shadow:0 4px 0 #000000,0 0 10px #A000E8,0 0 24px rgba(255,213,0,0.45);
+}
+#start-button, #name-confirm-button{
+    background:linear-gradient(to bottom,#FF6548,#FF2517 55%,#F00014);
+    border:5px solid #050008; border-radius:35px;
+    color:#FFFFFF;
+    box-shadow:0 6px 0 #000000,inset 0 4px 0 rgba(255,255,255,0.20);
+}
+#character-screen{ background:#080018; border:none; }
+#character-screen::before, #character-screen::after{ display:none; }
+#character-screen > h1{ color:#FFFFFF; text-shadow:none; }
+#character-selector{
+    position:relative; z-index:12; flex-shrink:0;
+    display:flex; justify-content:center; align-items:center;
+    background:linear-gradient(to bottom,#FF9200 0%,#FFBD00 48%,#FFF9A8 100%);
+    border:6px solid #FF6A00; border-radius:50%; box-shadow:none;
+}
+#character-selector::before{
+    top:10px; left:15%; width:70%; height:22px;
+    background:rgba(255,255,255,0.18); filter:blur(6px);
+}
+.character-option{
+    position:relative; z-index:2;
+    display:flex; justify-content:center; align-items:center;
+    background:#080808; border:4px solid #181818; border-radius:50%;
+    overflow:hidden; box-shadow:none;
+    transition:transform 0.2s ease,border-color 0.2s ease;
+}
+.character-option img{ display:block; }
+.character-option.active{ border-color:#FFFFFF; box-shadow:none; transform:scale(1.02); }
+.character-option:hover{ border-color:#FFFFFF; box-shadow:none; transform:scale(1.06); }
+.character-option.active:hover{ border-color:#FFFFFF; transform:scale(1.06); }
+#character-card{
+    position:relative; z-index:5; flex-shrink:0; display:flex;
+    background:linear-gradient(#080018,#080018) padding-box,linear-gradient(to bottom,#FF6500 0%,#FF003C 52%,#D500FF 76%,#00C8FF 100%) border-box;
+    border:8px solid transparent; box-shadow:none;
+}
+#character-card::before{ display:none; }
+#character-container{
+    display:flex; justify-content:center; align-items:center;
+    background:linear-gradient(145deg,#FFFFFF 0%,#F3F3F3 70%,#FFFFFF 100%);
+    border:18px solid #66616F; box-shadow:inset 0 0 0 1px #FFFFFF;
+}
+#character-image{ padding:0; }
+#character-info{
+    flex:1; min-width:0; align-self:center;
+    display:flex; flex-direction:column; justify-content:flex-start; align-items:flex-start;
+}
+#character-name{
+    display:inline-block;
+    background:linear-gradient(to bottom,#FF6548 0%,#FF321B 55%,#FF1008 100%);
+    border:6px solid #050008; border-radius:42px;
+    color:#FFFFFF; font-weight:900;
+    box-shadow:0 4px 0 #000000,inset 0 5px 0 rgba(255,255,255,0.22);
+    text-shadow:none;
+}
+#character-description{ max-width:620px; color:#FFFFFF; text-align:left; }
+#character-select-button{
+    position:relative; z-index:10; min-width:0;
+    background:linear-gradient(to bottom,#FF5546 0%,#FF2517 48%,#F00014 100%);
+    border:7px solid #050008; border-radius:80px;
+    color:#FFFFFF; font-weight:900; text-align:center;
+    box-shadow:0 5px 0 #000000,inset 0 5px 0 rgba(255,255,255,0.18);
+    text-shadow:none;
+}
+#character-select-button:hover{ filter:brightness(1.08); }
+#character-instruction{ color:#FFFFFF; text-shadow:none; }
+#player-name{ background:#100022; color:#FFFFFF; border:4px solid #FF6A00; }
+#player-name:focus{ border-color:#FFD500; box-shadow:0 0 0 2px #FF6A00; }
+#selected-character-profile{ border-color:#FF6A00; box-shadow:none; }
+#name-character-label{ color:#FFD500; text-shadow:none; }
+#game-character{ border-color:#FF1608; box-shadow:none; }
+#score{
+    background:linear-gradient(to bottom,#FFBD00,#FF8A00);
+    border-color:#050008; box-shadow:none;
+}
+#score-value{ color:#FFFFFF; text-shadow:0 2px 0 #8C4800; }
+#reels{
+    background:linear-gradient(135deg,#FF8A00,#FFBD00 50%,#FF6500);
+    border-color:#FF6500;
+    box-shadow:0 6px 0 #000000,inset 0 0 12px rgba(255,255,255,0.18);
+}
+.reel{
+    background:linear-gradient(to right,#BDBDBD,#FFFFFF 15%,#F3F3F3 50%,#FFFFFF 85%,#BDBDBD);
+    border-color:#555555; box-shadow:0 3px 0 #333333;
+}
+#reels::before{
+    border-top-color:#FF1608; border-bottom-color:#FF1608;
+    background:rgba(255,213,0,0.08);
+    box-shadow:0 0 8px rgba(255,22,8,0.6);
+}
+#reels::after{ border-color:rgba(255,213,0,0.7); }
+#chips{ background:#100022; border-color:#FF6500; box-shadow:none; }
+#spin-button{
+    background:linear-gradient(to bottom,#FF6548,#FF2517 55%,#F00014);
+    border-color:#050008;
+    box-shadow:0 7px 0 #000000,inset 0 4px 0 rgba(255,255,255,0.20);
+}
+#spin-button:hover{ box-shadow:0 7px 0 #000000,inset 0 4px 0 rgba(255,255,255,0.20); }
+#game-message{ color:#FFFFFF; text-shadow:none; }
+#final-score{ color:#FFD500; text-shadow:0 2px 0 #000000; }
+#final-character{ color:#FFFFFF; text-shadow:none; }
+#ranking-list{ background:#100022; border-color:#FF6500; box-shadow:none; }
+#ranking-table{ color:#FFFFFF; }
+#ranking-table th{ color:#FFD500; border-bottom-color:#FF6500; }
+#ranking-table td{ color:#FFFFFF; border-bottom-color:#4A3159; }
+#ranking-table tr:hover{ background:rgba(255,255,255,0.05); }
 
-    width: min(600px, 90vw);
-
-    min-height: 200px;
-
-    padding: 25px;
-
-    background:
-        linear-gradient(
-            135deg,
-            var(--purple-dark),
-            #0D0718
-        );
-
-    border: 4px solid var(--yellow);
-
-    border-radius: 15px;
-
-    box-shadow:
-        0 0 15px rgba(255, 210, 28, 0.4);
-
+@media (max-width:800px){
+    #character-screen{ padding:12px 12px 25px; }
+    #character-selector{
+        width:min(570px,94vw); height:100px;
+        margin-bottom:-45px; padding:8px 20px; gap:clamp(8px,2vw,18px);
+    }
+    .character-option{ width:clamp(52px,11vw,78px); height:clamp(52px,11vw,78px); }
+    #character-card{
+        width:96vw; min-height:0; padding:75px 20px 25px;
+        gap:22px; border-width:6px; border-radius:22px;
+    }
+    #character-container{
+        width:min(38vw,300px); height:min(55vw,370px);
+        border-width:10px; border-radius:30px;
+    }
+    #character-info{ gap:15px; }
+    #character-name{ padding:8px 22px; font-size:clamp(22px,4vw,34px); }
+    #character-description{ font-size:clamp(14px,2vw,18px); }
+    #character-select-button{
+        width:90vw; margin-top:20px; padding:14px 12px;
+        font-size:clamp(18px,3.4vw,27px);
+    }
 }
 
-
-#ranking-list p {
-
-    color: var(--gray);
-
+@media (max-width:480px){
+    #character-card{ flex-direction:column; padding:65px 16px 22px; }
+    #character-container{ width:min(78vw,300px); height:min(90vw,360px); }
+    #character-info{ width:100%; align-items:center; }
+    #character-description{ text-align:center; }
+    #character-selector{ height:82px; margin-bottom:-32px; padding:6px 12px; gap:8px; }
+    .character-option{
+        width:clamp(45px,13vw,58px); height:clamp(45px,13vw,58px);
+        border-width:3px;
+    }
+    #character-name{ font-size:25px; }
+    #character-select-button{ width:94vw; font-size:18px; }
 }
 
-
-/* ==================================================
-   RESPONSIVE
-   ================================================== */
-
-@media (max-width: 1100px) {
-
-   @media (max-width: 1100px) {
-
-    #game-screen {
-
-        grid-template-columns:
-            180px
-            minmax(400px, 1fr)
-            170px;
-
-        column-gap: 15px;
-
-    }
-
-
-    #game-left-panel {
-
-        width: 180px;
-
-    }
-
-
-    #game-character {
-
-        width: 170px;
-
-        height: 170px;
-
-    }
-
-
-    #game-character-image {
-
-        width: 155px;
-
-        height: 155px;
-
-    }
-
-
-    #score {
-
-        width: 170px;
-
-    }
-
-
-    .score-title {
-
-        font-size: 17px;
-
-    }
-
-
-    #score-value {
-
-        font-size: 30px;
-
-    }
-
-
-    #reels {
-
-        height: 330px;
-
-    }
-
-
-    .reel-symbol img {
-
-        width: 80px;
-
-        height: 80px;
-
-    }
-
-
-    #chips {
-
-        width: 170px;
-
-    }
-
-
-    .chip {
-
-        width: 52px;
-
-        height: 52px;
-
-    }
-
-
-    #spin-button {
-
-        width: 170px;
-
-        min-height: 115px;
-
-        font-size: 28px;
-
-    }
-
+#warning-screen{
+    min-height:100vh; padding:40px 24px; gap:24px;
+    justify-content:center; align-items:center; text-align:center;
+}
+#warning-screen h1{
+    font-size:clamp(32px,5vw,52px); line-height:1.2;
+    letter-spacing:3px; margin-bottom:4px;
+}
+#warning-screen p{
+    width:100%; max-width:850px; font-size:clamp(15px,2vw,20px);
+    line-height:1.6; margin:0; padding:0 8px;
+}
+#warning-button{
+    min-width:190px; min-height:54px; padding:14px 32px;
+    font-size:18px; font-weight:800; letter-spacing:1px;
+    border-radius:30px; cursor:pointer; margin-top:4px;
 }
 
-
-@media (max-width: 800px) {
-
-    #character-card {
-
-        flex-direction: column;
-
-        width: 90vw;
-
-    }
-
-
-    #character-info {
-
-        align-items: center;
-
-        text-align: center;
-
-    }
-
-
-    #character-description {
-
-        text-align: center;
-
-    }
-
-
-    #character-container {
-
-        width: 280px;
-
-        height: 280px;
-
-    }
-
-
-    #character-image {
-
-        width: 250px;
-
-        height: 250px;
-
-    }
-
-
-    #character-select-button {
-
-        min-width: 80vw;
-
-        font-size: 20px;
-
-    }
-
-
-    #character-selector {
-
-        gap: 12px;
-
-    }
-
-
-    .character-option {
-
-        width: 60px;
-
-        height: 60px;
-
-    }
-
-
-    /* ==========================================
-       JUEGO
-       ========================================== */
-
-    #game-screen {
-
-        display: flex;
-
-        flex-direction: column;
-
-        justify-content: center;
-
-        align-items: center;
-
-        gap: 15px;
-
-        padding: 20px;
-
-    }
-
-
-    #game-left-panel {
-
-        width: auto;
-
-        display: flex;
-
-        flex-direction: row;
-
-        align-items: center;
-
-        gap: 15px;
-
-    }
-
-
-    #game-character {
-
-        width: 150px;
-
-        height: 150px;
-
-    }
-
-
-    #game-character-image {
-
-        width: 135px;
-
-        height: 135px;
-
-    }
-
-
-    #score {
-
-        width: 150px;
-
-        min-height: 90px;
-
-    }
-
-
-    #reels {
-
-        order: 2;
-
-        width: 90vw;
-
-        height: 300px;
-
-    }
-
-
-    .reel-symbol img {
-
-        width: 65px;
-
-        height: 65px;
-
-    }
-
-
-    #game-right-panel {
-
-        order: 3;
-
-        width: auto;
-
-        min-height: auto;
-
-        flex-direction: row;
-
-        gap: 15px;
-
-    }
-
-
-    #chips {
-
-        width: auto;
-
-        min-height: auto;
-
-        flex-direction: row;
-
-        border: none;
-
-        background: transparent;
-
-        box-shadow: none;
-
-        padding: 0;
-
-    }
-
-
-    .chip {
-
-        width: 50px;
-
-        height: 50px;
-
-    }
-
-
-    #spin-button {
-
-        width: 180px;
-
-        min-height: 90px;
-
-        font-size: 28px;
-
-    }
-
-
-    #game-message {
-
-        order: 4;
-
-    }
-
+@media (max-width:480px){
+    #warning-screen{ padding:28px 18px; gap:20px; }
+    #warning-screen h1{ font-size:32px; letter-spacing:2px; }
+    #warning-screen p{ font-size:15px; }
+    #warning-button{ min-width:175px; min-height:50px; font-size:16px; }
 }
 
+#character-screen{ justify-content:flex-start; overflow-y:auto; }
+#character-screen h1{
+    font-size:clamp(28px,3.5vw,48px); letter-spacing:3px;
+    line-height:1.15; margin:0;
+}
+#character-options{
+    max-width:680px; width:min(80%,680px); padding:12px 20px; gap:18px;
+}
+.character-option{ flex-shrink:0; }
+.character-option img{ width:100%; height:100%; object-fit:contain; }
+#character-card{ align-items:center; margin:8px auto; }
+#character-container{ flex-shrink:0; overflow:hidden; }
+#character-image{ max-width:100%; max-height:100%; width:100%; height:100%; object-fit:contain; }
+#character-name{ letter-spacing:1px; }
+#character-description{ line-height:1.4; }
 
-    /* ------------------------------------------
-       JUEGO EN PANTALLAS PEQUEÑAS
-       ------------------------------------------ */
-
-    #game-screen {
-
-        display: flex;
-
-        flex-direction: column;
-
-        justify-content: center;
-
-        gap: 15px;
-
-    }
-
-
-    #game-character {
-
-        width: 180px;
-
-        height: 180px;
-
-        order: 1;
-
-    }
-
-
-    #game-character-image {
-
-        width: 165px;
-
-        height: 165px;
-
-    }
-
-
-    #reels {
-
-        order: 2;
-
-        min-height: 300px;
-
-        width: 90vw;
-
-    }
-
-
-    .reel {
-
-        min-width: 0;
-
-        width: 30%;
-
-        height: 250px;
-
-    }
-
-
-    .reel img {
-
-        width: 75px;
-
-        height: 75px;
-
-    }
-
-
-    #chips {
-
-        order: 3;
-
-        min-height: auto;
-
-        flex-direction: row;
-
-        width: auto;
-
-        border: none;
-
-        background: transparent;
-
-        box-shadow: none;
-
-    }
-
-
-    #score {
-
-        order: 4;
-
-        width: auto;
-
-    }
-
-
-    #game-message {
-
-        order: 5;
-
-    }
-
-
-    #spin-button {
-
-        order: 6;
-
-        width: 220px;
-
-        min-height: 100px;
-
-        font-size: 30px;
-
-    }
-
+@media (max-height:760px){
+    #character-screen{ gap:8px; }
+    #character-card{ margin:4px auto; }
+    #character-options{ padding:8px 16px; }
 }
 
-
-/* =========================================================
-   NUEVO SISTEMA DE GIRO DE LOS RODILLOS
-   ========================================================= */
-
-/*
-   Cada rodillo tiene 3 símbolos visibles.
-   Los símbolos se desplazan verticalmente mientras giran.
-*/
-
-.reel {
-    position: relative;
-    overflow: hidden;
+@media (max-width:600px){
+    #character-screen{ height:auto; min-height:100vh; padding:20px 14px; }
+    #character-card{ flex-direction:column; gap:14px; }
+    #character-container{ width:min(75vw,280px); height:280px; }
+    #character-options{ width:100%; gap:8px; }
 }
 
-/* ---------------------------------------------------------
-   MOVIMIENTO DE LAS 3 FILAS
-   --------------------------------------------------------- */
+#character-screen{
+    height:100vh; min-height:0; padding:10px 22px 14px;
+    gap:0; overflow:hidden; align-items:center;
+}
+#character-screen > h1{ font-size:clamp(28px,4vw,44px); line-height:1.1; margin:0 0 6px; }
+#character-selector{
+    width:min(680px,78vw); height:112px;
+    padding:8px 35px; gap:clamp(12px,2vw,26px);
+    border-width:5px; margin-bottom:-62px;
+}
+.character-option{
+    width:clamp(65px,7vw,94px); height:clamp(65px,7vw,94px);
+    border-width:4px;
+}
+#character-card{
+    width:min(1180px,94vw); min-height:0; flex:1;
+    margin-top:0; margin-bottom:0;
+    padding:85px 48px 18px; gap:32px;
+    border-width:6px; border-radius:24px; overflow:hidden;
+}
+#character-container{
+    width:clamp(220px,28vw,330px); height:min(42vh,340px);
+    border-width:12px; border-radius:38px;
+}
+#character-info{ gap:12px; }
+#character-name{ font-size:clamp(24px,2.5vw,36px); padding:8px 24px; }
+#character-description{ font-size:clamp(15px,1.4vw,20px); }
+#character-select-button{
+    width:min(720px,85vw); margin-top:10px;
+    padding:12px 22px; font-size:clamp(18px,2vw,28px);
+    border-width:5px;
+}
+#character-instruction{ margin:5px 0 0; font-size:clamp(12px,1.2vw,15px); }
 
-.reel.spinning .reel-symbol {
-    animation: reel-symbol-move 0.18s linear infinite;
+@media (max-height:760px){
+    #character-screen{ padding-top:6px; padding-bottom:8px; }
+    #character-screen > h1{ font-size:clamp(25px,3.5vw,36px); }
+    #character-selector{ height:88px; margin-bottom:-48px; }
+    .character-option{ width:68px; height:68px; }
+    #character-card{ padding-top:65px; padding-bottom:12px; gap:24px; }
+    #character-container{ height:min(36vh,265px); width:clamp(190px,23vw,270px); }
+    #character-select-button{ margin-top:6px; padding:9px 18px; }
 }
 
-/*
-   Cada fila empieza ligeramente desfasada.
-   Esto evita que las tres imágenes parezcan
-   estar pegadas entre sí.
-*/
-
-.reel.spinning .reel-symbol:nth-child(1) {
-    animation-delay: -0.06s;
+#character-screen #character-card{
+    display:flex !important; flex-direction:row !important;
+    align-items:center !important; justify-content:center !important;
+}
+#character-screen #character-container{ padding:0 !important; }
+#character-screen #character-image{ display:block !important; padding:0 !important; }
+#character-screen #character-info{
+    align-self:flex-start !important; transform:translateY(35px) !important;
+    display:flex !important; flex-direction:column !important;
+    gap:12px !important; box-sizing:border-box !important;
+}
+#character-screen #character-name{
+    display:block !important; width:fit-content !important;
+    max-width:100% !important; margin:0 auto !important;
+    padding:10px 24px !important; box-sizing:border-box !important;
+    font-size:clamp(24px,2.7vw,36px) !important;
+    text-align:center !important; overflow-wrap:anywhere !important;
+}
+#character-screen #character-description{
+    display:block !important; width:100% !important;
+    max-width:100% !important; margin:0 !important;
+    font-size:clamp(16px,1.6vw,20px) !important;
+    line-height:1.4 !important; text-align:center !important;
+    overflow-wrap:anywhere !important; box-sizing:border-box !important;
 }
 
-.reel.spinning .reel-symbol:nth-child(2) {
-    animation-delay: -0.12s;
-}
-
-.reel.spinning .reel-symbol:nth-child(3) {
-    animation-delay: -0.18s;
-}
-
-
-/* ---------------------------------------------------------
-   ANIMACIÓN VERTICAL
-   --------------------------------------------------------- */
-
-@keyframes reel-symbol-move {
-
-    0% {
-        transform: translateY(-45px);
-        opacity: 0.35;
+@media (max-height:800px){
+    #character-screen #character-container{
+        width:clamp(250px,30vw,340px) !important;
+        height:min(43vh,320px) !important; flex-basis:340px !important;
     }
+    #character-screen #character-card{ gap:28px !important; }
+    #character-screen #character-info{ transform:translateY(22px) !important; }
+}
 
-    25% {
-        transform: translateY(-15px);
-        opacity: 0.65;
+@media (max-width:600px){
+    #character-screen #character-card{ flex-direction:column !important; }
+    #character-screen #character-container{ flex:0 1 280px !important; }
+    #character-screen #character-info{ align-self:center !important; transform:none !important; }
+}
+
+#character-screen #character-selector{
+    width:min(780px,84vw) !important; min-width:0 !important;
+    height:128px !important; padding:10px 42px !important;
+    gap:clamp(14px,2.2vw,28px) !important;
+    box-sizing:border-box !important; overflow:visible !important;
+}
+#character-screen #character-selector .character-option{
+    width:clamp(68px,7.5vw,96px) !important;
+    height:clamp(68px,7.5vw,96px) !important;
+    flex:0 0 auto !important; box-sizing:border-box !important;
+}
+
+@media (max-height:760px){
+    #character-screen #character-container{ margin-left:-10px !important; }
+    #character-screen #character-selector{
+        width:min(740px,84vw) !important; height:100px !important;
+        padding:7px 32px !important; gap:16px !important;
     }
-
-    50% {
-        transform: translateY(0);
-        opacity: 1;
+    #character-screen #character-selector .character-option{
+        width:70px !important; height:70px !important;
     }
+}
 
-    75% {
-        transform: translateY(15px);
-        opacity: 0.65;
+@media (max-width:600px){
+    #character-screen #character-container{ margin-left:0 !important; }
+    #character-screen #character-selector{
+        width:min(96%,440px) !important; height:auto !important;
+        min-height:88px !important; padding:8px 12px !important; gap:8px !important;
     }
-
-    100% {
-        transform: translateY(45px);
-        opacity: 0.35;
+    #character-screen #character-selector .character-option{
+        width:clamp(48px,14vw,68px) !important;
+        height:clamp(48px,14vw,68px) !important;
     }
-
 }
 
-
-/* ---------------------------------------------------------
-   DESENFOQUE DURANTE EL GIRO
-   --------------------------------------------------------- */
-
-.reel.spinning .reel-symbol img {
-
-    filter:
-        blur(3px)
-        drop-shadow(
-            0 0 9px
-            rgba(255, 210, 28, 0.75)
-        );
-
-    transform: scale(0.95);
-
+#character-screen #character-card{
+    width:min(1000px,88vw) !important; max-width:1000px !important;
+    padding:65px 32px 18px !important; gap:24px !important;
+    box-sizing:border-box !important; border-radius:24px !important;
+    margin:0 auto !important;
+}
+#character-screen #character-container{ margin-left:0 !important; }
+#character-screen #character-info{
+    flex:1 1 0 !important; min-width:0 !important;
+    max-width:440px !important; align-items:center !important;
+    justify-content:center !important; text-align:center !important;
 }
 
-
-/*
-   Cuando deja de girar, vuelve inmediatamente
-   a verse nítido.
-*/
-
-.reel:not(.spinning) .reel-symbol img {
-
-    filter:
-        drop-shadow(
-            0 0 5px
-            rgba(0, 0, 0, 0.35)
-        );
-
-    transform: scale(1);
-
-}
-
-
-/* ---------------------------------------------------------
-   VIBRACIÓN DEL RODILLO
-   --------------------------------------------------------- */
-
-.reel.spinning {
-    animation: reel-vibration 0.07s linear infinite;
-}
-
-@keyframes reel-vibration {
-
-    0% {
-        transform: translateY(-2px);
+@media (max-height:760px){
+    #character-screen #character-card{
+        padding:55px 28px 12px !important; gap:20px !important;
     }
+}
 
-    50% {
-        transform: translateY(2px);
+@media (max-width:600px){
+    #character-screen #character-card{
+        width:94vw !important; padding:55px 16px 16px !important; gap:14px !important;
     }
+    #character-screen #character-info{ width:100% !important; max-width:100% !important; }
+}
 
-    100% {
-        transform: translateY(-2px);
+#character-screen #character-container{
+    width:clamp(270px,32vw,380px) !important;
+    height:min(48vh,390px) !important; flex:0 1 380px !important;
+    min-width:0 !important; overflow:hidden !important;
+    display:flex !important; align-items:center !important;
+    justify-content:center !important; box-sizing:border-box !important;
+}
+#character-screen #character-image{
+    width:100% !important; height:100% !important;
+    max-width:100% !important; max-height:100% !important;
+    object-fit:contain !important; object-position:center !important;
+}
+
+@media (max-height:760px){
+    #character-screen #character-container{
+        width:clamp(250px,29vw,340px) !important;
+        height:min(42vh,320px) !important; flex-basis:340px !important;
     }
-
 }
 
-
-/* ---------------------------------------------------------
-   EFECTO AL DETENERSE
-   --------------------------------------------------------- */
-
-.reel.stopped {
-    animation: reel-stop 0.25s ease-out;
-}
-
-@keyframes reel-stop {
-
-    0% {
-        transform: translateY(2px);
+@media (max-width:600px){
+    #character-screen #character-container{
+        width:min(82vw,320px) !important;
+        height:290px !important; flex-basis:290px !important;
     }
-
-    40% {
-        transform: translateY(-2px);
-    }
-
-    70% {
-        transform: translateY(1px);
-    }
-
-    100% {
-        transform: translateY(0);
-    }
-
-}
-
-
-/* ==================================================
-   TABLA DE RANKING
-   ================================================== */
-
-#ranking-list {
-    width: 90%;
-    max-width: 900px;
-    margin: 30px auto;
-    overflow-x: auto;
-}
-
-
-#ranking-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: center;
-    font-size: 22px;
-}
-
-
-#ranking-table th {
-    padding: 15px;
-    border-bottom: 4px solid #555555;
-    font-weight: bold;
-}
-
-
-#ranking-table td {
-    padding: 14px;
-    border-bottom: 2px solid #777777;
-}
-
-
-#ranking-table tr {
-    transition: transform 0.2s ease;
-}
-
-
-#ranking-table tr:hover {
-    transform: scale(1.02);
 }
