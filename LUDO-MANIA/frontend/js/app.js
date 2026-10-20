@@ -346,7 +346,7 @@ function dibujarTablaRanking() {
         return;
     }
 
-    const topRanking = ranking.slice(0, 8);
+    const topRanking = ranking;
     const table = document.createElement("table");
     table.id = "ranking-table";
 
@@ -493,7 +493,7 @@ function confirmPlayerName() {
             }
 
             playerId = data.id_jugador;
-            playerName = data.display_name;
+            playerName = data.nombre;
 
             console.log("Nombre del jugador:", playerName);
 

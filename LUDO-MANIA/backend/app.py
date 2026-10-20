@@ -15,7 +15,7 @@ CORS(app)
 def registrar_jugador():
     """
     Crea un jugador al confirmar el nombre.
-    Si el nombre ya existe, le asigna el siguiente número (AAA #2).
+    Si el nombre ya existe, guarda un número interno para distinguirlo.
     """
     data = request.json or {}
     nombre = data.get("name")

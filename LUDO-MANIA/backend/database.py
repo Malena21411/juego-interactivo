@@ -101,13 +101,6 @@ def _asegurar_columna_numero(cursor):
     )
 
 
-def nombre_visible(nombre, numero):
-    """AAA se ve como AAA. El segundo AAA se ve como AAA #2."""
-    if not numero or numero <= 1:
-        return nombre
-    return f"{nombre} #{numero}"
-
-
 def registrar_jugador(nombre_jugador):
     """
     Crea siempre un jugador nuevo.
@@ -135,11 +128,11 @@ def registrar_jugador(nombre_jugador):
     conexion.commit()
     conexion.close()
 
+    # El número distingue registros iguales solamente dentro de la base.
+    # La interfaz recibe y muestra el nombre original, sin sufijos como "#2".
     return {
         "id_jugador": id_jugador,
         "nombre": nombre_jugador,
-        "numero": siguiente,
-        "display_name": nombre_visible(nombre_jugador, siguiente),
     }
 
 def inicializar_catalogo():
@@ -214,12 +207,12 @@ def obtener_ranking():
     
     # Cruzamos las tablas para obtener los datos legibles
     query = '''
-        SELECT J.nombre, J.numero, P.nombre, PA.puntuacion_final
+        SELECT J.nombre, P.nombre, PA.puntuacion_final
         FROM Partida PA
         JOIN Jugador J ON PA.id_jugador = J.id_jugador
         JOIN Personaje P ON PA.id_personaje = P.id_personaje
         ORDER BY PA.puntuacion_final DESC
-        LIMIT 10
+        LIMIT 8
     '''
     cursor.execute(query)
     resultados = cursor.fetchall()
@@ -229,9 +222,9 @@ def obtener_ranking():
     ranking = []
     for r in resultados:
         ranking.append({
-            "name": nombre_visible(r[0], r[1]),
-            "character": r[2],
-            "score": r[3]
+            "name": r[0],
+            "character": r[1],
+            "score": r[2]
         })
     return ranking
 
