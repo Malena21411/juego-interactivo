@@ -86,7 +86,7 @@ const symbols = [
 const characters = [
     {
         id: 1,
-        name: "Personaje 1",
+        name: "Jeo",
         selection: "assets/images/personaje1.png",
         profile: "assets/images/logo1.png",
         normal: "assets/images/personaje1_normal.png",
@@ -95,7 +95,7 @@ const characters = [
     },
     {
         id: 2,
-        name: "Personaje 2",
+        name: "Juana",
         selection: "assets/images/personaje2.png",
         profile: "assets/images/logo2.png",
         normal: "assets/images/personaje2_normal.png",
@@ -104,7 +104,7 @@ const characters = [
     },
     {
         id: 3,
-        name: "Personaje 3",
+        name: "Jazmin",
         selection: "assets/images/personaje3.png",
         profile: "assets/images/logo3.png",
         normal: "assets/images/personaje3_normal.png",
@@ -113,7 +113,7 @@ const characters = [
     },
     {
         id: 4,
-        name: "Personaje 4",
+        name: "Joaquin",
         selection: "assets/images/personaje4.png",
         profile: "assets/images/logo4.png",
         normal: "assets/images/personaje4_normal.png",
@@ -346,7 +346,7 @@ function dibujarTablaRanking() {
         return;
     }
 
-    const topRanking = ranking;
+    const topRanking = ranking.slice(0, 8);
     const table = document.createElement("table");
     table.id = "ranking-table";
 
@@ -493,7 +493,7 @@ function confirmPlayerName() {
             }
 
             playerId = data.id_jugador;
-            playerName = data.nombre;
+            playerName = data.display_name;
 
             console.log("Nombre del jugador:", playerName);
 
