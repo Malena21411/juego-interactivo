@@ -41,7 +41,7 @@ def crear_base_datos():
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS Personaje (
         id_personaje INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT NOT NULL,       -- ej: "Personaje 1"
+        nombre TEXT NOT NULL,       -- ej: "Jeo"
         ruta_imagen TEXT NOT NULL   -- ej: "assets/images/logo1.png"
     )
     ''')
@@ -137,25 +137,32 @@ def registrar_jugador(nombre_jugador):
 
 def inicializar_catalogo():
     """
-    Inserta los personajes y símbolos iniciales (el 'menú') 
-    solo si las tablas están vacías.
+    Inserta y mantiene sincronizados los personajes y símbolos
+    disponibles en el juego.
     """
     conexion = sqlite3.connect(DB_PATH)
     cursor = conexion.cursor()
     
     # 1. Insertar Personajes
-    # Primero revisamos si ya hay personajes (para no duplicarlos si ejecutas esto 2 veces)
-    cursor.execute("SELECT COUNT(*) FROM Personaje")
-    if cursor.fetchone()[0] == 0:
-        personajes = [
-            ("Personaje 1", "assets/images/logo1.png"),
-            ("Personaje 2", "assets/images/logo2.png"),
-            ("Personaje 3", "assets/images/logo3.png"),
-            ("Personaje 4", "assets/images/logo4.png")
-        ]
-        # executemany inserta todos los elementos de la lista de una sola vez
-        cursor.executemany("INSERT INTO Personaje (nombre, ruta_imagen) VALUES (?, ?)", personajes)
-        print("- Catálogo de personajes cargado.")
+    # Usamos IDs fijos para que las partidas existentes sigan vinculadas
+    # al personaje correcto, aunque el nombre del catálogo se actualice.
+    personajes = [
+        (1, "Jeo", "assets/images/logo1.png"),
+        (2, "Juana", "assets/images/logo2.png"),
+        (3, "Jazmin", "assets/images/logo3.png"),
+        (4, "Joaquin", "assets/images/logo4.png")
+    ]
+    cursor.executemany(
+        '''
+        INSERT INTO Personaje (id_personaje, nombre, ruta_imagen)
+        VALUES (?, ?, ?)
+        ON CONFLICT(id_personaje) DO UPDATE SET
+            nombre = excluded.nombre,
+            ruta_imagen = excluded.ruta_imagen
+        ''',
+        personajes,
+    )
+    print("- Catálogo de personajes sincronizado.")
 
     # 2. Insertar Símbolos
     cursor.execute("SELECT COUNT(*) FROM Simbolo")
