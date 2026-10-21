@@ -59,8 +59,8 @@ def home():
     return send_from_directory(FRONTEND_DIR, "index.html")
 
 if __name__ == "__main__":
-    # Nos aseguramos de que la base de datos esté creada al iniciar el servidor
-    database.crear_base_datos()
+    # Preparamos la base de datos local a partir de la plantilla del repo.
+    database.preparar_base_datos()
     database.inicializar_catalogo()
 
     print("\n" + "=" * 50)

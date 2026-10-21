@@ -1,0 +1,12 @@
+# Base de datos de trabajo (se genera a partir de la plantilla)
+database/ludo_mania_local.db
+database/ludo_mania_local.db.bak
+
+# Archivos temporales de SQLite
+*.db-wal
+*.db-shm
+*.db-journal
+
+# Python
+__pycache__/
+*.py[cod]

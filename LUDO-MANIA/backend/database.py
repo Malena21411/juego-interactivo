@@ -1,20 +1,33 @@
 import sqlite3
 import os
+import shutil
 
-# Construimos la ruta absoluta para asegurarnos de que el archivo ludo_mania.db
-# se guarde exactamente en la carpeta "database" de tu proyecto.
+# Construimos las rutas absolutas para asegurarnos de que los archivos
+# se guarden exactamente en la carpeta "database" del proyecto.
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-DB_PATH = os.path.join(BASE_DIR, 'database', 'ludo_mania.db')
+DB_DIR = os.path.join(BASE_DIR, 'database')
 
-def crear_base_datos():
+# Plantilla versionada en Git: contiene el esquema y los catálogos base.
+# El juego nunca escribe acá, así que este archivo no cambia al jugar.
+PLANTILLA_PATH = os.path.join(DB_DIR, 'ludo_mania.db')
+
+# Base de datos de trabajo: acá se guardan jugadores y partidas de esta PC.
+# Está ignorada por Git y se crea automáticamente a partir de la plantilla.
+DB_PATH = os.path.join(DB_DIR, 'ludo_mania_local.db')
+
+# Archivo de texto que indica la versión del esquema de la plantilla.
+# Se sube a mano cuando se cambia la estructura o los datos base.
+VERSION_PATH = os.path.join(DB_DIR, 'version_esquema.txt')
+
+def crear_base_datos(ruta=DB_PATH):
     """
     Crea la base de datos y las 4 tablas principales si no existen.
     Esta es la estructura (el "esqueleto") de tu información.
     """
     # 1. Nos conectamos a la base de datos.
-    # Si el archivo ludo_mania.db no existe, SQLite lo crea automáticamente.
-    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
-    conexion = sqlite3.connect(DB_PATH)
+    # Si el archivo no existe, SQLite lo crea automáticamente.
+    os.makedirs(os.path.dirname(ruta), exist_ok=True)
+    conexion = sqlite3.connect(ruta)
     
     # 2. Creamos un cursor.
     # El cursor es la herramienta que nos permite ejecutar comandos SQL en la base de datos.
@@ -85,7 +98,81 @@ def crear_base_datos():
     # 4. Cerramos la conexión para liberar memoria.
     conexion.close()
     
-    print(f"Exito! Base de datos creada en: {DB_PATH}")
+    print(f"Exito! Base de datos creada en: {ruta}")
+
+
+def _leer_version_plantilla():
+    """Lee la versión del esquema desde el archivo de texto versionado."""
+    try:
+        with open(VERSION_PATH, encoding="utf-8") as archivo:
+            return int(archivo.read().strip())
+    except (OSError, ValueError):
+        return 1
+
+
+def _leer_version_db(ruta):
+    """Devuelve el user_version guardado dentro de un archivo SQLite."""
+    if not os.path.exists(ruta):
+        return 0
+    conexion = sqlite3.connect(ruta)
+    try:
+        return conexion.execute("PRAGMA user_version").fetchone()[0]
+    finally:
+        conexion.close()
+
+
+def _escribir_version_db(ruta, version):
+    """Guarda el user_version dentro del archivo SQLite."""
+    conexion = sqlite3.connect(ruta)
+    try:
+        conexion.execute(f"PRAGMA user_version = {int(version)}")
+        conexion.commit()
+    finally:
+        conexion.close()
+
+
+def preparar_base_datos():
+    """
+    Prepara la base de datos de trabajo (DB_PATH) a partir de la plantilla.
+
+    - Si es la primera ejecución, copia la plantilla.
+    - Si la base local es de una versión anterior, la respalda y la recrea
+      desde la plantilla (las partidas de prueba locales se pierden, pero
+      queda una copia .bak).
+    - Si la base local ya está en la versión actual, no la toca.
+    """
+    os.makedirs(DB_DIR, exist_ok=True)
+    version_plantilla = _leer_version_plantilla()
+
+    if not os.path.exists(DB_PATH):
+        if os.path.exists(PLANTILLA_PATH):
+            shutil.copy2(PLANTILLA_PATH, DB_PATH)
+            print(f"- Base local creada desde la plantilla: {DB_PATH}")
+        else:
+            crear_base_datos()
+
+    version_local = _leer_version_db(DB_PATH)
+
+    if version_local == 0:
+        # Base legada o recién copiada: se completa sin borrar datos.
+        crear_base_datos()
+        _escribir_version_db(DB_PATH, version_plantilla)
+        print(f"- Base local actualizada a la versión {version_plantilla}.")
+    elif version_local < version_plantilla:
+        # La plantilla cambió de esquema: se respalda la base local y se
+        # recrea con la nueva plantilla.
+        respaldo = DB_PATH + ".bak"
+        shutil.copy2(DB_PATH, respaldo)
+        if os.path.exists(PLANTILLA_PATH):
+            shutil.copy2(PLANTILLA_PATH, DB_PATH)
+        else:
+            crear_base_datos()
+        _escribir_version_db(DB_PATH, version_plantilla)
+        print(f"- Esquema nuevo detectado (v{version_plantilla}).")
+        print(f"  Tu base anterior quedó respaldada en: {respaldo}")
+
+    print(f"- Base de datos en uso: {DB_PATH}")
+    return DB_PATH
 
 
 def _asegurar_columna_numero(cursor):
@@ -238,6 +325,6 @@ def obtener_ranking():
 # Esta condición verifica si estamos ejecutando este archivo directamente.
 # Si es así, llama a las funciones para preparar todo.
 if __name__ == '__main__':
-    crear_base_datos()
+    preparar_base_datos()
     inicializar_catalogo()
     print("¡Base de datos y catálogos listos para usar!")
