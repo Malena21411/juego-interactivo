@@ -1,4 +1,3 @@
-
 console.log("LUDO-MANIA iniciado");
 
 // ==================================================
@@ -9,6 +8,7 @@ const warningScreen = document.getElementById("warning-screen");
 const startScreen = document.getElementById("start-screen");
 const characterScreen = document.getElementById("character-screen");
 const nameScreen = document.getElementById("name-screen");
+const prizesScreen = document.getElementById("prizes-screen");
 const gameScreen = document.getElementById("game-screen");
 const endScreen = document.getElementById("end-screen");
 const rankingScreen = document.getElementById("ranking-screen");
@@ -20,6 +20,7 @@ const rankingScreen = document.getElementById("ranking-screen");
 const warningButton = document.getElementById("warning-button");
 const startButton = document.getElementById("start-button");
 const nameButton = document.getElementById("name-button");
+const prizesButton = document.getElementById("prizes-button");
 const rankingButton = document.getElementById("ranking-button");
 const spinButton = document.getElementById("spin-button");
 
@@ -40,8 +41,10 @@ const nameCharacterImage = document.getElementById("name-character-image");
 const chips = document.querySelectorAll(".chip");
 const gameMessage = document.getElementById("game-message");
 const scoreValue = document.getElementById("score-value");
+const creditsValue = document.getElementById("credits-value");
 const reels = document.querySelectorAll(".reel");
 const reelsContainer = document.getElementById("reels");
+const reelLights = document.querySelectorAll(".reel-light");
 
 let gameMessageTimeout = null;
 let gameMessageVersion = 0;
@@ -57,12 +60,20 @@ if (gameMessage && reelsContainer) {
 const playerNameInput = document.getElementById("player-name");
 const finalScore = document.getElementById("final-score");
 const finalCharacter = document.getElementById("final-character");
+const finalCredits = document.getElementById("final-credits");
 
 // ==================================================
 // ELEMENTOS DEL RANKING
 // ==================================================
 
 const rankingList = document.getElementById("ranking-list");
+
+// ==================================================
+// ELEMENTOS DE LA PANTALLA DE PREMIOS
+// ==================================================
+
+const prizesInfo = document.getElementById("prizes-info");
+const prizesList = document.getElementById("prizes-list");
 
 // ==================================================
 // SÍMBOLOS DE LOS RODILLOS
@@ -123,6 +134,43 @@ const characters = [
 ];
 
 // ==================================================
+// CRÉDITOS
+// ==================================================
+
+const INITIAL_CREDITS = 7500;
+const SPIN_COST = 2500;
+
+// ==================================================
+// PREMIOS (puntos + créditos)
+// Las claves van sin tildes y en minúscula.
+// ==================================================
+
+const TRIPLE_PRIZES = {
+    siete:    { points: 500, credits: 10000 },
+    diamante: { points: 300, credits: 5000 },
+    trebol:   { points: 200, credits: 3000 }
+};
+
+// Tres iguales de cualquier otro símbolo
+const DEFAULT_TRIPLE_PRIZE = { points: 150, credits: 2000 };
+
+// Dos iguales, sin importar el símbolo
+const PAIR_PRIZE = { points: 50, credits: 500 };
+
+// ==================================================
+// PROBABILIDADES
+// ==================================================
+
+const TRIPLE_CHANCE = 0.12; // 12%: tres iguales
+const PAIR_CHANCE = 0.33;   // 33%: exactamente dos iguales
+                            // el resto (55%): todos distintos
+
+// Qué tan probable es cada símbolo dentro de un triple
+// (más alto = sale más seguido). Los no listados valen 14.
+const TRIPLE_WEIGHTS = { siete: 8, diamante: 10, trebol: 12 };
+const DEFAULT_TRIPLE_WEIGHT = 14;
+
+// ==================================================
 // VARIABLES DE LA PARTIDA
 // ==================================================
 
@@ -132,11 +180,16 @@ let carouselInterval = null;
 let playerName = "";
 let playerId = null;
 let registrandoJugador = false;
-let remainingChips = 3;
+let credits = INITIAL_CREDITS;
 let score = 0;
-let extraTurns = 0;
+let spinsPlayed = 0;
+let spinHistory = [];
 let spinning = false;
 let reelIntervals = [];
+let expressionTimeout = null;
+
+// Segundos que dura la reacción (winner / loser) antes de volver a normal
+const REACTION_DURATION = 3000;
 
 // ==================================================
 // RANKING LOCAL
@@ -166,14 +219,39 @@ function showCharacter(index) {
 
 // ==================================================
 // ACTUALIZAR FICHAS
+// Cada ficha representa una tirada disponible
+// (se muestran hasta 3).
 // ==================================================
 
 function updateChips() {
+    const availableSpins = Math.floor(credits / SPIN_COST);
+
     chips.forEach((chip, index) => {
-        chip.style.visibility = index < remainingChips
+        chip.style.visibility = index < availableSpins
             ? "visible"
             : "hidden";
     });
+}
+
+// ==================================================
+// CRÉDITOS
+// ==================================================
+
+function formatCredits(amount) {
+    return String(amount).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+function updateCredits() {
+    if (!creditsValue) return;
+
+    creditsValue.textContent = formatCredits(credits);
+    creditsValue.classList.toggle("low", credits < SPIN_COST);
+}
+
+function addCredits(amount) {
+    credits += amount;
+    updateCredits();
+    updateChips();
 }
 
 // ==================================================
@@ -193,8 +271,13 @@ function updateScore() {
 function setCharacterExpression(expression) {
     if (!selectedCharacter) return;
 
+    // Cancelar cualquier reacción anterior pendiente
+    clearTimeout(expressionTimeout);
+    expressionTimeout = null;
+
     if (expression === "normal") {
         gameCharacterImage.src = selectedCharacter.normal;
+        return;
     }
 
     if (expression === "victoria") {
@@ -204,6 +287,11 @@ function setCharacterExpression(expression) {
     if (expression === "mala") {
         gameCharacterImage.src = selectedCharacter.bad;
     }
+
+    // La reacción dura unos segundos y después vuelve a la normal
+    expressionTimeout = setTimeout(() => {
+        setCharacterExpression("normal");
+    }, REACTION_DURATION);
 }
 
 // ==================================================
@@ -225,6 +313,22 @@ function showSymbol(reel, symbol) {
 
     image.src = symbol.image;
     image.alt = symbol.name;
+}
+
+// ==================================================
+// LUCES BAJO LOS RODILLOS
+// ==================================================
+
+function setReelLight(index, on) {
+    const light = reelLights[index];
+
+    if (light) {
+        light.classList.toggle("on", on);
+    }
+}
+
+function resetReelLights() {
+    reelLights.forEach(light => light.classList.remove("on"));
 }
 
 // ==================================================
@@ -254,13 +358,19 @@ function startReelSpin(reel, index) {
 // DETENER RODILLOS
 // ==================================================
 
-function stopReelSpin(index) {
+function stopReelSpin(index, finalSymbol = null) {
     const reel = reels[index];
     if (!reel) return;
 
     if (reelIntervals[index]) {
         clearInterval(reelIntervals[index]);
         reelIntervals[index] = null;
+    }
+
+    // Símbolo decidido para la línea central
+    if (finalSymbol) {
+        showSymbol(reel, finalSymbol);
+        setReelLight(index, true); // se enciende la luz de este rodillo
     }
 
     reel.classList.remove("spinning");
@@ -278,6 +388,8 @@ function stopAllReels() {
 }
 
 function showRandomReels() {
+    resetReelLights();
+
     reels.forEach((reel, index) => {
         reel.classList.remove("stopped");
         reel.classList.add("spinning");
@@ -296,7 +408,11 @@ function saveRankingEntry() {
         player_id: playerId,
         name: playerName,
         character: selectedCharacter.name,
-        score: score
+        score: score,
+        credits_initial: INITIAL_CREDITS,
+        credits_final: credits,
+        spins: spinsPlayed,
+        spin_results: spinHistory
     };
 
     ranking.push(entry);
@@ -398,6 +514,67 @@ function showRankingScreen(fromScreen = null) {
     renderRanking();
 }
 
+// ==================================================
+// PANTALLA DE PREMIOS (antes de jugar)
+// Los valores salen de las mismas constantes que usa el juego,
+// así que si cambiás un premio se actualiza solo.
+// ==================================================
+
+function symbolImageTag(key) {
+    const symbol = symbols.find(s => normalizeSymbolName(s.name) === key);
+
+    return symbol
+        ? '<img src="' + symbol.image + '" alt="' + symbol.name + '">'
+        : "";
+}
+
+function renderPrizesScreen() {
+    if (prizesInfo) {
+        prizesInfo.textContent =
+            "EMPEZÁS CON " + formatCredits(INITIAL_CREDITS) +
+            " CRÉDITOS · CADA TIRADA CUESTA " + formatCredits(SPIN_COST);
+    }
+
+    if (!prizesList) return;
+
+    const triple = key => symbolImageTag(key).repeat(3);
+
+    const rows = [
+        { label: triple("siete"), prize: TRIPLE_PRIZES.siete },
+        { label: triple("diamante"), prize: TRIPLE_PRIZES.diamante },
+        { label: triple("trebol"), prize: TRIPLE_PRIZES.trebol },
+        {
+            label: "TRES IGUALES<small>OTROS SÍMBOLOS</small>",
+            prize: DEFAULT_TRIPLE_PRIZE
+        },
+        { label: "DOS IGUALES", prize: PAIR_PRIZE },
+        { label: "SIN COINCIDENCIA", prize: { points: 0, credits: 0 } }
+    ];
+
+    const body = rows.map(row =>
+        "<tr>" +
+            '<td class="prize-label">' + row.label + "</td>" +
+            "<td>" + row.prize.points + "</td>" +
+            "<td>" + formatCredits(row.prize.credits) + "</td>" +
+        "</tr>"
+    ).join("");
+
+    prizesList.innerHTML =
+        '<table id="prizes-table">' +
+            "<thead><tr>" +
+                "<th>COMBINACIÓN</th><th>PUNTOS</th><th>CRÉDITOS</th>" +
+            "</tr></thead>" +
+            "<tbody>" + body + "</tbody>" +
+        "</table>";
+}
+
+function showPrizesScreen() {
+    renderPrizesScreen();
+
+    nameScreen.classList.add("hidden");
+    prizesScreen.classList.remove("hidden");
+}
+
 // ADVERTENCIA → RANKING
 warningButton.addEventListener("click", () => {
     showRankingScreen(warningScreen);
@@ -497,7 +674,7 @@ function confirmPlayerName() {
 
             console.log("Nombre del jugador:", playerName);
 
-            comenzarPartida();
+            showPrizesScreen();
         })
         .catch(error => {
             console.error("Error registrando jugador:", error);
@@ -524,6 +701,7 @@ function confirmPlayerName() {
 function comenzarPartida() {
     setCharacterExpression("normal");
     stopAllReels();
+    resetReelLights();
 
     reels.forEach((reel, index) => {
         reel.classList.remove("spinning");
@@ -538,19 +716,21 @@ function comenzarPartida() {
         showSymbol(reel, symbols[index % symbols.length]);
     });
 
-    remainingChips = 3;
+    credits = INITIAL_CREDITS;
+    spinsPlayed = 0;
+    spinHistory = [];
     score = 0;
-    extraTurns = 0;
     spinning = false;
 
     updateChips();
     updateScore();
+    updateCredits();
 
     if (spinButton) {
         spinButton.disabled = false;
     }
 
-    nameScreen.classList.add("hidden");
+    prizesScreen.classList.add("hidden");
     gameScreen.classList.remove("hidden");
 
     clearGameMessage();
@@ -594,7 +774,7 @@ function clearGameMessage() {
 }
 
 // ==================================================
-// PUNTAJE Y TURNOS EXTRA
+// PUNTAJE
 // ==================================================
 
 function addScore(points) {
@@ -602,52 +782,71 @@ function addScore(points) {
     updateScore();
 }
 
-function addExtraTurns(amount) {
-    remainingChips += amount;
-    extraTurns += amount;
-    updateChips();
-}
-
 // ==================================================
-// RAREZA DE LOS SÍMBOLOS
+// UTILIDADES DE SÍMBOLOS
 // ==================================================
 
-function getSymbolRarity(symbolName) {
-    if (!symbolName) return null;
-
-    const normalizedName = symbolName
+function normalizeSymbolName(name) {
+    return name
         .toLowerCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "");
+}
 
-    if (
-        normalizedName === "naranja" ||
-        normalizedName === "manzana" ||
-        normalizedName === "limon" ||
-        normalizedName === "cereza"
-    ) {
-        return "baja";
+function shuffle(list) {
+    const copy = [...list];
+
+    for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
     }
 
-    if (
-        normalizedName === "siete" ||
-        normalizedName === "moneda demoniaca"
-    ) {
-        return "media";
+    return copy;
+}
+
+// ==================================================
+// RESULTADO DE CADA TIRADA (con probabilidades)
+// ==================================================
+
+function getTripleSymbol() {
+    const weights = symbols.map(symbol =>
+        TRIPLE_WEIGHTS[normalizeSymbolName(symbol.name)] ?? DEFAULT_TRIPLE_WEIGHT
+    );
+
+    const total = weights.reduce((sum, w) => sum + w, 0);
+    let roll = Math.random() * total;
+
+    for (let i = 0; i < symbols.length; i++) {
+        roll -= weights[i];
+        if (roll < 0) return symbols[i];
     }
 
-    if (
-        normalizedName === "diamante" ||
-        normalizedName === "trebol"
-    ) {
-        return "alta";
+    return symbols[symbols.length - 1];
+}
+
+function pickSpinResult() {
+    const roll = Math.random();
+
+    // Tres iguales
+    if (roll < TRIPLE_CHANCE) {
+        const symbol = getTripleSymbol();
+        return [symbol, symbol, symbol];
     }
 
-    if (normalizedName === "pluma") {
-        return "unica";
+    // Dos iguales
+    if (roll < TRIPLE_CHANCE + PAIR_CHANCE) {
+        const pair = getRandomSymbol();
+        let other;
+
+        do {
+            other = getRandomSymbol();
+        } while (other === pair);
+
+        return shuffle([pair, pair, other]);
     }
 
-    return null;
+    // Todos distintos
+    return shuffle(symbols).slice(0, 3);
 }
 
 // ==================================================
@@ -657,132 +856,46 @@ function getSymbolRarity(symbolName) {
 function evaluateCombination(result) {
     if (!result || result.length < 3) {
         console.warn("Resultado incompleto:", result);
-        return;
+        return { points: 0, credits: 0 };
     }
 
-    const first = result[0];
-    const second = result[1];
-    const third = result[2];
+    const [first, second, third] = result;
+    let prize = null;
+    let message = "";
 
-    // Tres símbolos iguales
     if (first === second && second === third) {
-        const rarity = getSymbolRarity(first);
-
-        if (rarity === "unica") {
-            addScore(500);
-            setCharacterExpression("victoria");
-            gameMessage.textContent =
-                "¡¡¡3 PLUMAS DE ÁNGEL!!! +500 PUNTOS · ¡PREMIO MAYOR!";
-            return;
-        }
-
-        const normalizedFirst = first
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "");
-
-        if (normalizedFirst === "moneda demoniaca") {
-            addScore(350);
-            addExtraTurns(1);
-            setCharacterExpression("victoria");
-            gameMessage.textContent =
-                "¡¡¡3 MONEDAS DEMONÍACAS!!! +350 PUNTOS · +1 TURNO EXTRA";
-            return;
-        }
-
-        if (rarity === "baja") {
-            addScore(100);
-            setCharacterExpression("victoria");
-            gameMessage.textContent =
-                "¡¡¡TRIPLE DE RAREZA BAJA!!! +100 PUNTOS";
-            return;
-        }
-
-        if (rarity === "media") {
-            addScore(200);
-            setCharacterExpression("victoria");
-            gameMessage.textContent =
-                "¡¡¡TRIPLE DE RAREZA MEDIA!!! +200 PUNTOS";
-            return;
-        }
-
-        if (rarity === "alta") {
-            addScore(300);
-            setCharacterExpression("victoria");
-            gameMessage.textContent =
-                "¡¡¡TRIPLE DE RAREZA ALTA!!! +300 PUNTOS";
-            return;
-        }
+        prize = TRIPLE_PRIZES[normalizeSymbolName(first)] ?? DEFAULT_TRIPLE_PRIZE;
+        message = "¡¡¡TRIPLE DE " + first.toUpperCase() + "!!!";
+    } else if (first === second || first === third || second === third) {
+        prize = PAIR_PRIZE;
+        message = "¡PAR!";
     }
 
-    // Buscar dos símbolos iguales
-    let pairSymbol = null;
-
-    if (first === second) {
-        pairSymbol = first;
-    } else if (first === third) {
-        pairSymbol = first;
-    } else if (second === third) {
-        pairSymbol = second;
+    if (!prize) {
+        setCharacterExpression("mala");
+        gameMessage.textContent = "SIN COMBINACIÓN · 0 PUNTOS";
+        return { points: 0, credits: 0 };
     }
 
-    if (pairSymbol) {
-        const rarity = getSymbolRarity(pairSymbol);
+    addScore(prize.points);
+    addCredits(prize.credits);
+    setCharacterExpression("victoria");
 
-        if (rarity === "unica") {
-            addScore(400);
-            addExtraTurns(2);
-            setCharacterExpression("victoria");
-            gameMessage.textContent =
-                "¡¡¡2 PLUMAS DE ÁNGEL!!! +400 PUNTOS · +2 TURNOS EXTRA";
-            return;
-        }
+    gameMessage.textContent =
+        message + " +" + prize.points + " PUNTOS · +" +
+        formatCredits(prize.credits) + " CRÉDITOS";
 
-        if (rarity === "baja") {
-            addScore(50);
-            setCharacterExpression("victoria");
-            gameMessage.textContent =
-                "¡2 DE RAREZA BAJA! +50 PUNTOS";
-            return;
-        }
-
-        if (rarity === "media") {
-            addScore(75);
-            setCharacterExpression("victoria");
-            gameMessage.textContent =
-                "¡2 DE RAREZA MEDIA! +75 PUNTOS";
-            return;
-        }
-
-        if (rarity === "alta") {
-            addScore(100);
-            setCharacterExpression("victoria");
-            gameMessage.textContent =
-                "¡2 DE RAREZA ALTA! +100 PUNTOS";
-            return;
-        }
-    }
-
-    setCharacterExpression("mala");
-    gameMessage.textContent = "SIN COMBINACIÓN";
+    return prize;
 }
 
 function checkCombination(result) {
-    evaluateCombination(result);
+    const prize = evaluateCombination(result);
 
     if (gameMessage && gameMessage.textContent.trim() !== "") {
         showGameMessage(gameMessage.textContent.trim(), 5000);
     }
-}
 
-// ==================================================
-// INICIAR RODILLOS
-// ==================================================
-
-function startReels() {
-    reels.forEach(reel => {
-        reel.classList.add("spinning");
-    });
+    return prize;
 }
 
 // ==================================================
@@ -793,7 +906,7 @@ function spin() {
     clearGameMessage();
 
     if (spinning) return;
-    if (remainingChips <= 0) return;
+    if (credits < SPIN_COST) return;
 
     spinning = true;
 
@@ -801,38 +914,51 @@ function spin() {
         spinButton.disabled = true;
     }
 
-    remainingChips--;
+    // Al tirar de nuevo el personaje vuelve a su imagen normal
+    setCharacterExpression("normal");
+
+    // Se paga la tirada antes de girar
+    credits -= SPIN_COST;
+    spinsPlayed++;
+    updateCredits();
     updateChips();
 
-    console.log("Fichas restantes:", remainingChips);
+    console.log("Créditos restantes:", credits);
 
     showRandomReels();
 
-    setTimeout(() => stopReelSpin(0), 1500);
-    setTimeout(() => stopReelSpin(1), 2000);
-    setTimeout(() => stopReelSpin(2), 2500);
+    // El resultado se decide al empezar y los rodillos se detienen en él
+    const outcome = pickSpinResult();
+
+    setTimeout(() => stopReelSpin(0, outcome[0]), 1500);
+    setTimeout(() => stopReelSpin(1, outcome[1]), 2000);
+    setTimeout(() => stopReelSpin(2, outcome[2]), 2500);
 
     setTimeout(() => {
         const result = [];
 
         reels.forEach(reel => {
-            const reelSymbols = reel.querySelectorAll(".reel-symbol");
-            const centerSymbol = reelSymbols[1];
+            const centerSymbol = reel.querySelectorAll(".reel-symbol")[1];
+            const image = centerSymbol && centerSymbol.querySelector("img");
 
-            if (centerSymbol) {
-                const image = centerSymbol.querySelector("img");
-
-                if (image) {
-                    result.push(image.alt);
-                }
+            if (image) {
+                result.push(image.alt);
             }
         });
 
         console.log("Resultado:", result);
 
-        checkCombination(result);
+        const prize = checkCombination(result);
 
-        if (remainingChips > 0) {
+        spinHistory.push({
+            spin: spinsPlayed,
+            symbols: result,
+            points: prize.points,
+            credits: prize.credits
+        });
+
+        // Todavía alcanza para otra tirada
+        if (credits >= SPIN_COST) {
             spinning = false;
 
             if (spinButton) {
@@ -842,10 +968,15 @@ function spin() {
             return;
         }
 
+        // Sin créditos: mensaje de fin y pantalla de score
         setTimeout(() => {
-            spinning = false;
-            endGame();
-        }, 1200);
+            showGameMessage("SIN CRÉDITOS · FIN DE LA PARTIDA", 2000);
+
+            setTimeout(() => {
+                spinning = false;
+                endGame();
+            }, 1800);
+        }, 2200);
     }, 2600);
 }
 
@@ -854,9 +985,13 @@ function spin() {
 // ==================================================
 
 function returnToStart() {
-    remainingChips = 3;
+    clearTimeout(expressionTimeout);
+    expressionTimeout = null;
+
+    credits = INITIAL_CREDITS;
+    spinsPlayed = 0;
+    spinHistory = [];
     score = 0;
-    extraTurns = 0;
 
     playerName = "";
     playerId = null;
@@ -870,6 +1005,7 @@ function returnToStart() {
     carouselInterval = null;
 
     stopAllReels();
+    resetReelLights();
 
     if (playerNameInput) {
         playerNameInput.value = "";
@@ -885,6 +1021,7 @@ function returnToStart() {
 
     updateChips();
     updateScore();
+    updateCredits();
     clearGameMessage();
 
     warningScreen.classList.add("hidden");
@@ -892,6 +1029,7 @@ function returnToStart() {
     endScreen.classList.add("hidden");
     gameScreen.classList.add("hidden");
     nameScreen.classList.add("hidden");
+    prizesScreen.classList.add("hidden");
     characterScreen.classList.add("hidden");
 
     startScreen.classList.remove("hidden");
@@ -934,6 +1072,11 @@ document.addEventListener("keydown", event => {
         return;
     }
 
+    if (!prizesScreen.classList.contains("hidden")) {
+        comenzarPartida();
+        return;
+    }
+
     if (!gameScreen.classList.contains("hidden")) {
         spin();
         return;
@@ -951,6 +1094,16 @@ document.addEventListener("keydown", event => {
 if (nameButton) {
     nameButton.addEventListener("click", () => {
         confirmPlayerName();
+    });
+}
+
+// ==================================================
+// BOTÓN JUGAR (pantalla de premios)
+// ==================================================
+
+if (prizesButton) {
+    prizesButton.addEventListener("click", () => {
+        comenzarPartida();
     });
 }
 
@@ -975,7 +1128,7 @@ function endGame() {
     saveRankingEntry();
 
     if (spinButton) {
-        spinButton.disabled = false;
+        spinButton.disabled = true;
     }
 
     gameScreen.classList.add("hidden");
@@ -996,12 +1149,19 @@ function endGame() {
             "Personaje: " + selectedCharacter.name;
     }
 
+    if (finalCredits) {
+        finalCredits.textContent =
+            "Créditos restantes: " + formatCredits(credits);
+    }
+
     console.log(
         "Partida terminada.",
         "Jugador:",
         playerName,
         "Puntaje:",
-        score
+        score,
+        "Créditos:",
+        credits
     );
 }
 
