@@ -70,6 +70,8 @@ def crear_base_datos(ruta=DB_PATH):
         id_jugador INTEGER,
         id_personaje INTEGER,
         puntuacion_final INTEGER DEFAULT 0,
+        creditos_iniciales INTEGER NOT NULL DEFAULT 0,
+        creditos_finales INTEGER NOT NULL DEFAULT 0,
         fecha_partida DATETIME DEFAULT CURRENT_TIMESTAMP,
         
         -- Estas líneas conectan la partida con quién la jugó y con qué personaje
@@ -77,6 +79,7 @@ def crear_base_datos(ruta=DB_PATH):
         FOREIGN KEY (id_personaje) REFERENCES Personaje (id_personaje)
     )
     ''')
+    _asegurar_columnas_partida(cursor)
 
     # ==========================================
     # TABLA 4: SIMBOLO
@@ -171,6 +174,8 @@ def preparar_base_datos():
         print(f"- Esquema nuevo detectado (v{version_plantilla}).")
         print(f"  Tu base anterior quedó respaldada en: {respaldo}")
 
+    # Aplica migraciones aditivas a la base local sin borrar partidas.
+    crear_base_datos(DB_PATH)
     print(f"- Base de datos en uso: {DB_PATH}")
     return DB_PATH
 
@@ -186,6 +191,19 @@ def _asegurar_columna_numero(cursor):
     cursor.execute(
         "CREATE UNIQUE INDEX IF NOT EXISTS idx_jugador_nombre_numero ON Jugador (nombre, numero)"
     )
+
+
+def _asegurar_columnas_partida(cursor):
+    """Agrega datos de créditos a bases creadas antes de esta versión."""
+    columnas = [fila[1] for fila in cursor.execute("PRAGMA table_info(Partida)").fetchall()]
+    if "creditos_iniciales" not in columnas:
+        cursor.execute(
+            "ALTER TABLE Partida ADD COLUMN creditos_iniciales INTEGER NOT NULL DEFAULT 0"
+        )
+    if "creditos_finales" not in columnas:
+        cursor.execute(
+            "ALTER TABLE Partida ADD COLUMN creditos_finales INTEGER NOT NULL DEFAULT 0"
+        )
 
 
 def registrar_jugador(nombre_jugador):
@@ -270,7 +288,7 @@ def inicializar_catalogo():
     conexion.commit()
     conexion.close()
 
-def guardar_partida(id_jugador, nombre_personaje, puntos):
+def guardar_partida(id_jugador, nombre_personaje, puntos, creditos_iniciales, creditos_finales):
     conexion = sqlite3.connect(DB_PATH)
     cursor = conexion.cursor()
 
@@ -285,10 +303,15 @@ def guardar_partida(id_jugador, nombre_personaje, puntos):
     res_personaje = cursor.fetchone()
     id_personaje = res_personaje[0] if res_personaje else 1
 
-    # 3. Guardar la partida ligada a ESE jugador, no al nombre suelto
+    # 3. Guardar la partida ligada a ESE jugador, junto a sus créditos.
     cursor.execute(
-        "INSERT INTO Partida (id_jugador, id_personaje, puntuacion_final) VALUES (?, ?, ?)",
-        (id_jugador, id_personaje, puntos),
+        '''
+        INSERT INTO Partida (
+            id_jugador, id_personaje, puntuacion_final,
+            creditos_iniciales, creditos_finales
+        ) VALUES (?, ?, ?, ?, ?)
+        ''',
+        (id_jugador, id_personaje, puntos, creditos_iniciales, creditos_finales),
     )
 
     conexion.commit()
