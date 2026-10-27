@@ -30,6 +30,7 @@ const spinButton = document.getElementById("spin-button");
 
 const characterImage = document.getElementById("character-image");
 const characterName = document.getElementById("character-name");
+const characterDescription = document.getElementById("character-description");
 const characterOptions = document.querySelectorAll(".character-option");
 const gameCharacterImage = document.getElementById("game-character-image");
 const nameCharacterImage = document.getElementById("name-character-image");
@@ -98,6 +99,7 @@ const characters = [
     {
         id: 1,
         name: "Jeo",
+        description: "Adicto a la emoción de apostar, terminó jugando contra los demonios para saldar sus deudas. Ahora, su alma está en manos de Mammon, Señor de la Codicia.",
         selection: "assets/images/personaje1.png",
         profile: "assets/images/logo1.png",
         normal: "assets/images/personaje1_normal.png",
@@ -107,6 +109,7 @@ const characters = [
     {
         id: 2,
         name: "Juana",
+        description: "Fanática del ocultismo, fue capturada por seguidores de Mammon para ser sacrificada. Ahora, deberá ganar un juego para salvarse y cambiar su destino.",
         selection: "assets/images/personaje2.png",
         profile: "assets/images/logo2.png",
         normal: "assets/images/personaje2_normal.png",
@@ -116,6 +119,7 @@ const characters = [
     {
         id: 3,
         name: "Jazmin",
+        description: "Haría cualquier cosa por proteger a su preciado El Cinco, obtenido mediante un tributo incompleto a Mammon. Para saldar su deuda, apostará su propia vida.",
         selection: "assets/images/personaje3.png",
         profile: "assets/images/logo3.png",
         normal: "assets/images/personaje3_normal.png",
@@ -125,6 +129,7 @@ const characters = [
     {
         id: 4,
         name: "Joaquin",
+        description: "Apostó su vida 56 veces y siempre logró sobrevivir. Ahora, Mammon quiere arrebatarle su suerte, un don divino que podría desencadenar el apocalipsis.",
         selection: "assets/images/personaje4.png",
         profile: "assets/images/logo4.png",
         normal: "assets/images/personaje4_normal.png",
@@ -209,8 +214,19 @@ try {
 // ==================================================
 
 function showCharacter(index) {
-    characterImage.src = characters[index].selection;
-    characterName.textContent = characters[index].name;
+    const character = characters[index];
+
+    if (!character) {
+        return;
+    }
+
+    characterImage.src = character.selection;
+    characterImage.alt = character.name;
+    characterName.textContent = character.name;
+
+    if (characterDescription) {
+        characterDescription.textContent = character.description;
+    }
 
     characterOptions.forEach((option, i) => {
         option.classList.toggle("active", i === index);
@@ -575,7 +591,10 @@ function showPrizesScreen() {
     prizesScreen.classList.remove("hidden");
 }
 
+// ==================================================
 // ADVERTENCIA → RANKING
+// ==================================================
+
 warningButton.addEventListener("click", () => {
     showRankingScreen(warningScreen);
 });
@@ -669,12 +688,8 @@ function confirmPlayerName() {
                 );
             }
 
-            if (!data.id_jugador || !data.nombre) {
-                throw new Error("La respuesta del servidor no incluye los datos del jugador");
-            }
-
             playerId = data.id_jugador;
-            playerName = data.nombre;
+            playerName = data.display_name;
 
             console.log("Nombre del jugador:", playerName);
 
