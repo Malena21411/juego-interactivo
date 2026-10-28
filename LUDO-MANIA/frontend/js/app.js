@@ -702,8 +702,12 @@ function confirmPlayerName() {
                 );
             }
 
+            if (!data.id_jugador || !data.nombre) {
+                throw new Error("La respuesta del servidor no incluye los datos del jugador");
+            }
+
             playerId = data.id_jugador;
-            playerName = data.display_name;
+            playerName = data.nombre;
 
             console.log("Nombre del jugador:", playerName);
 
