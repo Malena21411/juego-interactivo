@@ -1515,3 +1515,41 @@ button:disabled{
     #win-alert-title{ animation:none; }
     #win-alert-box i{ display:none; }
 }
+
+/* Personaje en la pantalla de juego (normal, winner y loser) */
+#game-character-image{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    object-position:center;
+}
+
+/* Símbolos de los rodillos: se escalan según el tamaño de cada celda */
+.reel-symbol{
+    padding:clamp(6px,1.2vw,14px);
+}
+
+.reel-symbol img,
+.active-symbol img{
+    width:100%;
+    height:100%;
+    max-width:none;
+    object-fit:contain;
+    object-position:center;
+}
+
+/* Personaje de la pantalla de selección y fotos de perfil */
+#character-image{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    object-position:center;
+}
+
+#name-character-image,
+.character-option img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center top;
+}
