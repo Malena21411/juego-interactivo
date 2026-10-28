@@ -1516,6 +1516,8 @@ button:disabled{
     #win-alert-box i{ display:none; }
 }
 
+
+
 /* Personaje en la pantalla de juego (normal, winner y loser) */
 #game-character-image{
     width:100%;
