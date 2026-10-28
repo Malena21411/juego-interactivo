@@ -162,6 +162,20 @@ const DEFAULT_TRIPLE_PRIZE = { points: 150, credits: 2000 };
 // Dos iguales, sin importar el símbolo
 const PAIR_PRIZE = { points: 50, credits: 500 };
 
+
+// ==================================================
+// ALERTAS DE COMBINACIÓN
+// ==================================================
+
+const WIN_ALERT_TITLES = {
+    big: "BIG WIN",
+    super: "SUPER WIN",
+    mega: "MEGA WIN"
+};
+
+// Cuánto dura el cartel en pantalla (en milisegundos)
+const WIN_ALERT_DURATION = 3000;
+
 // ==================================================
 // PROBABILIDADES
 // ==================================================
@@ -869,6 +883,85 @@ function pickSpinResult() {
 }
 
 // ==================================================
+// ALERTAS DE COMBINACIÓN (BIG / SUPER / MEGA WIN)
+// Solo los tres iguales activan una alerta.
+//   MEGA  → tres sietes
+//   SUPER → tres diamantes o tres tréboles
+//   BIG   → tres iguales de cualquier otro símbolo
+// ==================================================
+
+let winAlertElement = null;
+let winAlertTimeout = null;
+
+function getWinTier(result) {
+    if (!result || result.length < 3) return null;
+
+    const [first, second, third] = result;
+
+    if (!(first === second && second === third)) return null;
+
+    const key = normalizeSymbolName(first);
+
+    if (key === "siete") return "mega";
+    if (key === "diamante" || key === "trebol") return "super";
+
+    return "big";
+}
+
+function hideWinAlert() {
+    clearTimeout(winAlertTimeout);
+    winAlertTimeout = null;
+
+    if (winAlertElement) {
+        winAlertElement.remove();
+        winAlertElement = null;
+    }
+}
+
+function showWinAlert(tier, prize) {
+    hideWinAlert();
+
+    const alertBox = document.createElement("div");
+    alertBox.id = "win-alert";
+    alertBox.dataset.tier = tier;
+    alertBox.setAttribute("role", "status");
+    alertBox.setAttribute("aria-live", "polite");
+
+    const box = document.createElement("div");
+    box.id = "win-alert-box";
+
+    const title = document.createElement("div");
+    title.id = "win-alert-title";
+    title.textContent = WIN_ALERT_TITLES[tier];
+
+    const creditsText = document.createElement("div");
+    creditsText.id = "win-alert-credits";
+    creditsText.textContent = "+" + formatCredits(prize.credits);
+
+    const label = document.createElement("div");
+    label.id = "win-alert-label";
+    label.textContent = "CRÉDITOS";
+
+    const points = document.createElement("div");
+    points.id = "win-alert-points";
+    points.textContent = "+" + prize.points + " PUNTOS";
+
+    box.append(title, creditsText, label, points);
+
+    // Chispas pixel que suben alrededor del cartel (el CSS las anima)
+    for (let i = 0; i < 12; i++) {
+        box.appendChild(document.createElement("i"));
+    }
+
+    alertBox.appendChild(box);
+    document.body.appendChild(alertBox);
+
+    winAlertElement = alertBox;
+
+    winAlertTimeout = setTimeout(hideWinAlert, WIN_ALERT_DURATION);
+}
+
+// ==================================================
 // COMPROBAR COMBINACIONES
 // ==================================================
 
@@ -926,7 +1019,7 @@ function spin() {
 
     if (spinning) return;
     if (credits < SPIN_COST) return;
-
+    hideWinAlert();
     spinning = true;
 
     if (spinButton) {
@@ -969,11 +1062,18 @@ function spin() {
 
         const prize = checkCombination(result);
 
+        const tier = getWinTier(result);
+
+        if (tier) {
+        showWinAlert(tier, prize);
+        }
         spinHistory.push({
             spin: spinsPlayed,
             symbols: result,
             points: prize.points,
             credits: prize.credits
+
+            
         });
 
         // Todavía alcanza para otra tirada
