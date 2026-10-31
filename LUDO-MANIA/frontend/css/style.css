@@ -18,28 +18,38 @@
    VARIABLES
    ================================================== */
 
-:root{
-    /* Paleta "Madera Arcade": sale de los colores reales del diseño de la cabina */
-    --bg:#1F1204;          /* carbón: fondo dentro del monitor */
-    --panel:#4A2802;       /* marrón oscuro del soporte del diseño */
-    --red:#D9301A;         /* rojo arcade: botones y SPIN */
-    --gold:#FFB627;        /* dorado: luces, marcos y títulos */
-    --cream:#FFEFD0;       /* crema: texto principal */
+/* ==================================================
+   VARIABLES
+   ================================================== */
 
-    /* Acentos del diseño */
-    --wood:#B66603;        /* madera ámbar de la cabina */
-    --green:#4ABF23;       /* verde del botón físico */
-    --sky:#B4D3FF;         /* azul de la pantalla del dibujo */
+/* ==================================================
+   VARIABLES
+   ================================================== */
 
-    /* Tonos derivados (sombras, biseles y textos de alerta) */
-    --ink:#0D0702;
-    --panel-deep:#2E1A04;
-    --red-deep:#8E1F0F;
-    --cream-deep:#E9CD97;
-    --alert:#FF6A4D;
+:root {
 
-    --font:"Press Start 2P","Courier New",monospace;
-    --px:4px;
+    /* Paleta principal: Casino Neón */
+    --bg: #0B1020;          /* Fondo azul oscuro */
+    --panel: #191A3A;       /* Panel violeta oscuro */
+    --red: #FF0055;          /* Rosa neón: botones y SPIN */
+    --gold: #FF6200;         /* Naranja neón: títulos y destacados */
+    --cream: #FFFFFF;       /* Texto principal */
+
+    /* Acentos neón */
+    --wood: #EB00D5;        /* Magenta eléctrico */
+    --green: #00C1FF;       /* Celeste eléctrico */
+    --sky: #0D14FF;         /* Azul eléctrico */
+
+    /* Tonos derivados */
+    --ink: #070A16;
+    --panel-deep: #12132B;
+    --red-deep: #B80040;
+    --cream-deep: #D8D5E8;
+    --alert: #FF6200;
+
+    /* Tipografía */
+    --font: "Press Start 2P", "Courier New", monospace;
+    --px: 4px;
 }
 
 /* ==================================================
@@ -1554,4 +1564,20 @@ button:disabled{
     height:100%;
     object-fit:cover;
     object-position:center top;
+}
+
+/* ==================================================
+   FONDO AZUL OSCURO EN LOS CUADROS DE IMAGEN
+   Reemplaza el fondo de ajedrez (cuadrille).
+   ================================================== */
+
+:root{
+    --navy:#c6c0d9;
+}
+
+/* Personaje grande (selección), foto de perfil (nombre) y personaje en el juego */
+#character-container,
+#selected-character-profile,
+#game-character{
+    background:var(--navy);
 }
