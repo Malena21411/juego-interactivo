@@ -1581,3 +1581,682 @@ button:disabled{
 #game-character{
     background:var(--navy);
 }
+
+
+/* ==================================================
+   LUCES NEÓN EXTRA · LUDO-MANIA
+   Pegar al FINAL del style.css (o cargar con un <link>
+   después de style.css). Solo suma estilos: no cambia
+   el HTML ni el JavaScript.
+   Cada bloque está rotulado, así podés borrar el que no
+   te guste sin afectar a los demás.
+   ================================================== */
+
+
+/* ==================================================
+   1. FONDO: grilla neón + resplandor ambiental
+   ================================================== */
+
+body{
+    background-image:
+        linear-gradient(rgba(235,0,213,0.10) 4px,transparent 4px),
+        linear-gradient(90deg,rgba(0,193,255,0.10) 4px,transparent 4px);
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    background:
+        radial-gradient(circle at 12% 18%,rgba(255,0,85,0.28),transparent 42%),
+        radial-gradient(circle at 88% 78%,rgba(0,193,255,0.26),transparent 42%),
+        radial-gradient(circle at 50% 105%,rgba(235,0,213,0.28),transparent 48%);
+    animation:ambient-glow 8s ease-in-out infinite alternate;
+}
+
+@keyframes ambient-glow{
+    from{ opacity:0.55; transform:scale(1); }
+    to{ opacity:1; transform:scale(1.12); }
+}
+
+
+/* ==================================================
+   2. TIRAS DE LUCES CORRIENDO ARRIBA Y ABAJO
+   de todas las pantallas (rosa, celeste y magenta)
+   ================================================== */
+
+.screen::before,
+.screen::after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    height:8px;
+    z-index:2;
+    pointer-events:none;
+    background:
+        linear-gradient(90deg,var(--red) 0 8px,transparent 8px) 0 center / 48px 8px repeat-x,
+        linear-gradient(90deg,var(--green) 0 8px,transparent 8px) 16px center / 48px 8px repeat-x,
+        linear-gradient(90deg,var(--wood) 0 8px,transparent 8px) 32px center / 48px 8px repeat-x;
+    filter:drop-shadow(0 0 6px var(--red)) drop-shadow(0 0 10px var(--green));
+    animation:strip-chase 0.6s steps(3) infinite;
+}
+
+.screen::before{ top:12px; }
+
+.screen::after{
+    bottom:12px;
+    animation-direction:reverse;
+}
+
+@keyframes strip-chase{
+    from{ background-position:0 center,16px center,32px center; }
+    to{ background-position:48px center,64px center,80px center; }
+}
+
+
+/* ==================================================
+   3. MÁQUINA: aura de neón alrededor de los rodillos
+   Cambia de rosa a celeste y se acelera al girar.
+   ================================================== */
+
+#reels::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    box-shadow:
+        0 0 28px 6px rgba(255,0,85,0.65),
+        0 0 70px 18px rgba(235,0,213,0.45),
+        0 0 120px 30px rgba(0,193,255,0.30);
+    animation:aura-cycle 4s ease-in-out infinite alternate;
+}
+
+#reels:has(.reel.spinning)::after{
+    animation-duration:0.5s;
+}
+
+@keyframes aura-cycle{
+    0%{
+        box-shadow:
+            0 0 28px 6px rgba(255,0,85,0.65),
+            0 0 70px 18px rgba(235,0,213,0.45),
+            0 0 120px 30px rgba(0,193,255,0.30);
+    }
+    100%{
+        box-shadow:
+            0 0 28px 6px rgba(0,193,255,0.65),
+            0 0 70px 18px rgba(13,20,255,0.45),
+            0 0 120px 30px rgba(255,0,85,0.30);
+    }
+}
+
+
+/* ==================================================
+   4. LÍNEA DE PAGO: brilla y parpadea rosa / naranja
+   ================================================== */
+
+#reels::before{
+    background:
+        linear-gradient(var(--red),var(--red)) left center / 12px 100% no-repeat,
+        linear-gradient(var(--red),var(--red)) right center / 12px 100% no-repeat,
+        rgba(255,0,85,0.16);
+    box-shadow:
+        0 0 16px 2px rgba(255,0,85,0.8),
+        inset 0 0 18px rgba(255,0,85,0.45);
+    animation:payline-pulse 0.9s steps(2) infinite;
+}
+
+@keyframes payline-pulse{
+    0%{ border-color:var(--red); }
+    100%{ border-color:var(--gold); }
+}
+
+
+/* ==================================================
+   5. RODILLOS: rayas de luz al girar y destello al parar
+   ================================================== */
+
+.reel::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:8;
+    pointer-events:none;
+    opacity:0;
+}
+
+.reel.spinning::after{
+    opacity:1;
+    background:repeating-linear-gradient(
+        180deg,
+        transparent 0 24px,
+        rgba(0,193,255,0.18) 24px 32px,
+        transparent 32px 56px,
+        rgba(255,0,85,0.16) 56px 64px
+    );
+    background-size:100% 64px;
+    animation:reel-streaks 0.2s steps(4) infinite;
+}
+
+.reel.stopped::after{
+    animation:reel-flash 0.45s steps(5) 1;
+}
+
+@keyframes reel-streaks{
+    from{ background-position:0 0; }
+    to{ background-position:0 64px; }
+}
+
+@keyframes reel-flash{
+    0%{ opacity:1; background-color:rgba(255,255,255,0.75); }
+    100%{ opacity:0; background-color:rgba(255,255,255,0); }
+}
+
+
+/* ==================================================
+   6. LUCES BAJO LOS RODILLOS: latido una vez encendidas
+   ================================================== */
+
+.reel-light.on{
+    animation:
+        lamp-on 0.3s steps(3) 1,
+        lamp-pulse 1s ease-in-out 0.3s infinite alternate;
+}
+
+@keyframes lamp-pulse{
+    from{ filter:brightness(1); }
+    to{ filter:brightness(1.45); }
+}
+
+
+/* ==================================================
+   7. BOTONES PRINCIPALES: aura que late
+   (START, JUGAR y SPIN; el SPIN apagado no brilla)
+   ================================================== */
+
+#start-button::after,
+#prizes-button::after,
+#spin-button::after{
+    content:"";
+    position:absolute;
+    inset:-4px -4px -8px;
+    z-index:-1;
+    pointer-events:none;
+    box-shadow:
+        0 0 22px 6px rgba(255,0,85,0.85),
+        0 0 56px 14px rgba(255,0,85,0.40);
+    animation:button-aura 1.1s ease-in-out infinite alternate;
+}
+
+#spin-button:disabled::after{
+    animation:none;
+    opacity:0;
+}
+
+@keyframes button-aura{
+    from{ opacity:0.45; }
+    to{ opacity:1; }
+}
+
+
+/* ==================================================
+   8. TÍTULOS: resplandor neón
+   El título de inicio cambia de color: rosa, celeste, magenta.
+   ================================================== */
+
+h1{
+    text-shadow:
+        4px 4px 0 var(--red),
+        0 0 22px rgba(255,0,85,0.60);
+}
+
+#warning-screen h1{
+    text-shadow:
+        4px 4px 0 var(--panel),
+        0 0 24px rgba(255,98,0,0.80);
+}
+
+#start-screen h1{
+    animation:title-neon 4.5s linear infinite;
+}
+
+@keyframes title-neon{
+    0%,100%{
+        text-shadow:
+            4px 4px 0 var(--red),
+            8px 8px 0 var(--panel),
+            12px 12px 0 var(--ink),
+            0 0 28px var(--red),
+            0 0 64px rgba(255,0,85,0.55);
+    }
+    33%{
+        text-shadow:
+            4px 4px 0 var(--green),
+            8px 8px 0 var(--panel),
+            12px 12px 0 var(--ink),
+            0 0 28px var(--green),
+            0 0 64px rgba(0,193,255,0.55);
+    }
+    66%{
+        text-shadow:
+            4px 4px 0 var(--wood),
+            8px 8px 0 var(--panel),
+            12px 12px 0 var(--ink),
+            0 0 28px var(--wood),
+            0 0 64px rgba(235,0,213,0.55);
+    }
+}
+
+
+/* ==================================================
+   9. PANELES: resplandor suave con el color de su borde
+   ================================================== */
+
+#character-card,
+#character-selector,
+#character-container,
+#selected-character-profile,
+#game-character,
+#score,
+#credits,
+#chips,
+#ranking-list,
+#prizes-list{
+    animation:panel-glow 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes panel-glow{
+    from{ filter:drop-shadow(0 0 6px color-mix(in srgb,var(--o) 55%,transparent)); }
+    to{ filter:drop-shadow(0 0 18px color-mix(in srgb,var(--o) 90%,transparent)); }
+}
+
+/* Personaje elegido en el selector */
+.character-option.active{
+    box-shadow:
+        0 8px 0 0 var(--ink),
+        0 0 0 4px rgba(255,0,85,0.35),
+        0 0 26px 6px var(--red);
+}
+
+/* Créditos bajos: parpadean como alarma */
+#credits-value.low{
+    animation:low-credits 0.8s steps(1) infinite;
+}
+
+@keyframes low-credits{
+    0%{ opacity:1; }
+    50%{ opacity:0.35; }
+}
+
+
+/* ==================================================
+   10. FICHAS: brillan una detrás de otra
+   ================================================== */
+
+.chip{
+    overflow:visible;
+    animation:chip-glow 1.4s ease-in-out infinite alternate;
+}
+
+.chip:nth-child(2){ animation-delay:0.25s; }
+.chip:nth-child(3){ animation-delay:0.5s; }
+
+@keyframes chip-glow{
+    from{ filter:drop-shadow(0 0 4px rgba(255,98,0,0.5)); }
+    to{ filter:drop-shadow(0 0 14px rgba(255,98,0,1)); }
+}
+
+
+/* ==================================================
+   11. ALERTAS BIG / SUPER / MEGA WIN
+   Rayos giratorios de fondo y borde de pantalla que pulsa.
+   El MEGA late el doble de rápido.
+   ================================================== */
+
+#win-alert{
+    --tc:color-mix(in srgb,var(--sky) 55%,white);
+    overflow:hidden;
+    background:rgba(7,10,22,0.72);
+}
+
+#win-alert[data-tier="super"]{ --tc:var(--green); }
+#win-alert[data-tier="mega"]{ --tc:var(--red); }
+
+#win-alert::before{
+    content:"";
+    position:absolute;
+    inset:-60%;
+    pointer-events:none;
+    background:repeating-conic-gradient(
+        from 0deg,
+        color-mix(in srgb,var(--tc) 38%,transparent) 0 7deg,
+        transparent 7deg 22deg
+    );
+    -webkit-mask-image:radial-gradient(circle,#000 0,transparent 62%);
+    mask-image:radial-gradient(circle,#000 0,transparent 62%);
+    animation:alert-rays 16s linear infinite;
+}
+
+#win-alert::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    box-shadow:
+        inset 0 0 0 6px var(--tc),
+        inset 0 0 90px 16px color-mix(in srgb,var(--tc) 55%,transparent);
+    animation:alert-edge 0.9s ease-in-out infinite alternate;
+}
+
+#win-alert[data-tier="mega"]::after{
+    animation-duration:0.4s;
+}
+
+#win-alert-box{
+    z-index:1;
+}
+
+#win-alert-title{
+    text-shadow:
+        4px 4px 0 var(--panel),
+        8px 8px 0 var(--ink),
+        0 0 24px var(--c),
+        0 0 56px var(--c);
+}
+
+#win-alert-credits{
+    text-shadow:
+        4px 4px 0 var(--c),
+        0 0 24px var(--c);
+}
+
+@keyframes alert-rays{
+    to{ transform:rotate(360deg); }
+}
+
+@keyframes alert-edge{
+    from{ opacity:0.45; }
+    to{ opacity:1; }
+}
+
+
+/* ==================================================
+   12. MENOS MOVIMIENTO
+   Quien lo pide en su sistema ve las luces quietas.
+   ================================================== */
+
+@media (prefers-reduced-motion:reduce){
+    body::before,
+    .screen::before,
+    .screen::after,
+    #reels::before,
+    #reels::after,
+    .reel.spinning::after,
+    .reel.stopped::after,
+    .reel-light.on,
+    #start-button::after,
+    #prizes-button::after,
+    #spin-button::after,
+    #start-screen h1,
+    #character-card,
+    #character-selector,
+    #character-container,
+    #selected-character-profile,
+    #game-character,
+    #score,
+    #credits,
+    #chips,
+    #ranking-list,
+    #prizes-list,
+    #credits-value.low,
+    .chip,
+    #win-alert::before,
+    #win-alert::after{
+        animation:none;
+    }
+}
+
+/* ==================================================
+   AJUSTES: SELECTOR SIN CUADRADOS + FICHAS APILADAS
+   Pegar al FINAL del style.css (después de luces-neon.css
+   si también lo tenés pegado).
+   ================================================== */
+
+
+/* ==================================================
+   1. SELECTOR DE PERSONAJES: SOLO CÍRCULOS
+   Sin cuadrado, sin borde y sin barrita negra debajo.
+   El elegido se marca con un aro rosa que brilla.
+   ================================================== */
+
+.character-option{
+    background:transparent;
+    border:none;
+    border-radius:50%;
+    box-shadow:none;
+}
+
+.character-option img{
+    border-radius:50%;
+}
+
+.character-option:hover{
+    box-shadow:0 0 0 4px var(--gold);
+}
+
+.character-option.active{
+    transform:translateY(-8px);
+    box-shadow:
+        0 0 0 4px var(--red),
+        0 0 26px 6px var(--red);
+}
+
+
+/* ==================================================
+   2. FICHAS: UNA SOBRE OTRA Y MÁS GRANDES
+   En todos los tamaños de pantalla quedan en columna.
+   ================================================== */
+
+/* PC */
+#chips{
+    flex-direction:column;
+    min-height:0;
+    padding:16px;
+    gap:14px;
+}
+
+.chip{
+    width:96px;
+    height:96px;
+}
+
+/* Ventanas medianas */
+@media (min-width:1051px) and (max-width:1250px){
+    #chips{
+        min-height:0;
+        padding:12px 10px;
+        gap:10px;
+    }
+
+    .chip{
+        width:76px;
+        height:76px;
+    }
+}
+
+/* Tablet y celular: las fichas en columna al lado del botón SPIN */
+@media (max-width:1050px){
+    #chips{
+        flex-direction:column;
+        width:auto;
+        min-height:0;
+        padding:12px;
+        gap:10px;
+    }
+
+    .chip{
+        width:64px;
+        height:64px;
+    }
+}
+
+/* Celular */
+@media (max-width:700px){
+    #game-right-panel{
+        flex-wrap:nowrap;
+        gap:16px;
+    }
+
+    #chips{
+        padding:8px;
+        gap:8px;
+    }
+
+    .chip{
+        width:52px;
+        height:52px;
+    }
+
+    #spin-button{
+        width:min(56vw,210px);
+        min-height:84px;
+        font-size:20px;
+    }
+}
+
+/* Celulares muy chicos */
+@media (max-width:380px){
+    .chip{
+        width:42px;
+        height:42px;
+    }
+
+    #spin-button{
+        font-size:18px;
+    }
+}
+
+/* ==================================================
+   FICHAS ENCIMADAS (en vertical)
+   Cada ficha tapa un poco a la anterior, como los
+   círculos superpuestos de la imagen de referencia.
+   Pegar al FINAL del style.css, después de
+   ajustes-selector-fichas.css.
+   ================================================== */
+
+/* PC */
+#chips{
+    flex-direction:column;
+    gap:0;
+    padding:16px 16px 22px;
+}
+
+.chip{
+    position:relative;
+    width:112px;
+    height:112px;
+}
+
+/* Desde la segunda ficha: sube y se encima sobre la anterior */
+.chip + .chip{
+    margin-top:-52px;
+}
+
+/* Cada ficha queda por encima de la de arriba */
+.chip:nth-child(1){ z-index:1; }
+.chip:nth-child(2){ z-index:2; }
+.chip:nth-child(3){ z-index:3; }
+
+/* Ventanas medianas */
+@media (min-width:1051px) and (max-width:1250px){
+    #chips{
+        gap:0;
+        padding:12px 10px 16px;
+    }
+
+    .chip{
+        width:88px;
+        height:88px;
+    }
+
+    .chip + .chip{
+        margin-top:-40px;
+    }
+}
+
+/* Tablet y celular */
+@media (max-width:1050px){
+    #chips{
+        flex-direction:column;
+        gap:0;
+        padding:12px 12px 16px;
+    }
+
+    .chip{
+        width:76px;
+        height:76px;
+    }
+
+    .chip + .chip{
+        margin-top:-34px;
+    }
+}
+
+/* Celular */
+@media (max-width:700px){
+    #chips{
+        gap:0;
+        padding:8px 8px 12px;
+    }
+
+    .chip{
+        width:60px;
+        height:60px;
+    }
+
+    .chip + .chip{
+        margin-top:-27px;
+    }
+}
+
+/* Celulares muy chicos */
+@media (max-width:380px){
+    .chip{
+        width:48px;
+        height:48px;
+    }
+
+    .chip + .chip{
+        margin-top:-22px;
+    }
+}
+
+/* ==================================================
+   PANTALLA DE NOMBRE: FOTO SOLO CON CÍRCULO
+   Sin cuadrado ni fondo. Pegar al FINAL del style.css.
+   ================================================== */
+
+#selected-character-profile{
+    background:transparent;
+    border-radius:50%;
+    overflow:hidden;
+    animation:none;
+    filter:none;
+
+    /* Aro rosa circular con brillo (borrá estas 3 líneas si no lo querés) */
+    box-shadow:
+        0 0 0 4px var(--red),
+        0 0 26px 6px var(--red);
+}
+
+#name-character-image{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    border-radius:50%;
+}
