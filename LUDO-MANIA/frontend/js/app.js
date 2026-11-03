@@ -237,6 +237,7 @@ let reelIntervals = [];
 let expressionTimeout = null;
 let skillAlertElement = null;
 let skillAlertTimeout = null;
+let acceptSkillOffer = null;
 let skillState = createSkillState();
 
 // Segundos que dura la reacción (winner / loser) antes de volver a normal
@@ -1025,6 +1026,7 @@ function getSelectedSkill() {
 function hideSkillAlert() {
     clearTimeout(skillAlertTimeout);
     skillAlertTimeout = null;
+    acceptSkillOffer = null;
 
     if (skillAlertElement) {
         skillAlertElement.remove();
@@ -1081,24 +1083,11 @@ function showSkillOffer(onResolved) {
 
     const timer = document.createElement("p");
     timer.className = "skill-alert-timer";
-    timer.textContent = "ELEGÍ EN 5 SEGUNDOS";
-
-    const actions = document.createElement("div");
-    actions.className = "skill-alert-actions";
-
-    const accept = document.createElement("button");
-    accept.type = "button";
-    accept.textContent = "ACEPTAR HABILIDAD";
-
-    const reject = document.createElement("button");
-    reject.type = "button";
-    reject.className = "skill-alert-reject";
-    reject.textContent = "RECHAZAR";
+    timer.textContent = "PRESIONÁ ENTER PARA ACEPTAR · 5 SEGUNDOS";
 
     const cannotPay = skill.code === "premio_doble" && credits < 500;
     if (cannotPay) {
-        accept.disabled = true;
-        detail.textContent = "NECESITÁS 500 CRÉDITOS PARA ACTIVARLA";
+        detail.textContent = "NECESITÁS 500 CRÉDITOS · ESPERÁ A QUE EXPIRE";
     }
 
     let resolved = false;
@@ -1123,11 +1112,11 @@ function showSkillOffer(onResolved) {
         onResolved();
     };
 
-    accept.addEventListener("click", () => resolve("aceptada"));
-    reject.addEventListener("click", () => resolve("rechazada"));
+    acceptSkillOffer = () => {
+        if (!cannotPay) resolve("aceptada");
+    };
 
-    actions.append(accept, reject);
-    box.append(title, name, description, detail, timer, actions);
+    box.append(title, name, description, detail, timer);
     alertBox.appendChild(box);
     document.body.appendChild(alertBox);
     skillAlertElement = alertBox;
@@ -1313,7 +1302,13 @@ function spin() {
             }, 2200);
         };
 
-        if (spinsPlayed === SKILL_OFFER_SPIN && !skillState.offered) {
+        // La habilidad se ofrece solo si la quinta tirada dejó créditos
+        // suficientes para que la partida pueda continuar normalmente.
+        if (
+            spinsPlayed === SKILL_OFFER_SPIN &&
+            !skillState.offered &&
+            credits >= SPIN_COST
+        ) {
             // Espera a que termine el cartel de premio antes de mostrar la habilidad.
             setTimeout(() => showSkillOffer(continueAfterSpin), WIN_ALERT_DURATION);
             return;
@@ -1391,6 +1386,12 @@ document.addEventListener("keydown", event => {
 
     // Evitar envíos de formularios o acciones duplicadas.
     event.preventDefault();
+
+    // La habilidad solo se acepta con Enter. Si no se presiona, expira sola.
+    if (skillAlertElement) {
+        if (acceptSkillOffer) acceptSkillOffer();
+        return;
+    }
 
     if (!warningScreen.classList.contains("hidden")) {
         warningButton.click();
