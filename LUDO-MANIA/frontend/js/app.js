@@ -145,7 +145,6 @@ const characters = [
 const INITIAL_CREDITS = 7500;
 const SPIN_COST = 2500;
 const SKILL_OFFER_SPIN = 5;
-const SKILL_ALERT_DURATION = 5000;
 
 const CHARACTER_SKILLS = {
     1: {
@@ -236,7 +235,6 @@ let spinning = false;
 let reelIntervals = [];
 let expressionTimeout = null;
 let skillAlertElement = null;
-let skillAlertTimeout = null;
 let acceptSkillOffer = null;
 let skillState = createSkillState();
 
@@ -1024,8 +1022,6 @@ function getSelectedSkill() {
 }
 
 function hideSkillAlert() {
-    clearTimeout(skillAlertTimeout);
-    skillAlertTimeout = null;
     acceptSkillOffer = null;
 
     if (skillAlertElement) {
@@ -1083,7 +1079,19 @@ function showSkillOffer(onResolved) {
 
     const timer = document.createElement("p");
     timer.className = "skill-alert-timer";
-    timer.textContent = "PRESIONÁ ENTER PARA ACEPTAR · 5 SEGUNDOS";
+    timer.textContent = "PRESIONÁ ENTER O ACEPTÁ LA HABILIDAD PARA CONTINUAR";
+
+    const actions = document.createElement("div");
+    actions.className = "skill-alert-actions";
+
+    const accept = document.createElement("button");
+    accept.type = "button";
+    accept.textContent = "ACEPTAR HABILIDAD";
+
+    const reject = document.createElement("button");
+    reject.type = "button";
+    reject.className = "skill-alert-reject";
+    reject.textContent = "RECHAZAR";
 
     const cannotPay = skill.code === "premio_doble" && credits < 500;
     if (cannotPay) {
@@ -1116,12 +1124,15 @@ function showSkillOffer(onResolved) {
         if (!cannotPay) resolve("aceptada");
     };
 
-    box.append(title, name, description, detail, timer);
+    accept.addEventListener("click", acceptSkillOffer);
+    reject.addEventListener("click", () => resolve("rechazada"));
+
+    actions.append(accept, reject);
+    box.append(title, name, description, detail, timer, actions);
     alertBox.appendChild(box);
     document.body.appendChild(alertBox);
     skillAlertElement = alertBox;
 
-    skillAlertTimeout = setTimeout(() => resolve("expirada"), SKILL_ALERT_DURATION);
 }
 
 function hasActiveSkill(code) {
@@ -1387,7 +1398,7 @@ document.addEventListener("keydown", event => {
     // Evitar envíos de formularios o acciones duplicadas.
     event.preventDefault();
 
-    // La habilidad solo se acepta con Enter. Si no se presiona, expira sola.
+    // Enter acepta la habilidad mientras el cartel esté abierto.
     if (skillAlertElement) {
         if (acceptSkillOffer) acceptSkillOffer();
         return;

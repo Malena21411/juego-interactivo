@@ -1561,8 +1561,24 @@ button:disabled{
 
 .skill-alert-timer{ color:var(--gold); animation:alert-shine 0.6s steps(1) infinite; }
 
+.skill-alert-actions{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:16px;
+}
+
+.skill-alert-actions button{ min-width:180px; }
+
+.skill-alert-reject{
+    background:var(--panel);
+    box-shadow:4px 4px 0 var(--ink);
+}
+
 @media (max-width:700px){
     #skill-alert-box{ padding:26px 18px; gap:14px; }
+    .skill-alert-actions{ width:100%; gap:12px; }
+    .skill-alert-actions button{ width:100%; }
 }
 
 @keyframes alert-fade{
