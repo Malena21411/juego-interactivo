@@ -1493,6 +1493,94 @@ button:disabled{
 #win-alert-box i:nth-of-type(11){ --x:89%; --d:0.65s; }
 #win-alert-box i:nth-of-type(12){ --x:96%; --d:1s; }
 
+/* ==================================================
+   HABILIDAD DESBLOQUEADA
+   Se muestra al terminar la quinta tirada.
+   ================================================== */
+
+#skill-alert{
+    position:fixed;
+    inset:0;
+    z-index:950;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    background:rgba(7,10,22,0.82);
+    animation:alert-fade 0.2s steps(2) 1;
+}
+
+#skill-alert-box{
+    position:relative;
+    width:min(620px,94vw);
+    padding:32px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:16px;
+    background:var(--bg);
+    text-align:center;
+    box-shadow:
+        -4px 0 0 var(--gold),
+        4px 0 0 var(--gold),
+        0 -4px 0 var(--gold),
+        0 4px 0 var(--gold),
+        0 0 0 12px rgba(255,209,102,0.22),
+        14px 14px 0 12px var(--ink);
+    animation:alert-pop 0.5s steps(5) 1;
+}
+
+#skill-alert-title{
+    margin:0;
+    color:var(--gold);
+    font-size:clamp(22px,5vw,38px);
+    line-height:1.2;
+    text-shadow:4px 4px 0 var(--panel),8px 8px 0 var(--ink);
+}
+
+.skill-alert-name{
+    margin:0;
+    color:var(--sky);
+    font-size:clamp(14px,2.8vw,20px);
+}
+
+.skill-alert-description{
+    max-width:500px;
+    margin:0;
+    color:var(--cream);
+    font-size:clamp(13px,2.5vw,18px);
+    line-height:1.6;
+}
+
+.skill-alert-detail,
+.skill-alert-timer{
+    margin:0;
+    color:var(--green);
+    font-size:clamp(11px,2vw,14px);
+}
+
+.skill-alert-timer{ color:var(--gold); animation:alert-shine 0.6s steps(1) infinite; }
+
+.skill-alert-actions{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:16px;
+}
+
+.skill-alert-actions button{ min-width:180px; }
+
+.skill-alert-reject{
+    background:var(--panel);
+    box-shadow:4px 4px 0 var(--ink);
+}
+
+@media (max-width:700px){
+    #skill-alert-box{ padding:26px 18px; gap:14px; }
+    .skill-alert-actions{ width:100%; gap:12px; }
+    .skill-alert-actions button{ width:100%; }
+}
+
 @keyframes alert-fade{
     0%{ opacity:0; }
     100%{ opacity:1; }

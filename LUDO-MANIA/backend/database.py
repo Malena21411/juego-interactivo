@@ -1,6 +1,7 @@
 import sqlite3
 import os
 import shutil
+import json
 
 # Construimos las rutas absolutas para asegurarnos de que los archivos
 # se guarden exactamente en la carpeta "database" del proyecto.
@@ -59,6 +60,19 @@ def crear_base_datos(ruta=DB_PATH):
     )
     ''')
 
+    # Cada personaje tiene una habilidad fija disponible durante la partida.
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Habilidad (
+        id_habilidad INTEGER PRIMARY KEY,
+        id_personaje INTEGER NOT NULL UNIQUE,
+        nombre TEXT NOT NULL,
+        descripcion TEXT NOT NULL,
+        codigo TEXT NOT NULL UNIQUE,
+        valor INTEGER NOT NULL DEFAULT 0,
+        FOREIGN KEY (id_personaje) REFERENCES Personaje (id_personaje)
+    )
+    ''')
+
     # ==========================================
     # TABLA 3: PARTIDA (Reemplaza a tu Ranking local)
     # ==========================================
@@ -80,6 +94,24 @@ def crear_base_datos(ruta=DB_PATH):
     )
     ''')
     _asegurar_columnas_partida(cursor)
+
+    # Guarda la decisión y el efecto real de la habilidad en cada partida.
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS UsoHabilidad (
+        id_uso_habilidad INTEGER PRIMARY KEY AUTOINCREMENT,
+        id_partida INTEGER NOT NULL,
+        id_habilidad INTEGER NOT NULL,
+        tirada_ofrecida INTEGER NOT NULL,
+        decision TEXT NOT NULL CHECK(decision IN ('aceptada', 'rechazada', 'expirada')),
+        tiradas_aplicadas TEXT NOT NULL DEFAULT '[]',
+        efecto_creditos INTEGER NOT NULL DEFAULT 0,
+        efecto_puntos INTEGER NOT NULL DEFAULT 0,
+        costo_creditos INTEGER NOT NULL DEFAULT 0,
+        fecha_uso DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (id_partida) REFERENCES Partida (id_partida),
+        FOREIGN KEY (id_habilidad) REFERENCES Habilidad (id_habilidad)
+    )
+    ''')
 
     # ==========================================
     # TABLA 4: SIMBOLO
@@ -240,12 +272,12 @@ def registrar_jugador(nombre_jugador):
         "nombre": nombre_jugador,
     }
 
-def inicializar_catalogo():
+def inicializar_catalogo(ruta=DB_PATH):
     """
     Inserta y mantiene sincronizados los personajes y símbolos
     disponibles en el juego.
     """
-    conexion = sqlite3.connect(DB_PATH)
+    conexion = sqlite3.connect(ruta)
     cursor = conexion.cursor()
     
     # 1. Insertar Personajes
@@ -269,6 +301,28 @@ def inicializar_catalogo():
     )
     print("- Catálogo de personajes sincronizado.")
 
+    habilidades = [
+        (1, 1, "Premio doble", "Duplica el premio y cuesta 500 créditos.", "premio_doble", 500),
+        (2, 2, "Tirada gratis", "Permite repetir una tirada sin pagar.", "tirada_gratis", 0),
+        (3, 3, "Quinta ganadora", "Cada quinta tirada ganadora da 500 créditos extra.", "quinta_ganadora", 500),
+        (4, 4, "Recuperación", "Devuelve los créditos apostados si la siguiente tirada pierde.", "recuperar_apuesta", 2500),
+    ]
+    cursor.executemany(
+        '''
+        INSERT INTO Habilidad (
+            id_habilidad, id_personaje, nombre, descripcion, codigo, valor
+        ) VALUES (?, ?, ?, ?, ?, ?)
+        ON CONFLICT(id_habilidad) DO UPDATE SET
+            id_personaje = excluded.id_personaje,
+            nombre = excluded.nombre,
+            descripcion = excluded.descripcion,
+            codigo = excluded.codigo,
+            valor = excluded.valor
+        ''',
+        habilidades,
+    )
+    print("- Catálogo de habilidades sincronizado.")
+
     # 2. Insertar Símbolos
     cursor.execute("SELECT COUNT(*) FROM Simbolo")
     if cursor.fetchone()[0] == 0:
@@ -288,7 +342,10 @@ def inicializar_catalogo():
     conexion.commit()
     conexion.close()
 
-def guardar_partida(id_jugador, nombre_personaje, puntos, creditos_iniciales, creditos_finales):
+def guardar_partida(
+    id_jugador, nombre_personaje, puntos, creditos_iniciales, creditos_finales,
+    habilidad=None,
+):
     conexion = sqlite3.connect(DB_PATH)
     cursor = conexion.cursor()
 
@@ -313,6 +370,38 @@ def guardar_partida(id_jugador, nombre_personaje, puntos, creditos_iniciales, cr
         ''',
         (id_jugador, id_personaje, puntos, creditos_iniciales, creditos_finales),
     )
+    id_partida = cursor.lastrowid
+
+    if isinstance(habilidad, dict) and habilidad.get("decision") in {
+        "aceptada", "rechazada", "expirada"
+    }:
+        cursor.execute(
+            "SELECT id_habilidad FROM Habilidad WHERE id_personaje = ?",
+            (id_personaje,),
+        )
+        resultado_habilidad = cursor.fetchone()
+        if resultado_habilidad:
+            tiradas = habilidad.get("tiradas_aplicadas", [])
+            if not isinstance(tiradas, list):
+                tiradas = []
+            cursor.execute(
+                '''
+                INSERT INTO UsoHabilidad (
+                    id_partida, id_habilidad, tirada_ofrecida, decision,
+                    tiradas_aplicadas, efecto_creditos, efecto_puntos, costo_creditos
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ''',
+                (
+                    id_partida,
+                    resultado_habilidad[0],
+                    int(habilidad.get("tirada_ofrecida", 5)),
+                    habilidad["decision"],
+                    json.dumps(tiradas),
+                    int(habilidad.get("efecto_creditos", 0)),
+                    int(habilidad.get("efecto_puntos", 0)),
+                    int(habilidad.get("costo_creditos", 0)),
+                ),
+            )
 
     conexion.commit()
     conexion.close()

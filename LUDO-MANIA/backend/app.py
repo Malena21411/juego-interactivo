@@ -37,13 +37,14 @@ def guardar_partida():
     puntos = data.get("score")
     creditos_iniciales = data.get("credits_initial")
     creditos_finales = data.get("credits_final")
+    habilidad = data.get("skill")
 
     # Validaciones básicas
     if not id_jugador or not personaje or creditos_iniciales is None or creditos_finales is None:
         return jsonify({"status": "error", "message": "Faltan datos"}), 400
 
     guardada = database.guardar_partida(
-        id_jugador, personaje, puntos, creditos_iniciales, creditos_finales
+        id_jugador, personaje, puntos, creditos_iniciales, creditos_finales, habilidad
     )
     if not guardada:
         return jsonify({"status": "error", "message": "Jugador no encontrado"}), 400

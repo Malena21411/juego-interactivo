@@ -144,6 +144,35 @@ const characters = [
 
 const INITIAL_CREDITS = 7500;
 const SPIN_COST = 2500;
+const SKILL_OFFER_SPIN = 5;
+const SKILL_ALERT_DURATION = 5000;
+
+const CHARACTER_SKILLS = {
+    1: {
+        code: "premio_doble",
+        name: "PREMIO DOBLE",
+        description: "Tu próxima combinación ganadora duplica puntos y créditos.",
+        detail: "COSTO DE ACTIVACIÓN: 500 CRÉDITOS"
+    },
+    2: {
+        code: "tirada_gratis",
+        name: "TIRADA GRATIS",
+        description: "Tu próxima tirada no descuenta créditos.",
+        detail: "USO ÚNICO"
+    },
+    3: {
+        code: "quinta_ganadora",
+        name: "QUINTA GANADORA",
+        description: "Cada quinta tirada ganadora otorga 500 créditos extra.",
+        detail: "ACTIVA DURANTE EL RESTO DE LA PARTIDA"
+    },
+    4: {
+        code: "recuperar_apuesta",
+        name: "RECUPERACIÓN",
+        description: "Si tu próxima tirada pierde, recuperás los créditos apostados.",
+        detail: "USO ÚNICO"
+    }
+};
 
 // ==================================================
 // PREMIOS (puntos + créditos)
@@ -151,16 +180,16 @@ const SPIN_COST = 2500;
 // ==================================================
 
 const TRIPLE_PRIZES = {
-    siete:    { points: 500, credits: 10000 },
-    diamante: { points: 300, credits: 5000 },
-    trebol:   { points: 200, credits: 3000 }
+    siete:    { points: 500, credits: 15000 },
+    diamante: { points: 300, credits: 10000 },
+    trebol:   { points: 200, credits: 7500 }
 };
 
 // Tres iguales de cualquier otro símbolo
-const DEFAULT_TRIPLE_PRIZE = { points: 150, credits: 2000 };
+const DEFAULT_TRIPLE_PRIZE = { points: 150, credits: 5000 };
 
 // Dos iguales, sin importar el símbolo
-const PAIR_PRIZE = { points: 50, credits: 500 };
+const PAIR_PRIZE = { points: 50, credits: 2500 };
 
 
 // ==================================================
@@ -206,9 +235,24 @@ let spinHistory = [];
 let spinning = false;
 let reelIntervals = [];
 let expressionTimeout = null;
+let skillAlertElement = null;
+let skillAlertTimeout = null;
+let skillState = createSkillState();
 
 // Segundos que dura la reacción (winner / loser) antes de volver a normal
 const REACTION_DURATION = 3000;
+
+function createSkillState() {
+    return {
+        offered: false,
+        decision: null,
+        activeCode: null,
+        appliedSpins: [],
+        effectCredits: 0,
+        effectPoints: 0,
+        activationCost: 0
+    };
+}
 
 // ==================================================
 // RANKING LOCAL
@@ -442,7 +486,8 @@ function saveRankingEntry() {
         credits_initial: INITIAL_CREDITS,
         credits_final: credits,
         spins: spinsPlayed,
-        spin_results: spinHistory
+        spin_results: spinHistory,
+        skill: getSkillPayload()
     };
 
     ranking.push(entry);
@@ -757,6 +802,8 @@ function comenzarPartida() {
     spinsPlayed = 0;
     spinHistory = [];
     score = 0;
+    skillState = createSkillState();
+    hideSkillAlert();
     spinning = false;
 
     updateChips();
@@ -966,6 +1013,133 @@ function showWinAlert(tier, prize) {
 }
 
 // ==================================================
+// HABILIDADES DE PERSONAJE
+// Se ofrecen al completar la quinta tirada y se aplican
+// desde la siguiente tirada o resultado correspondiente.
+// ==================================================
+
+function getSelectedSkill() {
+    return selectedCharacter ? CHARACTER_SKILLS[selectedCharacter.id] : null;
+}
+
+function hideSkillAlert() {
+    clearTimeout(skillAlertTimeout);
+    skillAlertTimeout = null;
+
+    if (skillAlertElement) {
+        skillAlertElement.remove();
+        skillAlertElement = null;
+    }
+}
+
+function getSkillPayload() {
+    if (!skillState.offered) return null;
+
+    return {
+        tirada_ofrecida: SKILL_OFFER_SPIN,
+        decision: skillState.decision,
+        tiradas_aplicadas: skillState.appliedSpins,
+        efecto_creditos: skillState.effectCredits,
+        efecto_puntos: skillState.effectPoints,
+        costo_creditos: skillState.activationCost
+    };
+}
+
+function showSkillOffer(onResolved) {
+    const skill = getSelectedSkill();
+    if (!skill || skillState.offered) {
+        onResolved();
+        return;
+    }
+
+    skillState.offered = true;
+
+    const alertBox = document.createElement("div");
+    alertBox.id = "skill-alert";
+    alertBox.setAttribute("role", "dialog");
+    alertBox.setAttribute("aria-modal", "true");
+    alertBox.setAttribute("aria-labelledby", "skill-alert-title");
+
+    const box = document.createElement("div");
+    box.id = "skill-alert-box";
+
+    const title = document.createElement("h2");
+    title.id = "skill-alert-title";
+    title.textContent = "HABILIDAD DESBLOQUEADA";
+
+    const name = document.createElement("p");
+    name.className = "skill-alert-name";
+    name.textContent = selectedCharacter.name + " · " + skill.name;
+
+    const description = document.createElement("p");
+    description.className = "skill-alert-description";
+    description.textContent = skill.description;
+
+    const detail = document.createElement("p");
+    detail.className = "skill-alert-detail";
+    detail.textContent = skill.detail;
+
+    const timer = document.createElement("p");
+    timer.className = "skill-alert-timer";
+    timer.textContent = "ELEGÍ EN 5 SEGUNDOS";
+
+    const actions = document.createElement("div");
+    actions.className = "skill-alert-actions";
+
+    const accept = document.createElement("button");
+    accept.type = "button";
+    accept.textContent = "ACEPTAR HABILIDAD";
+
+    const reject = document.createElement("button");
+    reject.type = "button";
+    reject.className = "skill-alert-reject";
+    reject.textContent = "RECHAZAR";
+
+    const cannotPay = skill.code === "premio_doble" && credits < 500;
+    if (cannotPay) {
+        accept.disabled = true;
+        detail.textContent = "NECESITÁS 500 CRÉDITOS PARA ACTIVARLA";
+    }
+
+    let resolved = false;
+    const resolve = decision => {
+        if (resolved) return;
+        resolved = true;
+
+        skillState.decision = decision;
+        if (decision === "aceptada") {
+            skillState.activeCode = skill.code;
+
+            if (skill.code === "premio_doble") {
+                credits -= 500;
+                skillState.activationCost = 500;
+                skillState.effectCredits -= 500;
+                updateCredits();
+                updateChips();
+            }
+        }
+
+        hideSkillAlert();
+        onResolved();
+    };
+
+    accept.addEventListener("click", () => resolve("aceptada"));
+    reject.addEventListener("click", () => resolve("rechazada"));
+
+    actions.append(accept, reject);
+    box.append(title, name, description, detail, timer, actions);
+    alertBox.appendChild(box);
+    document.body.appendChild(alertBox);
+    skillAlertElement = alertBox;
+
+    skillAlertTimeout = setTimeout(() => resolve("expirada"), SKILL_ALERT_DURATION);
+}
+
+function hasActiveSkill(code) {
+    return skillState.activeCode === code;
+}
+
+// ==================================================
 // COMPROBAR COMBINACIONES
 // ==================================================
 
@@ -980,17 +1154,47 @@ function evaluateCombination(result) {
     let message = "";
 
     if (first === second && second === third) {
-        prize = TRIPLE_PRIZES[normalizeSymbolName(first)] ?? DEFAULT_TRIPLE_PRIZE;
+        prize = { ...(TRIPLE_PRIZES[normalizeSymbolName(first)] ?? DEFAULT_TRIPLE_PRIZE) };
         message = "¡¡¡TRIPLE DE " + first.toUpperCase() + "!!!";
     } else if (first === second || first === third || second === third) {
-        prize = PAIR_PRIZE;
+        prize = { ...PAIR_PRIZE };
         message = "¡PAR!";
     }
 
     if (!prize) {
+        if (hasActiveSkill("recuperar_apuesta")) {
+            addCredits(SPIN_COST);
+            skillState.appliedSpins.push(spinsPlayed);
+            skillState.effectCredits += SPIN_COST;
+            skillState.activeCode = null;
+            setCharacterExpression("victoria");
+            gameMessage.textContent =
+                "SIN COMBINACIÓN · RECUPERÁS " + formatCredits(SPIN_COST) + " CRÉDITOS";
+            return { points: 0, credits: SPIN_COST };
+        }
+
         setCharacterExpression("mala");
         gameMessage.textContent = "SIN COMBINACIÓN · 0 PUNTOS";
         return { points: 0, credits: 0 };
+    }
+
+    if (hasActiveSkill("premio_doble")) {
+        const extraPoints = prize.points;
+        const extraCredits = prize.credits;
+        prize.points += extraPoints;
+        prize.credits += extraCredits;
+        skillState.appliedSpins.push(spinsPlayed);
+        skillState.effectPoints += extraPoints;
+        skillState.effectCredits += extraCredits;
+        skillState.activeCode = null;
+        message += " · PREMIO DOBLE";
+    }
+
+    if (hasActiveSkill("quinta_ganadora") && spinsPlayed % 5 === 0) {
+        prize.credits += 500;
+        skillState.appliedSpins.push(spinsPlayed);
+        skillState.effectCredits += 500;
+        message += " · +500 CRÉDITOS DE HABILIDAD";
     }
 
     addScore(prize.points);
@@ -1022,7 +1226,8 @@ function spin() {
     clearGameMessage();
 
     if (spinning) return;
-    if (credits < SPIN_COST) return;
+    const freeSpin = hasActiveSkill("tirada_gratis");
+    if (credits < SPIN_COST && !freeSpin) return;
     hideWinAlert();
     spinning = true;
 
@@ -1033,8 +1238,13 @@ function spin() {
     // Al tirar de nuevo el personaje vuelve a su imagen normal
     setCharacterExpression("normal");
 
-    // Se paga la tirada antes de girar
-    credits -= SPIN_COST;
+    // La habilidad de Juana permite una única tirada sin descontar créditos.
+    if (freeSpin) {
+        skillState.appliedSpins.push(spinsPlayed + 1);
+        skillState.activeCode = null;
+    } else {
+        credits -= SPIN_COST;
+    }
     spinsPlayed++;
     updateCredits();
     updateChips();
@@ -1080,26 +1290,36 @@ function spin() {
             
         });
 
-        // Todavía alcanza para otra tirada
-        if (credits >= SPIN_COST) {
-            spinning = false;
+        const continueAfterSpin = () => {
+            // La tirada gratis de Juana permite continuar incluso sin créditos.
+            if (credits >= SPIN_COST || hasActiveSkill("tirada_gratis")) {
+                spinning = false;
 
-            if (spinButton) {
-                spinButton.disabled = false;
+                if (spinButton) {
+                    spinButton.disabled = false;
+                }
+
+                return;
             }
 
+            // Sin créditos: mensaje de fin y pantalla de score.
+            setTimeout(() => {
+                showGameMessage("SIN CRÉDITOS · FIN DE LA PARTIDA", 2000);
+
+                setTimeout(() => {
+                    spinning = false;
+                    endGame();
+                }, 1800);
+            }, 2200);
+        };
+
+        if (spinsPlayed === SKILL_OFFER_SPIN && !skillState.offered) {
+            // Espera a que termine el cartel de premio antes de mostrar la habilidad.
+            setTimeout(() => showSkillOffer(continueAfterSpin), WIN_ALERT_DURATION);
             return;
         }
 
-        // Sin créditos: mensaje de fin y pantalla de score
-        setTimeout(() => {
-            showGameMessage("SIN CRÉDITOS · FIN DE LA PARTIDA", 2000);
-
-            setTimeout(() => {
-                spinning = false;
-                endGame();
-            }, 1800);
-        }, 2200);
+        continueAfterSpin();
     }, 2600);
 }
 
@@ -1115,6 +1335,8 @@ function returnToStart() {
     spinsPlayed = 0;
     spinHistory = [];
     score = 0;
+    skillState = createSkillState();
+    hideSkillAlert();
 
     playerName = "";
     playerId = null;
