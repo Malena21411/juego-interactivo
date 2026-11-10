@@ -94,76 +94,20 @@
             </h1>
 
 
-
-            <!-- SELECTOR DE PERSONAJES -->
-
-            <div id="character-selector">
-
-                <div
-                    class="character-option"
-                    data-character="0"
-                >
-                    <img
-                        src="assets/images/logo1.png"
-                        alt="Personaje 1"
-                    >
-                </div>
+            <div id="character-layout">
 
 
-                <div
-                    class="character-option"
-                    data-character="1"
-                >
-                    <img
-                        src="assets/images/logo2.png"
-                        alt="Personaje 2"
-                    >
-                </div>
+                <!-- COLUMNA IZQUIERDA: personaje, nombre y descripción -->
 
+                <div id="character-card">
 
-                <div
-                    class="character-option"
-                    data-character="2"
-                >
-                    <img
-                        src="assets/images/logo3.png"
-                        alt="Personaje 3"
-                    >
-                </div>
-
-
-                <div
-                    class="character-option"
-                    data-character="3"
-                >
-                    <img
-                        src="assets/images/logo4.png"
-                        alt="Personaje 4"
-                    >
-                </div>
-
-            </div>
-
-
-
-            <!-- PANEL PRINCIPAL -->
-
-            <div id="character-card">
-
-                <!-- Personaje grande -->
-
-                <div id="character-container">
-                    <img
-                        id="character-image"
-                        src=""
-                        alt="Personaje seleccionado"
-                    >
-                </div>
-
-
-                <!-- Información -->
-
-                <div id="character-info">
+                    <div id="character-container">
+                        <img
+                            id="character-image"
+                            src=""
+                            alt="Personaje seleccionado"
+                        >
+                    </div>
 
                     <h2 id="character-name"></h2>
 
@@ -173,14 +117,97 @@
 
                 </div>
 
-            </div>
+
+                <!-- COLUMNA DERECHA: selector, habilidad y botón -->
+
+                <div id="character-side">
+
+                    <!-- SELECTOR DE PERSONAJES -->
+
+                    <div id="character-selector">
+
+                        <div
+                            class="character-option"
+                            data-character="0"
+                        >
+                            <img
+                                src="assets/images/logo1.png"
+                                alt="Personaje 1"
+                            >
+                        </div>
 
 
+                        <div
+                            class="character-option"
+                            data-character="1"
+                        >
+                            <img
+                                src="assets/images/logo2.png"
+                                alt="Personaje 2"
+                            >
+                        </div>
 
-            <!-- BOTÓN VISUAL DE SELECCIÓN -->
 
-            <div id="character-select-button">
-                ¡SELECCIONÁ A TU PERSONAJE!
+                        <div
+                            class="character-option"
+                            data-character="2"
+                        >
+                            <img
+                                src="assets/images/logo3.png"
+                                alt="Personaje 3"
+                            >
+                        </div>
+
+
+                        <div
+                            class="character-option"
+                            data-character="3"
+                        >
+                            <img
+                                src="assets/images/logo4.png"
+                                alt="Personaje 4"
+                            >
+                        </div>
+
+                    </div>
+
+
+                    <!-- HABILIDAD ESPECIAL DEL PERSONAJE MOSTRADO
+                         (el JavaScript completa los textos) -->
+
+                    <section
+                        id="skill-panel"
+                        aria-labelledby="skill-panel-title"
+                    >
+
+                        <h2 id="skill-panel-title">
+                            HABILIDAD ESPECIAL
+                        </h2>
+
+                        <div id="skill-panel-avatar">
+                            <img
+                                id="skill-panel-image"
+                                src=""
+                                alt=""
+                            >
+                        </div>
+
+                        <div id="skill-panel-owner"></div>
+
+                        <div id="skill-panel-name"></div>
+
+                        <p id="skill-panel-description"></p>
+
+                        <p id="skill-panel-detail"></p>
+
+                        <div id="skill-panel-when"></div>
+
+                    </section>
+
+
+                </div>
+
+
             </div>
 
         </section>
@@ -437,6 +464,30 @@
                 <button id="spin-button">
                     SPIN!!!
                 </button>
+
+            </div>
+
+
+
+            <!-- ALERTA DE COMBINACIÓN (BIG / SUPER / MEGA WIN) -->
+
+            <div id="win-alert" class="hidden" data-tier="big" aria-live="polite">
+
+                <div id="win-alert-box">
+
+                    <span id="win-alert-title">BIG WIN</span>
+
+                    <span id="win-alert-credits">+0</span>
+
+                    <span id="win-alert-label">CRÉDITOS</span>
+
+                    <span id="win-alert-points">+0 PUNTOS</span>
+
+                    <!-- Chispas pixel -->
+                    <i></i><i></i><i></i><i></i><i></i><i></i>
+                    <i></i><i></i><i></i><i></i><i></i><i></i>
+
+                </div>
 
             </div>
 

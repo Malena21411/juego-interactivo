@@ -1,6 +1,14 @@
 /* ==================================================
-   LUDO-MANIA · ESTILO PIXELART · MADERA ARCADE
-   Paleta Madera Arcade: #1F1204  #4A2802  #D9301A  #FFB627  #FFEFD0
+   LUDO-MANIA · PIXELART · CASINO NEÓN
+   Paleta: #0B1020  #191A3A  #FF0055  #FF6200
+           #EB00D5  #00C1FF  #0D14FF  #FFFFFF
+
+   Orden del archivo:
+     1. Variables
+     2. Base (fondo, textos, botones, paneles)
+     3. Pantallas (1 a 7 + alertas de premio)
+     4. Responsive (todo junto, de mayor a menor)
+     5. Menos movimiento
 
    Fuente: "Press Start 2P" (Google Fonts). Necesita internet.
    Para usarla sin conexión, descargala, ponela en assets/fonts/
@@ -14,46 +22,39 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
-/* ==================================================
-   VARIABLES
-   ================================================== */
 
 /* ==================================================
-   VARIABLES
+   1. VARIABLES
+   Un solo lugar para cambiar colores.
    ================================================== */
 
-/* ==================================================
-   VARIABLES
-   ================================================== */
+:root{
+    /* Fondos */
+    --bg:#0B1020;            /* azul oscuro */
+    --panel:#191A3A;         /* violeta oscuro */
+    --panel-deep:#12132B;    /* violeta más oscuro */
+    --ink:#070A16;           /* sombras duras y contornos */
+    --photo-bg:#C6C0D9;      /* fondo de las fotos de personajes */
 
-:root {
+    /* Neones */
+    --pink:#FF0055;          /* botones, SPIN y acentos */
+    --pink-deep:#B80040;     /* sombra interna de los botones */
+    --orange:#FF6200;        /* títulos y destacados */
+    --magenta:#EB00D5;
+    --cyan:#00C1FF;
+    --blue:#0D14FF;
 
-    /* Paleta principal: Casino Neón */
-    --bg: #0B1020;          /* Fondo azul oscuro */
-    --panel: #191A3A;       /* Panel violeta oscuro */
-    --red: #FF0055;          /* Rosa neón: botones y SPIN */
-    --gold: #FF6200;         /* Naranja neón: títulos y destacados */
-    --cream: #FFFFFF;       /* Texto principal */
-
-    /* Acentos neón */
-    --wood: #EB00D5;        /* Magenta eléctrico */
-    --green: #00C1FF;       /* Celeste eléctrico */
-    --sky: #0D14FF;         /* Azul eléctrico */
-
-    /* Tonos derivados */
-    --ink: #070A16;
-    --panel-deep: #12132B;
-    --red-deep: #B80040;
-    --cream-deep: #D8D5E8;
-    --alert: #FF6200;
+    /* Textos y celdas de los rodillos */
+    --white:#FFFFFF;
+    --lilac:#D8D5E8;
 
     /* Tipografía */
-    --font: "Press Start 2P", "Courier New", monospace;
-    --px: 4px;
+    --font:"Press Start 2P","Courier New",monospace;
 }
 
+
 /* ==================================================
-   RESETEO Y BASE
+   2. BASE
    ================================================== */
 
 *{
@@ -68,19 +69,35 @@ img{
 }
 
 ::selection{
-    background:var(--red);
-    color:var(--cream);
+    background:var(--pink);
+    color:var(--white);
 }
+
+/* ----- Fondo: grilla neón ----- */
 
 body{
     min-height:100vh;
     background-color:var(--bg);
     background-image:
-        linear-gradient(rgba(74,40,2,0.35) 4px,transparent 4px),
-        linear-gradient(90deg,rgba(74,40,2,0.35) 4px,transparent 4px);
+        linear-gradient(color-mix(in srgb,var(--magenta) 10%,transparent) 4px,transparent 4px),
+        linear-gradient(90deg,color-mix(in srgb,var(--cyan) 10%,transparent) 4px,transparent 4px);
     background-size:48px 48px;
-    color:var(--cream);
+    color:var(--white);
     font-family:var(--font);
+}
+
+/* Resplandor ambiental que respira */
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    background:
+        radial-gradient(circle at 12% 18%,color-mix(in srgb,var(--pink) 28%,transparent),transparent 42%),
+        radial-gradient(circle at 88% 78%,color-mix(in srgb,var(--cyan) 26%,transparent),transparent 42%),
+        radial-gradient(circle at 50% 105%,color-mix(in srgb,var(--magenta) 28%,transparent),transparent 48%);
+    animation:ambient-glow 8s ease-in-out infinite alternate;
 }
 
 /* Líneas de pantalla CRT, muy suaves */
@@ -99,6 +116,13 @@ body::after{
     );
 }
 
+@keyframes ambient-glow{
+    from{ opacity:0.55; transform:scale(1); }
+    to{ opacity:1; transform:scale(1.12); }
+}
+
+/* ----- Pantallas ----- */
+
 .screen{
     position:relative;
     min-height:100vh;
@@ -115,21 +139,21 @@ body::after{
     display:none !important;
 }
 
-/* ==================================================
-   TEXTOS
-   ================================================== */
+/* ----- Textos ----- */
 
 h1{
     position:relative;
     z-index:5;
     max-width:100%;
-    color:var(--cream);
+    color:var(--white);
     font-size:clamp(20px,4vw,40px);
     font-weight:400;
     line-height:1.45;
     letter-spacing:0;
     text-align:center;
-    text-shadow:4px 4px 0 var(--red);
+    text-shadow:
+        4px 4px 0 var(--pink),
+        0 0 22px color-mix(in srgb,var(--pink) 60%,transparent);
     overflow-wrap:anywhere;
 }
 
@@ -137,17 +161,15 @@ p{
     position:relative;
     z-index:5;
     max-width:640px;
-    color:var(--cream);
+    color:var(--white);
     font-size:12px;
     line-height:2;
     text-align:center;
 }
 
-/* ==================================================
-   BOTONES
-   Todos los botones y el falso botón de selección
-   comparten el mismo bloque de píxeles.
-   ================================================== */
+/* ----- Botones ----- */
+/* Todos los botones y el falso botón de selección comparten
+   el mismo bloque de píxeles. */
 
 button,
 #character-select-button{
@@ -157,8 +179,8 @@ button,
     padding:18px 32px;
     border:none;
     border-radius:0;
-    background:var(--red);
-    color:var(--cream);
+    background:var(--pink);
+    color:var(--white);
     font-family:var(--font);
     font-size:16px;
     line-height:1.3;
@@ -171,7 +193,7 @@ button,
         0 -4px 0 0 var(--ink),
         0 4px 0 0 var(--ink),
         inset 4px 4px 0 0 rgba(255,255,255,0.38),
-        inset -4px -4px 0 0 var(--red-deep),
+        inset -4px -4px 0 0 var(--pink-deep),
         0 8px 0 0 var(--ink);
     transition:filter 0.1s steps(2);
 }
@@ -189,12 +211,12 @@ button:active{
         0 -4px 0 0 var(--ink),
         0 4px 0 0 var(--ink),
         inset 4px 4px 0 0 rgba(255,255,255,0.38),
-        inset -4px -4px 0 0 var(--red-deep),
+        inset -4px -4px 0 0 var(--pink-deep),
         0 4px 0 0 var(--ink);
 }
 
 button:focus-visible{
-    outline:4px dashed var(--gold);
+    outline:4px dashed var(--orange);
     outline-offset:8px;
 }
 
@@ -204,24 +226,48 @@ button:disabled{
     filter:grayscale(0.6);
 }
 
-/* ==================================================
-   PANELES (marco pixelado con sombra dura)
-   Cada panel define su color de borde con --o
-   ================================================== */
+/* Aura que late en los botones principales (el SPIN apagado no brilla) */
+#start-button::after,
+#prizes-button::after,
+#spin-button::after{
+    content:"";
+    position:absolute;
+    inset:-4px -4px -8px;
+    z-index:-1;
+    pointer-events:none;
+    box-shadow:
+        0 0 22px 6px color-mix(in srgb,var(--pink) 85%,transparent),
+        0 0 56px 14px color-mix(in srgb,var(--pink) 40%,transparent);
+    animation:button-aura 1.1s ease-in-out infinite alternate;
+}
+
+#spin-button:disabled::after{
+    animation:none;
+    opacity:0;
+}
+
+@keyframes button-aura{
+    from{ opacity:0.45; }
+    to{ opacity:1; }
+}
+
+/* ----- Paneles: marco pixelado con sombra dura -----
+   Cada panel puede cambiar el color de su borde con --o */
 
 #character-card,
 #character-selector,
 #character-container,
-#selected-character-profile,
 #game-character,
 #score,
 #credits,
 #reels,
 #chips,
 #ranking-list,
+#prizes-list,
+#skill-panel,
 #warning-screen p,
 #player-name{
-    --o:var(--gold);
+    --o:var(--orange);
     box-shadow:
         -4px 0 0 0 var(--o),
         4px 0 0 0 var(--o),
@@ -232,42 +278,95 @@ button:disabled{
         12px 12px 0 0 var(--ink);
 }
 
+/* Resplandor suave con el color del borde de cada panel */
+#character-card,
+#character-selector,
+#character-container,
+#game-character,
+#score,
+#credits,
+#chips,
+#ranking-list,
+#prizes-list{
+    animation:panel-glow 3.2s ease-in-out infinite alternate;
+}
+
+@keyframes panel-glow{
+    from{ filter:drop-shadow(0 0 6px color-mix(in srgb,var(--o) 55%,transparent)); }
+    to{ filter:drop-shadow(0 0 18px color-mix(in srgb,var(--o) 90%,transparent)); }
+}
+
+
 /* ==================================================
-   1. ADVERTENCIA
+   3. PANTALLAS
    ================================================== */
+
+/* ----- 1. Advertencia ----- */
 
 #warning-screen{
     gap:28px;
 }
 
 #warning-screen h1{
-    color:var(--alert);
-    text-shadow:4px 4px 0 var(--panel);
+    color:var(--orange);
+    text-shadow:
+        4px 4px 0 var(--panel),
+        0 0 24px color-mix(in srgb,var(--orange) 80%,transparent);
 }
 
 #warning-screen p{
-    --o:var(--red);
+    --o:var(--pink);
     width:100%;
     max-width:720px;
     padding:20px 24px;
     background:var(--panel-deep);
 }
 
-/* ==================================================
-   2. INICIO
-   ================================================== */
+
+/* ----- 2. Inicio ----- */
 
 #start-screen{
     gap:56px;
 }
 
+/* El título cambia de color: rosa, celeste, magenta */
 #start-screen h1{
     font-size:clamp(28px,7vw,80px);
-    color:var(--cream);
+    color:var(--white);
     text-shadow:
-        4px 4px 0 var(--red),
+        4px 4px 0 var(--pink),
         8px 8px 0 var(--panel),
-        12px 12px 0 var(--ink);
+        12px 12px 0 var(--ink),
+        0 0 28px var(--pink),
+        0 0 64px color-mix(in srgb,var(--pink) 55%,transparent);
+    animation:title-neon 4.5s linear infinite;
+}
+
+@keyframes title-neon{
+    0%,100%{
+        text-shadow:
+            4px 4px 0 var(--pink),
+            8px 8px 0 var(--panel),
+            12px 12px 0 var(--ink),
+            0 0 28px var(--pink),
+            0 0 64px color-mix(in srgb,var(--pink) 55%,transparent);
+    }
+    33%{
+        text-shadow:
+            4px 4px 0 var(--cyan),
+            8px 8px 0 var(--panel),
+            12px 12px 0 var(--ink),
+            0 0 28px var(--cyan),
+            0 0 64px color-mix(in srgb,var(--cyan) 55%,transparent);
+    }
+    66%{
+        text-shadow:
+            4px 4px 0 var(--magenta),
+            8px 8px 0 var(--panel),
+            12px 12px 0 var(--ink),
+            0 0 28px var(--magenta),
+            0 0 64px color-mix(in srgb,var(--magenta) 55%,transparent);
+    }
 }
 
 #start-button{
@@ -276,9 +375,8 @@ button:disabled{
     font-size:24px;
 }
 
-/* ==================================================
-   3. SELECCIÓN DE PERSONAJE
-   ================================================== */
+
+/* ----- 3. Selección de personaje ----- */
 
 #character-screen{
     justify-content:flex-start;
@@ -291,11 +389,13 @@ button:disabled{
     font-size:clamp(18px,3vw,32px);
 }
 
+/* Selector: solo círculos */
+
 #character-selector{
-    --o:var(--red);
+    --o:var(--pink);
     position:relative;
     z-index:10;
-    width:min(720px,92vw);
+    width:100%;
     padding:20px 28px;
     display:flex;
     justify-content:center;
@@ -314,107 +414,217 @@ button:disabled{
     justify-content:center;
     align-items:center;
     overflow:hidden;
-    background:var(--bg);
-    border:4px solid var(--panel);
+    background:transparent;
+    border-radius:50%;
     cursor:pointer;
-    transition:transform 0.1s steps(2),border-color 0.1s steps(2);
+    transition:transform 0.1s steps(2),box-shadow 0.1s steps(2);
 }
 
 .character-option img{
     width:100%;
     height:100%;
     object-fit:cover;
+    object-position:center top;
+    border-radius:50%;
     display:block;
 }
 
 .character-option:hover{
-    border-color:var(--gold);
+    box-shadow:0 0 0 4px var(--orange);
 }
 
+/* El elegido se levanta y se marca con un aro rosa que brilla */
 .character-option.active{
-    border-color:var(--red);
     transform:translateY(-8px);
-    box-shadow:0 8px 0 0 var(--ink);
+    box-shadow:
+        0 0 0 4px var(--pink),
+        0 0 26px 6px var(--pink);
 }
+
+/* Distribución: a la izquierda el personaje; a la derecha el selector,
+   la habilidad especial y el botón de selección */
+
+#character-layout{
+    width:min(1100px,96vw);
+    display:grid;
+    grid-template-columns:390px minmax(0,1fr);
+    gap:32px;
+    align-items:stretch;
+}
+
+#character-side{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:28px;
+}
+
+/* Columna izquierda: foto cuadrada, nombre y descripción */
 
 #character-card{
-    --o:var(--gold);
+    --o:var(--orange);
     position:relative;
     z-index:8;
-    width:min(960px,92vw);
-    padding:32px;
+    width:100%;
+    min-width:0;
+    min-height:620px;
+    box-sizing:border-box;
+    padding:24px;
     display:flex;
-    flex-direction:row;
+    flex-direction:column;
+    justify-content:flex-start;
     align-items:center;
-    gap:40px;
+    gap:18px;
     background:var(--panel);
 }
 
 #character-container{
-    --o:var(--red);
-    flex:0 0 auto;
-    width:clamp(220px,30vw,340px);
-    height:clamp(220px,30vw,340px);
+    --o:var(--pink);
+    width:100%;
+    aspect-ratio:1 / 1;
     display:flex;
     justify-content:center;
     align-items:center;
     overflow:hidden;
-    background:repeating-conic-gradient(var(--cream) 0 25%,var(--cream-deep) 0 50%) 0 0 / 32px 32px;
+    background:var(--photo-bg);
 }
 
 #character-image{
     width:100%;
     height:100%;
     object-fit:contain;
+    object-position:center;
     display:block;
-}
-
-#character-info{
-    flex:1 1 0;
-    min-width:0;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:flex-start;
-    gap:24px;
 }
 
 #character-name{
     display:inline-block;
     max-width:100%;
     padding:12px 24px;
-    background:var(--red);
-    color:var(--cream);
-    font-size:clamp(18px,2.4vw,28px);
+    background:var(--pink);
+    color:var(--white);
+    font-size:clamp(18px,2.4vw,26px);
     font-weight:400;
     line-height:1.3;
+    text-align:center;
     box-shadow:
         -4px 0 0 0 var(--ink),
         4px 0 0 0 var(--ink),
         0 -4px 0 0 var(--ink),
         0 4px 0 0 var(--ink),
         inset 4px 4px 0 0 rgba(255,255,255,0.38),
-        inset -4px -4px 0 0 var(--red-deep);
+        inset -4px -4px 0 0 var(--pink-deep);
     overflow-wrap:anywhere;
 }
 
 #character-description{
-    max-width:100%;
-    color:var(--cream);
-    font-size:clamp(11px,1.3vw,14px);
+    width:100%;
+    max-width:none;
+    color:var(--white);
+    font-size:11px;
     line-height:1.9;
     text-align:left;
 }
 
+/* Columna derecha: habilidad especial del personaje mostrado */
+
+#skill-panel{
+    --o:var(--magenta);
+    flex:1 1 auto;
+    width:100%;
+    min-height:520px;
+    box-sizing:border-box;
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:11px;
+    background:var(--panel-deep);
+    text-align:center;
+}
+
+#skill-panel-title{
+    color:var(--orange);
+    font-size:clamp(16px,2.4vw,24px);
+    font-weight:400;
+    line-height:1.4;
+    text-shadow:3px 3px 0 var(--ink);
+}
+
+#skill-panel-avatar{
+    width:96px;
+    height:96px;
+    overflow:hidden;
+    border-radius:50%;
+    box-shadow:
+        0 0 0 4px var(--pink),
+        0 0 24px 4px var(--pink);
+}
+
+#skill-panel-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center top;
+    border-radius:50%;
+    display:block;
+}
+
+#skill-panel-owner{
+    color:var(--cyan);
+    font-size:12px;
+    line-height:1.5;
+}
+
+#skill-panel-name{
+    color:var(--pink);
+    font-size:clamp(16px,2.4vw,24px);
+    line-height:1.4;
+    text-shadow:3px 3px 0 var(--ink);
+    overflow-wrap:anywhere;
+}
+
+#skill-panel-description{
+    max-width:480px;
+    color:var(--white);
+    font-size:clamp(11px,1.4vw,14px);
+    line-height:1.9;
+}
+
+#skill-panel-detail{
+    max-width:480px;
+    color:var(--lilac);
+    font-size:10px;
+    line-height:1.8;
+}
+
+#skill-panel-when{
+    padding:8px 12px;
+    background:var(--bg);
+    color:var(--magenta);
+    font-size:10px;
+    line-height:1.6;
+    box-shadow:
+        -4px 0 0 0 var(--magenta),
+        4px 0 0 0 var(--magenta),
+        0 -4px 0 0 var(--magenta),
+        0 4px 0 0 var(--magenta);
+}
+
 #character-select-button{
-    width:min(720px,92vw);
+    width:100%;
+    max-width:560px;
     padding:20px 24px;
     font-size:clamp(13px,2vw,20px);
     cursor:default;
 }
 
-#character-instruction{
-    color:var(--gold);
+/* Texto que parpadea (selección y premios) */
+#character-instruction,
+#prizes-instruction{
+    color:var(--orange);
     font-size:clamp(10px,1.2vw,13px);
     animation:blink 1s steps(1) infinite;
 }
@@ -424,46 +634,50 @@ button:disabled{
     61%,100%{ opacity:0.15; }
 }
 
-/* ==================================================
-   4. NOMBRE DEL JUGADOR
-   ================================================== */
+
+/* ----- 4. Nombre del jugador ----- */
 
 #name-screen{
     gap:24px;
 }
 
+/* Foto solo con círculo y aro rosa (borrá el box-shadow si no querés el aro) */
 #selected-character-profile{
-    --o:var(--red);
     width:170px;
     height:170px;
     display:flex;
     justify-content:center;
     align-items:center;
     overflow:hidden;
-    background:repeating-conic-gradient(var(--cream) 0 25%,var(--cream-deep) 0 50%) 0 0 / 24px 24px;
+    background:transparent;
+    border-radius:50%;
+    box-shadow:
+        0 0 0 4px var(--pink),
+        0 0 26px 6px var(--pink);
 }
 
 #name-character-image{
     width:100%;
     height:100%;
     object-fit:cover;
+    object-position:center;
+    border-radius:50%;
     display:block;
 }
 
 #name-character-label{
-    color:var(--gold);
+    color:var(--orange);
     font-size:12px;
 }
 
 #player-name{
-    --o:var(--gold);
     width:260px;
     height:76px;
     padding:10px 16px;
     background:var(--bg);
     border:none;
     border-radius:0;
-    color:var(--cream);
+    color:var(--white);
     font-family:var(--font);
     font-size:32px;
     text-align:center;
@@ -478,7 +692,7 @@ button:disabled{
 }
 
 #player-name:focus{
-    --o:var(--red);
+    --o:var(--pink);
 }
 
 #name-screen > p:not(#name-character-label){
@@ -487,9 +701,88 @@ button:disabled{
     line-height:2;
 }
 
-/* ==================================================
-   5. JUEGO
-   ================================================== */
+
+/* ----- 4B. Premios (antes de jugar) ----- */
+
+#prizes-screen{
+    gap:24px;
+}
+
+#prizes-info{
+    max-width:760px;
+    color:var(--orange);
+    font-size:11px;
+    line-height:2;
+}
+
+#prizes-list{
+    --o:var(--pink);
+    width:min(760px,92vw);
+    padding:20px 24px;
+    overflow-x:auto;
+    background:var(--panel-deep);
+}
+
+#prizes-table{
+    width:100%;
+    border-collapse:collapse;
+    text-align:center;
+    font-size:14px;
+}
+
+#prizes-table th{
+    padding:12px 10px;
+    border-bottom:4px solid var(--pink);
+    color:var(--orange);
+    font-weight:400;
+    font-size:12px;
+}
+
+#prizes-table td{
+    padding:12px 10px;
+    border-bottom:4px dashed var(--panel);
+    color:var(--white);
+    line-height:1.5;
+    vertical-align:middle;
+}
+
+#prizes-table tr:last-child td{
+    border-bottom:none;
+}
+
+#prizes-table td:nth-child(3){
+    color:var(--orange);
+}
+
+#prizes-table .prize-label{
+    text-align:left;
+    font-size:12px;
+}
+
+#prizes-table .prize-label img{
+    width:40px;
+    height:40px;
+    margin-right:4px;
+    object-fit:contain;
+    vertical-align:middle;
+}
+
+#prizes-table .prize-label small{
+    display:block;
+    margin-top:6px;
+    color:var(--orange);
+    font-size:9px;
+}
+
+/* Fila del premio mayor */
+#prizes-table tbody tr:first-child td:nth-child(2),
+#prizes-table tbody tr:first-child td:nth-child(3){
+    color:var(--orange);
+    text-shadow:2px 2px 0 var(--ink);
+}
+
+
+/* ----- 5. Juego ----- */
 
 #game-screen{
     display:grid;
@@ -498,10 +791,10 @@ button:disabled{
     justify-content:center;
     align-items:center;
     column-gap:32px;
-    padding:48px 32px;
+    padding:48px 32px 100px;   /* espacio abajo para las luces de los rodillos */
 }
 
-/* ----- Panel izquierdo ----- */
+/* Panel izquierdo: personaje, puntaje y créditos */
 
 #game-left-panel{
     grid-column:1;
@@ -515,25 +808,26 @@ button:disabled{
 }
 
 #game-character{
-    --o:var(--red);
+    --o:var(--pink);
     width:250px;
     height:250px;
     display:flex;
     justify-content:center;
     align-items:center;
     overflow:hidden;
-    background:repeating-conic-gradient(var(--cream) 0 25%,var(--cream-deep) 0 50%) 0 0 / 32px 32px;
+    background:var(--photo-bg);
 }
 
 #game-character-image{
-    width:232px;
-    height:232px;
+    width:100%;
+    height:100%;
     object-fit:contain;
+    object-position:center;
     display:block;
 }
 
 #score{
-    --o:var(--gold);
+    --o:var(--orange);
     width:250px;
     min-height:120px;
     padding:16px;
@@ -546,22 +840,23 @@ button:disabled{
 }
 
 .score-title{
-    color:var(--gold);
+    color:var(--orange);
     font-size:14px;
     line-height:1.4;
 }
 
 #score-value{
-    color:var(--cream);
+    max-width:100%;
+    color:var(--white);
     font-size:40px;
     line-height:1.2;
-    text-shadow:4px 4px 0 var(--red);
+    text-align:center;
+    text-shadow:4px 4px 0 var(--pink);
+    overflow-wrap:anywhere;
 }
 
-/* ----- Créditos (debajo del puntaje) ----- */
-
 #credits{
-    --o:var(--red);
+    --o:var(--pink);
     width:250px;
     min-height:100px;
     padding:14px 16px;
@@ -574,21 +869,34 @@ button:disabled{
 }
 
 #credits .score-title{
-    color:var(--alert);
+    color:var(--orange);
 }
 
 #credits-value{
-    color:var(--gold);
+    color:var(--orange);
     font-size:28px;
     line-height:1.2;
     text-shadow:3px 3px 0 var(--panel);
 }
 
-/* ----- Rodillos ----- */
+/* Créditos bajos: parpadean como alarma */
+#credits-value.low{
+    animation:low-credits 0.8s steps(1) infinite;
+}
+
+@keyframes low-credits{
+    0%{ opacity:1; }
+    50%{ opacity:0.35; }
+}
+
+/* Rodillos */
 
 #reels{
-    --o:var(--gold);
+    --o:var(--orange);
     --pad:20px;
+    --reel-gap:14px;   /* separación entre rodillos (y entre sus luces) */
+    --lamp:28px;       /* tamaño de las luces redondas de abajo */
+
     position:relative;
     z-index:5;
     grid-column:2;
@@ -599,114 +907,45 @@ button:disabled{
     display:flex;
     justify-content:center;
     align-items:stretch;
-    gap:14px;
+    gap:var(--reel-gap);
     overflow:visible;
-
-    /* Luces del marco: foquitos de --b px dentro del padding */
-    --b:calc(var(--pad) * 0.4);
-    --off:calc((var(--pad) - var(--b)) / 2);
-    --bulbs-h:linear-gradient(90deg,
-        var(--red) 0 var(--b),
-        transparent var(--b) calc(var(--b) * 2),
-        var(--cream) calc(var(--b) * 2) calc(var(--b) * 3),
-        transparent calc(var(--b) * 3) calc(var(--b) * 4));
-    --bulbs-v:linear-gradient(180deg,
-        var(--red) 0 var(--b),
-        transparent var(--b) calc(var(--b) * 2),
-        var(--cream) calc(var(--b) * 2) calc(var(--b) * 3),
-        transparent calc(var(--b) * 3) calc(var(--b) * 4));
-    background:
-        var(--bulbs-h) 0 var(--off) / calc(var(--b) * 4) var(--b) repeat-x,
-        var(--bulbs-h) 0 calc(100% - var(--off)) / calc(var(--b) * 4) var(--b) repeat-x,
-        var(--bulbs-v) var(--off) 0 / var(--b) calc(var(--b) * 4) repeat-y,
-        var(--bulbs-v) calc(100% - var(--off)) 0 / var(--b) calc(var(--b) * 4) repeat-y,
-        var(--panel);
-    animation:marquee 1s steps(1,end) infinite;
+    background:var(--panel);
 }
 
-/* Mientras giran los rodillos, las luces se aceleran */
-#reels:has(.reel.spinning){
-    animation-duration:0.3s;
-}
-
-.reel{
-    position:relative;
-    width:calc((100% - 28px) / 3);
-    height:100%;
-    display:grid;
-    grid-template-rows:repeat(3,1fr);
-    overflow:hidden;
-    background:
-        linear-gradient(to right,var(--cream-deep) 0,var(--cream) 16px,var(--cream) calc(100% - 16px),var(--cream-deep) 100%);
-    border:4px solid var(--ink);
-    box-shadow:inset 0 0 0 4px var(--wood);
-}
-
-.reel-symbol{
-    position:relative;
-    z-index:4;
-    width:100%;
-    height:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-shrink:0;
-    overflow:hidden;
-    border-bottom:4px dashed rgba(74,40,2,0.25);
-}
-
-.reel-symbol:last-child{
-    border-bottom:none;
-}
-
-.reel-symbol img{
-    width:clamp(72px,7vw,112px);
-    height:clamp(72px,7vw,112px);
-    object-fit:contain;
-    display:block;
-    filter:drop-shadow(4px 4px 0 rgba(31,18,4,0.35));
-}
-
-.active-symbol{
+/* Aura de neón alrededor de la máquina (rosa a celeste; se acelera al girar) */
+#reels::after{
+    content:"";
     position:absolute;
     inset:0;
-    width:100%;
-    height:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:6;
+    z-index:-1;
+    pointer-events:none;
+    box-shadow:
+        0 0 28px 6px color-mix(in srgb,var(--pink) 65%,transparent),
+        0 0 70px 18px color-mix(in srgb,var(--magenta) 45%,transparent),
+        0 0 120px 30px color-mix(in srgb,var(--cyan) 30%,transparent);
+    animation:aura-cycle 4s ease-in-out infinite alternate;
 }
 
-.active-symbol img{
-    width:clamp(80px,7.5vw,120px);
-    height:clamp(80px,7.5vw,120px);
-    object-fit:contain;
-    display:block;
+#reels:has(.reel.spinning)::after{
+    animation-duration:0.5s;
 }
 
-/* Luces de marquesina: solo en el marco de la cámara (#reels), definidas arriba */
-
-/* Alterna los foquitos: lo rojo pasa al lugar de lo otro y viceversa */
-@keyframes marquee{
-    0%,100%{
-        background-position:
-            0 var(--off),
-            0 calc(100% - var(--off)),
-            var(--off) 0,
-            calc(100% - var(--off)) 0;
+@keyframes aura-cycle{
+    0%{
+        box-shadow:
+            0 0 28px 6px color-mix(in srgb,var(--pink) 65%,transparent),
+            0 0 70px 18px color-mix(in srgb,var(--magenta) 45%,transparent),
+            0 0 120px 30px color-mix(in srgb,var(--cyan) 30%,transparent);
     }
-    50%{
-        background-position:
-            calc(var(--b) * 2) var(--off),
-            calc(var(--b) * 2) calc(100% - var(--off)),
-            var(--off) calc(var(--b) * 2),
-            calc(100% - var(--off)) calc(var(--b) * 2);
+    100%{
+        box-shadow:
+            0 0 28px 6px color-mix(in srgb,var(--cyan) 65%,transparent),
+            0 0 70px 18px color-mix(in srgb,var(--blue) 45%,transparent),
+            0 0 120px 30px color-mix(in srgb,var(--pink) 30%,transparent);
     }
 }
 
-/* Línea de pago: franja roja sobre la fila central */
-
+/* Línea de pago: franja rosa sobre la fila central, brilla y parpadea */
 #reels::before{
     content:"";
     position:absolute;
@@ -716,16 +955,65 @@ button:disabled{
     height:calc((100% - 2 * var(--pad) - 8px) / 3);
     transform:translateY(-50%);
     background:
-        linear-gradient(var(--red),var(--red)) left center / 12px 100% no-repeat,
-        linear-gradient(var(--red),var(--red)) right center / 12px 100% no-repeat,
-        rgba(217,48,26,0.14);
-    border-top:4px solid var(--red);
-    border-bottom:4px solid var(--red);
+        linear-gradient(var(--pink),var(--pink)) left center / 12px 100% no-repeat,
+        linear-gradient(var(--pink),var(--pink)) right center / 12px 100% no-repeat,
+        color-mix(in srgb,var(--pink) 16%,transparent);
+    border-top:4px solid var(--pink);
+    border-bottom:4px solid var(--pink);
+    box-shadow:
+        0 0 16px 2px color-mix(in srgb,var(--pink) 80%,transparent),
+        inset 0 0 18px color-mix(in srgb,var(--pink) 45%,transparent);
     pointer-events:none;
     z-index:20;
+    animation:payline-pulse 0.9s steps(2) infinite;
 }
 
-/* ----- Animación de giro ----- */
+@keyframes payline-pulse{
+    0%{ border-color:var(--pink); }
+    100%{ border-color:var(--orange); }
+}
+
+.reel{
+    position:relative;
+    width:calc((100% - 2 * var(--reel-gap)) / 3);
+    height:100%;
+    display:grid;
+    grid-template-rows:repeat(3,1fr);
+    overflow:hidden;
+    background:
+        linear-gradient(to right,var(--lilac) 0,var(--white) 16px,var(--white) calc(100% - 16px),var(--lilac) 100%);
+    border:4px solid var(--ink);
+    box-shadow:inset 0 0 0 4px var(--magenta);
+}
+
+.reel-symbol{
+    position:relative;
+    z-index:4;
+    width:100%;
+    height:100%;
+    padding:clamp(6px,1.2vw,14px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-shrink:0;
+    overflow:hidden;
+    border-bottom:4px dashed color-mix(in srgb,var(--ink) 20%,transparent);
+}
+
+.reel-symbol:last-child{
+    border-bottom:none;
+}
+
+.reel-symbol img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    object-position:center;
+    display:block;
+    filter:drop-shadow(4px 4px 0 color-mix(in srgb,var(--ink) 35%,transparent));
+}
+
+/* Animación de giro */
 
 .reel.spinning{
     animation:reel-vibration 0.08s steps(2) infinite;
@@ -741,11 +1029,40 @@ button:disabled{
 
 .reel.spinning .reel-symbol img{
     opacity:0.85;
-    filter:brightness(1.25) drop-shadow(4px 4px 0 rgba(31,18,4,0.35));
+    filter:
+        brightness(1.25)
+        drop-shadow(4px 4px 0 color-mix(in srgb,var(--ink) 35%,transparent));
 }
 
 .reel.stopped{
     animation:reel-stop 0.24s steps(3) 1;
+}
+
+/* Rayas de luz mientras gira y destello blanco al parar */
+.reel::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:8;
+    pointer-events:none;
+    opacity:0;
+}
+
+.reel.spinning::after{
+    opacity:1;
+    background:repeating-linear-gradient(
+        180deg,
+        transparent 0 24px,
+        color-mix(in srgb,var(--cyan) 18%,transparent) 24px 32px,
+        transparent 32px 56px,
+        color-mix(in srgb,var(--pink) 16%,transparent) 56px 64px
+    );
+    background-size:100% 64px;
+    animation:reel-streaks 0.2s steps(4) infinite;
+}
+
+.reel.stopped::after{
+    animation:reel-flash 0.45s steps(5) 1;
 }
 
 @keyframes reel-scroll{
@@ -764,7 +1081,73 @@ button:disabled{
     100%{ transform:translateY(0); }
 }
 
-/* ----- Panel derecho ----- */
+@keyframes reel-streaks{
+    from{ background-position:0 0; }
+    to{ background-position:0 64px; }
+}
+
+@keyframes reel-flash{
+    0%{ opacity:1; background-color:rgba(255,255,255,0.75); }
+    100%{ opacity:0; background-color:rgba(255,255,255,0); }
+}
+
+/* Luces redondas bajo cada rodillo: se encienden cuando ese rodillo
+   termina de girar y se apagan al empezar la siguiente tirada */
+
+#reel-lights{
+    position:absolute;
+    left:var(--pad);
+    right:var(--pad);
+    top:calc(100% + 26px);
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    column-gap:var(--reel-gap);
+    justify-items:center;
+    pointer-events:none;
+    z-index:6;
+}
+
+.reel-light{
+    --c:var(--pink);
+    width:var(--lamp);
+    height:var(--lamp);
+    border-radius:50%;
+    background:var(--panel-deep);
+    border:4px solid var(--panel);
+    box-shadow:
+        inset -3px -3px 0 0 rgba(0,0,0,0.45),
+        4px 4px 0 0 var(--ink);
+}
+
+.reel-light:nth-child(1){ --c:var(--pink); }
+.reel-light:nth-child(2){ --c:var(--cyan); }
+.reel-light:nth-child(3){ --c:var(--orange); }
+
+.reel-light.on{
+    background:var(--c);
+    border-color:var(--ink);
+    box-shadow:
+        inset 4px 4px 0 0 rgba(255,255,255,0.6),
+        inset -4px -4px 0 0 rgba(0,0,0,0.2),
+        0 0 0 4px color-mix(in srgb,var(--c) 55%,transparent),
+        0 0 0 8px color-mix(in srgb,var(--c) 25%,transparent),
+        0 0 22px 8px var(--c);
+    animation:
+        lamp-on 0.3s steps(3) 1,
+        lamp-pulse 1s ease-in-out 0.3s infinite alternate;
+}
+
+@keyframes lamp-on{
+    0%{ transform:scale(0.5); filter:brightness(2.2); }
+    100%{ transform:scale(1); filter:brightness(1); }
+}
+
+@keyframes lamp-pulse{
+    from{ filter:brightness(1); }
+    to{ filter:brightness(1.45); }
+}
+
+/* Panel derecho: fichas y botón SPIN */
 
 #game-right-panel{
     grid-column:3;
@@ -778,27 +1161,38 @@ button:disabled{
     gap:32px;
 }
 
+/* Fichas: una sobre otra, cada una encima de la anterior */
+
 #chips{
-    --o:var(--red);
+    --o:var(--pink);
     width:250px;
-    min-height:260px;
-    padding:20px 16px;
+    padding:16px 16px 22px;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    gap:16px;
+    gap:0;
     background:var(--panel-deep);
 }
 
 .chip{
-    width:80px;
-    height:80px;
+    position:relative;
+    width:112px;
+    height:112px;
     display:flex;
     justify-content:center;
     align-items:center;
-    overflow:hidden;
+    overflow:visible;
+    animation:chip-glow 1.4s ease-in-out infinite alternate;
 }
+
+.chip + .chip{
+    margin-top:-52px;
+}
+
+.chip:nth-child(1){ z-index:1; }
+.chip:nth-child(2){ z-index:2; animation-delay:0.25s; }
+.chip:nth-child(3){ z-index:3; animation-delay:0.5s; }
 
 .chip img{
     width:100%;
@@ -807,22 +1201,26 @@ button:disabled{
     display:block;
 }
 
+@keyframes chip-glow{
+    from{ filter:drop-shadow(0 0 4px color-mix(in srgb,var(--orange) 50%,transparent)); }
+    to{ filter:drop-shadow(0 0 14px var(--orange)); }
+}
+
 #spin-button{
     width:250px;
     min-height:140px;
     padding:20px 12px;
+    color:var(--white);
     font-size:30px;
     letter-spacing:0;
-    text-shadow:3px 3px 0 var(--red-deep);
-    color:var(--cream);
+    text-shadow:3px 3px 0 var(--pink-deep);
 }
 
-/* ----- Mensaje del juego (JS lo mueve dentro de #reels) ----- */
+/* Mensaje del juego (el JS lo mueve dentro de #reels) */
 
 #game-message{
     position:absolute;
     bottom:calc(100% + 18px);
-    top:auto;
     left:50%;
     transform:translateX(-50%);
     width:min(100%,760px);
@@ -833,8 +1231,7 @@ button:disabled{
     align-items:center;
     z-index:50;
     background:var(--bg);
-    border:none;
-    color:var(--cream);
+    color:var(--white);
     font-size:clamp(10px,1.2vw,14px);
     line-height:1.7;
     text-align:center;
@@ -842,10 +1239,10 @@ button:disabled{
     opacity:0;
     visibility:hidden;
     box-shadow:
-        -4px 0 0 0 var(--red),
-        4px 0 0 0 var(--red),
-        0 -4px 0 0 var(--red),
-        0 4px 0 0 var(--red),
+        -4px 0 0 0 var(--pink),
+        4px 0 0 0 var(--pink),
+        0 -4px 0 0 var(--pink),
+        0 4px 0 0 var(--pink),
         8px 8px 0 0 var(--ink);
 }
 
@@ -865,40 +1262,41 @@ button:disabled{
     100%{ transform:translateX(-50%) translateY(0); }
 }
 
-/* ==================================================
-   6. SCORE FINAL
-   ================================================== */
+
+/* ----- 6. Score final ----- */
 
 #end-screen{
     gap:28px;
 }
 
 #final-score{
-    color:var(--cream);
+    max-width:100%;
+    text-align:center;
+    overflow-wrap:anywhere;
+    color:var(--white);
     font-size:clamp(56px,14vw,112px);
     line-height:1.1;
     text-shadow:
-        6px 6px 0 var(--red),
+        6px 6px 0 var(--pink),
         12px 12px 0 var(--panel);
 }
 
 #final-player-name,
 #final-character,
 #final-credits{
-    color:var(--gold);
+    color:var(--orange);
     font-size:clamp(12px,2vw,18px);
 }
 
-/* ==================================================
-   7. RANKING
-   ================================================== */
+
+/* ----- 7. Ranking ----- */
 
 #ranking-screen{
     gap:24px;
 }
 
 #ranking-list{
-    --o:var(--red);
+    --o:var(--pink);
     width:min(900px,92vw);
     min-height:200px;
     padding:28px;
@@ -921,468 +1319,33 @@ button:disabled{
 
 #ranking-table th{
     padding:16px 10px;
-    border-bottom:4px solid var(--red);
-    color:var(--gold);
+    border-bottom:4px solid var(--pink);
+    color:var(--orange);
     font-weight:400;
 }
 
 #ranking-table td{
     padding:16px 10px;
     border-bottom:4px dashed var(--panel);
-    color:var(--cream);
+    color:var(--white);
     line-height:1.5;
 }
 
 #ranking-table tbody tr:first-child td{
-    color:var(--alert);
+    color:var(--orange);
     text-shadow:2px 2px 0 var(--ink);
 }
 
 #ranking-table tbody tr:hover td{
-    background:rgba(255,182,39,0.12);
-}
-
-/* ==================================================
-   RESPONSIVE
-   ================================================== */
-
-/* Ventanas medianas: la máquina se compacta pero sigue en 3 columnas */
-@media (min-width:1051px) and (max-width:1250px){
-    #game-screen{
-        grid-template-columns:210px minmax(440px,1fr) 205px;
-        column-gap:24px;
-        padding:40px 20px;
-    }
-
-    #game-left-panel,
-    #game-character,
-    #score,
-    #credits{ width:210px; }
-
-    #game-character{ height:210px; }
-    #game-character-image{ width:192px; height:192px; }
-    #score{ min-height:105px; }
-    .score-title{ font-size:12px; }
-    #score-value{ font-size:32px; }
-    #credits{ min-height:90px; }
-    #credits-value{ font-size:22px; }
-
-    #reels{ --pad:14px; --b:6px; height:420px; gap:10px; }
-    .reel{ width:calc((100% - 20px) / 3); }
-
-    #game-right-panel,
-    #chips,
-    #spin-button{ width:205px; }
-
-    #game-right-panel{ min-height:420px; }
-    #chips{ min-height:230px; padding:14px 10px; gap:10px; }
-    .chip{ width:64px; height:64px; }
-    #spin-button{ min-height:120px; font-size:22px; }
-}
-
-/* Tablet y celular: la máquina pasa a una sola columna */
-@media (max-width:1050px){
-    .screen{ padding:32px 20px; }
-
-    #game-screen{
-        display:flex;
-        flex-direction:column;
-        justify-content:flex-start;
-        align-items:center;
-        gap:28px;
-        padding:32px 20px 48px;
-    }
-
-    #game-left-panel{
-        order:1;
-        width:auto;
-        flex-direction:row;
-        align-items:center;
-        gap:24px;
-    }
-
-    #game-character{ width:160px; height:160px; }
-    #game-character-image{ width:144px; height:144px; }
-    #score{ width:200px; min-height:110px; }
-    .score-title{ font-size:12px; }
-    #score-value{ font-size:32px; }
-
-    #reels{
-        --pad:16px;
-        --b:6px;
-        order:2;
-        width:min(720px,92vw);
-        height:330px;
-        margin-top:84px;
-        gap:10px;
-    }
-
-    .reel{ width:calc((100% - 20px) / 3); }
-    .reel-symbol img{ width:clamp(64px,12vw,96px); height:clamp(64px,12vw,96px); }
-    .active-symbol img{ width:clamp(68px,12vw,100px); height:clamp(68px,12vw,100px); }
-
-    #game-right-panel{
-        order:3;
-        width:auto;
-        min-height:0;
-        flex-direction:row;
-        align-items:center;
-        gap:28px;
-    }
-
-    #chips{
-        width:auto;
-        min-height:0;
-        padding:12px 16px;
-        flex-direction:row;
-        gap:12px;
-    }
-
-    .chip{ width:56px; height:56px; }
-    #spin-button{ width:240px; min-height:100px; font-size:26px; }
-}
-
-/* Celular */
-@media (max-width:700px){
-    .screen{ min-height:100svh; padding:28px 16px; gap:20px; }
-    h1{ font-size:clamp(16px,6vw,28px); }
-    p{ font-size:11px; }
-    button,
-    #character-select-button{ min-height:52px; padding:14px 20px; font-size:14px; }
-
-    #warning-screen p{ padding:16px; }
-
-    /* Selección */
-    #character-selector{ padding:14px 12px; gap:8px; }
-    .character-option{ width:clamp(48px,16vw,68px); height:clamp(48px,16vw,68px); border-width:3px; }
-
-    #character-card{
-        flex-direction:column;
-        gap:24px;
-        padding:20px 16px;
-    }
-
-    #character-container{
-        width:min(70vw,280px);
-        height:min(70vw,280px);
-    }
-
-    #character-info{ width:100%; align-items:center; gap:16px; }
-    #character-description{ text-align:center; font-size:11px; }
-    #character-select-button{ width:94%; font-size:12px; }
-
-    /* Nombre */
-    #selected-character-profile{ width:130px; height:130px; }
-    #player-name{ width:210px; height:64px; font-size:26px; }
-
-    /* Juego */
-    #game-screen{ gap:24px; padding:24px 14px 40px; }
-    #game-left-panel{ gap:16px; }
-    #game-character{ width:120px; height:120px; }
-    #game-character-image{ width:108px; height:108px; }
-    #score{ width:150px; min-height:96px; padding:10px; gap:8px; }
-    .score-title{ font-size:10px; }
-    #score-value{ font-size:24px; text-shadow:3px 3px 0 var(--red); }
-
-    #reels{
-        --pad:12px;
-        --b:4px;
-        width:94vw;
-        height:min(62vw,290px);
-        min-height:210px;
-        margin-top:90px;
-        gap:6px;
-    }
-
-    .reel{ width:calc((100% - 12px) / 3); border-width:3px; }
-    .reel-symbol img,
-    .active-symbol img{ width:clamp(40px,14vw,64px); height:clamp(40px,14vw,64px); }
-    #reels::before{ border-width:3px; }
-
-    #game-right-panel{ flex-wrap:wrap; justify-content:center; gap:20px; }
-    .chip{ width:44px; height:44px; }
-    #spin-button{ width:min(92vw,280px); min-height:76px; font-size:22px; }
-
-    #game-message{
-        bottom:calc(100% + 14px);
-        width:100%;
-        min-height:44px;
-        padding:10px 12px;
-        font-size:10px;
-    }
-
-    /* Ranking */
-    #ranking-list{ padding:16px; }
-    #ranking-table{ min-width:460px; font-size:11px; }
-    #ranking-table th,
-    #ranking-table td{ padding:12px 6px; }
-}
-
-@media (max-width:380px){
-    #game-left-panel{ transform:scale(0.92); margin:-6px 0; }
-    .chip{ width:38px; height:38px; }
-    .character-option{ width:44px; height:44px; }
-}
-
-/* Respeta a quienes pidieron menos movimiento (el giro de rodillos se mantiene) */
-@media (prefers-reduced-motion:reduce){
-    #character-instruction{ animation:none; }
-    #reels{ animation:none; }
-    .reel.spinning{ animation:none; }
-    .reel.stopped{ animation:none; }
-    #game-message.game-message-visible{ animation:none; }
-}
-
-/* Color de alerta cuando ya no alcanza para otra tirada */
-#credits-value.low{
-    color:var(--alert);
-    text-shadow:3px 3px 0 var(--panel);
-}
-
-/* ==================================================
-   CRÉDITOS: PANEL IZQUIERDO EN TABLET Y CELULAR
-   Personaje a la izquierda; puntos y créditos apilados.
-   ================================================== */
-
-@media (max-width:1050px){
-    #game-left-panel{
-        display:grid;
-        grid-template-columns:auto auto;
-        align-items:center;
-        justify-items:center;
-        gap:20px 24px;
-    }
-
-    #game-character{ grid-row:1 / span 2; }
-
-    #score,
-    #credits{
-        width:200px;
-        min-height:0;
-        padding:12px;
-    }
-
-    #credits-value{ font-size:22px; }
-}
-
-@media (max-width:700px){
-    #game-left-panel{ gap:14px 16px; }
-
-    #score,
-    #credits{
-        width:150px;
-        padding:8px;
-    }
-
-    #credits-value{ font-size:16px; text-shadow:2px 2px 0 var(--panel); }
+    background:color-mix(in srgb,var(--orange) 12%,transparent);
 }
 
 
-/* ==================================================
-   LUCES CIRCULARES BAJO CADA RODILLO
-   Una luz por rodillo: se enciende cuando ese rodillo
-   termina de girar y se apaga al empezar la siguiente tirada.
-   ================================================== */
-
-#reels{
-    --reel-gap:14px;   /* tiene que coincidir con el gap de los rodillos */
-    --lamp:28px;
-}
-
-#reel-lights{
-    position:absolute;
-    left:var(--pad);
-    right:var(--pad);
-    top:calc(100% + 26px);
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    column-gap:var(--reel-gap);
-    justify-items:center;
-    pointer-events:none;
-    z-index:6;
-}
-
-.reel-light{
-    --c:var(--red);
-    width:var(--lamp);
-    height:var(--lamp);
-    border-radius:50%;
-    background:var(--panel-deep);
-    border:4px solid var(--panel);
-    box-shadow:
-        inset -3px -3px 0 0 rgba(0,0,0,0.45),
-        4px 4px 0 0 var(--ink);
-}
-
-.reel-light:nth-child(1){ --c:var(--red); }
-.reel-light:nth-child(2){ --c:var(--green); }
-.reel-light:nth-child(3){ --c:var(--gold); }
-
-.reel-light.on{
-    background:var(--c);
-    border-color:var(--ink);
-    box-shadow:
-        inset 4px 4px 0 0 rgba(255,255,255,0.6),
-        inset -4px -4px 0 0 rgba(0,0,0,0.2),
-        0 0 0 4px color-mix(in srgb,var(--c) 55%,transparent),
-        0 0 0 8px color-mix(in srgb,var(--c) 25%,transparent),
-        0 0 22px 8px var(--c);
-    animation:lamp-on 0.3s steps(3) 1;
-}
-
-@keyframes lamp-on{
-    0%{ transform:scale(0.5); filter:brightness(2.2); }
-    100%{ transform:scale(1); filter:brightness(1); }
-}
-
-/* Espacio extra bajo la máquina para que entren las luces */
-@media (min-width:1051px){
-    #game-screen{ padding-bottom:100px; }
-}
-
-@media (min-width:1051px) and (max-width:1250px){
-    #reels{ --reel-gap:10px; --lamp:24px; }
-}
-
-@media (max-width:1050px){
-    #reels{ --reel-gap:10px; --lamp:24px; margin-bottom:52px; }
-    #reel-lights{ top:calc(100% + 22px); }
-}
-
-@media (max-width:700px){
-    #reels{ --reel-gap:6px; --lamp:18px; margin-bottom:44px; }
-    #reel-lights{ top:calc(100% + 18px); }
-    .reel-light{ border-width:3px; }
-    .reel-light.on{
-        box-shadow:
-            inset 3px 3px 0 0 rgba(255,255,255,0.6),
-            0 0 0 3px color-mix(in srgb,var(--c) 55%,transparent),
-            0 0 14px 5px var(--c);
-    }
-}
-
-@media (prefers-reduced-motion:reduce){
-    .reel-light.on{ animation:none; }
-}
-
-/* ==================================================
-   PANTALLA DE PREMIOS (antes de jugar)
-   ================================================== */
-
-#prizes-screen{
-    gap:24px;
-}
-
-#prizes-info{
-    max-width:760px;
-    color:var(--gold);
-    font-size:11px;
-    line-height:2;
-}
-
-#prizes-list{
-    --o:var(--red);
-    width:min(760px,92vw);
-    padding:20px 24px;
-    overflow-x:auto;
-    background:var(--panel-deep);
-    box-shadow:
-        -4px 0 0 0 var(--o),
-        4px 0 0 0 var(--o),
-        0 -4px 0 0 var(--o),
-        0 4px 0 0 var(--o),
-        inset 4px 4px 0 0 rgba(255,255,255,0.14),
-        inset -4px -4px 0 0 rgba(0,0,0,0.28),
-        12px 12px 0 0 var(--ink);
-}
-
-#prizes-table{
-    width:100%;
-    border-collapse:collapse;
-    text-align:center;
-    font-size:14px;
-}
-
-#prizes-table th{
-    padding:12px 10px;
-    border-bottom:4px solid var(--red);
-    color:var(--gold);
-    font-weight:400;
-    font-size:12px;
-}
-
-#prizes-table td{
-    padding:12px 10px;
-    border-bottom:4px dashed var(--panel);
-    color:var(--cream);
-    line-height:1.5;
-    vertical-align:middle;
-}
-
-#prizes-table tr:last-child td{
-    border-bottom:none;
-}
-
-#prizes-table td:nth-child(2){
-    color:var(--cream);
-}
-
-#prizes-table td:nth-child(3){
-    color:var(--gold);
-}
-
-#prizes-table .prize-label{
-    text-align:left;
-    font-size:12px;
-}
-
-#prizes-table .prize-label img{
-    width:40px;
-    height:40px;
-    margin-right:4px;
-    object-fit:contain;
-    vertical-align:middle;
-}
-
-#prizes-table .prize-label small{
-    display:block;
-    margin-top:6px;
-    color:var(--gold);
-    font-size:9px;
-}
-
-#prizes-table tbody tr:first-child td:nth-child(2),
-#prizes-table tbody tr:first-child td:nth-child(3){
-    color:var(--alert);
-    text-shadow:2px 2px 0 var(--ink);
-}
-
-#prizes-instruction{
-    color:var(--gold);
-    font-size:clamp(10px,1.2vw,13px);
-    animation:blink 1s steps(1) infinite;
-}
-
-@media (max-width:700px){
-    #prizes-list{ padding:12px; }
-    #prizes-table{ font-size:11px; }
-    #prizes-table th{ font-size:9px; padding:10px 4px; }
-    #prizes-table td{ padding:10px 4px; }
-    #prizes-table .prize-label{ font-size:9px; }
-    #prizes-table .prize-label img{ width:26px; height:26px; margin-right:2px; }
-    #prizes-table .prize-label small{ font-size:8px; }
-}
-
-@media (prefers-reduced-motion:reduce){
-    #prizes-instruction{ animation:none; }
-}
-
-/* ==================================================
-   ALERTAS DE COMBINACIÓN: BIG / SUPER / MEGA WIN
-   Big = celeste · Super = verde · Mega = rojo
-   ================================================== */
+/* ----- Alertas de combinación: BIG / SUPER / MEGA WIN -----
+   Big = azul · Super = celeste · Mega = rosa */
 
 #win-alert{
+    --tc:color-mix(in srgb,var(--blue) 55%,white);   /* color de rayos y borde */
     position:fixed;
     inset:0;
     z-index:900;
@@ -1390,14 +1353,51 @@ button:disabled{
     justify-content:center;
     align-items:center;
     padding:20px;
-    background:rgba(13,7,2,0.6);
+    overflow:hidden;
+    background:color-mix(in srgb,var(--ink) 72%,transparent);
     pointer-events:none;
     animation:alert-fade 0.2s steps(2) 1;
 }
 
+#win-alert[data-tier="super"]{ --tc:var(--cyan); }
+#win-alert[data-tier="mega"]{ --tc:var(--pink); }
+
+/* Rayos giratorios de fondo */
+#win-alert::before{
+    content:"";
+    position:absolute;
+    inset:-60%;
+    pointer-events:none;
+    background:repeating-conic-gradient(
+        from 0deg,
+        color-mix(in srgb,var(--tc) 38%,transparent) 0 7deg,
+        transparent 7deg 22deg
+    );
+    -webkit-mask-image:radial-gradient(circle,#000 0,transparent 62%);
+    mask-image:radial-gradient(circle,#000 0,transparent 62%);
+    animation:alert-rays 16s linear infinite;
+}
+
+/* Borde de pantalla que pulsa (el MEGA late el doble de rápido) */
+#win-alert::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    box-shadow:
+        inset 0 0 0 6px var(--tc),
+        inset 0 0 90px 16px color-mix(in srgb,var(--tc) 55%,transparent);
+    animation:alert-edge 0.9s ease-in-out infinite alternate;
+}
+
+#win-alert[data-tier="mega"]::after{
+    animation-duration:0.4s;
+}
+
 #win-alert-box{
-    --c:var(--sky);
+    --c:var(--blue);
     position:relative;
+    z-index:1;
     width:min(560px,92vw);
     padding:36px 32px 30px;
     display:flex;
@@ -1419,33 +1419,35 @@ button:disabled{
     animation:alert-pop 0.5s steps(5) 1;
 }
 
-#win-alert[data-tier="super"] #win-alert-box{ --c:var(--green); }
-#win-alert[data-tier="mega"] #win-alert-box{ --c:var(--red); }
+#win-alert[data-tier="super"] #win-alert-box{ --c:var(--cyan); }
+#win-alert[data-tier="mega"] #win-alert-box{ --c:var(--pink); }
 
 #win-alert-title{
-    color:var(--c,var(--sky));
+    color:var(--c);
     font-size:clamp(24px,6.4vw,40px);
     line-height:1.2;
     text-shadow:
         4px 4px 0 var(--panel),
-        8px 8px 0 var(--ink);
+        8px 8px 0 var(--ink),
+        0 0 24px var(--c),
+        0 0 56px var(--c);
     animation:alert-shine 0.6s steps(1) infinite;
 }
 
 #win-alert[data-tier="super"] #win-alert-title{ font-size:clamp(24px,6.4vw,44px); }
 #win-alert[data-tier="mega"] #win-alert-title{ font-size:clamp(24px,6.4vw,50px); }
 
-#win-alert-box #win-alert-title{ color:var(--c); }
-
 #win-alert-credits{
-    color:var(--cream);
+    color:var(--white);
     font-size:clamp(26px,7vw,56px);
     line-height:1.2;
-    text-shadow:4px 4px 0 var(--c);
+    text-shadow:
+        4px 4px 0 var(--c),
+        0 0 24px var(--c);
 }
 
 #win-alert-label{
-    color:var(--gold);
+    color:var(--orange);
     font-size:clamp(11px,2.4vw,16px);
 }
 
@@ -1453,7 +1455,7 @@ button:disabled{
     margin-top:4px;
     padding:10px 18px;
     background:var(--panel);
-    color:var(--cream);
+    color:var(--white);
     font-size:clamp(11px,2.6vw,16px);
     box-shadow:
         -4px 0 0 0 var(--ink),
@@ -1470,15 +1472,15 @@ button:disabled{
     left:var(--x,50%);
     width:8px;
     height:8px;
-    background:var(--red);
+    background:var(--pink);
     opacity:0;
     pointer-events:none;
     animation:alert-spark 1.4s steps(7) infinite;
     animation-delay:var(--d,0s);
 }
 
-#win-alert-box i:nth-of-type(3n+2){ background:var(--cream); }
-#win-alert-box i:nth-of-type(3n+3){ background:var(--gold); }
+#win-alert-box i:nth-of-type(3n+2){ background:var(--white); }
+#win-alert-box i:nth-of-type(3n+3){ background:var(--orange); }
 
 #win-alert-box i:nth-of-type(1){  --x:4%;  --d:0s; }
 #win-alert-box i:nth-of-type(2){  --x:12%; --d:0.5s; }
@@ -1492,94 +1494,6 @@ button:disabled{
 #win-alert-box i:nth-of-type(10){ --x:81%; --d:0.15s; }
 #win-alert-box i:nth-of-type(11){ --x:89%; --d:0.65s; }
 #win-alert-box i:nth-of-type(12){ --x:96%; --d:1s; }
-
-/* ==================================================
-   HABILIDAD DESBLOQUEADA
-   Se muestra al terminar la quinta tirada.
-   ================================================== */
-
-#skill-alert{
-    position:fixed;
-    inset:0;
-    z-index:950;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-    background:rgba(7,10,22,0.82);
-    animation:alert-fade 0.2s steps(2) 1;
-}
-
-#skill-alert-box{
-    position:relative;
-    width:min(620px,94vw);
-    padding:32px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:16px;
-    background:var(--bg);
-    text-align:center;
-    box-shadow:
-        -4px 0 0 var(--gold),
-        4px 0 0 var(--gold),
-        0 -4px 0 var(--gold),
-        0 4px 0 var(--gold),
-        0 0 0 12px rgba(255,209,102,0.22),
-        14px 14px 0 12px var(--ink);
-    animation:alert-pop 0.5s steps(5) 1;
-}
-
-#skill-alert-title{
-    margin:0;
-    color:var(--gold);
-    font-size:clamp(22px,5vw,38px);
-    line-height:1.2;
-    text-shadow:4px 4px 0 var(--panel),8px 8px 0 var(--ink);
-}
-
-.skill-alert-name{
-    margin:0;
-    color:var(--sky);
-    font-size:clamp(14px,2.8vw,20px);
-}
-
-.skill-alert-description{
-    max-width:500px;
-    margin:0;
-    color:var(--cream);
-    font-size:clamp(13px,2.5vw,18px);
-    line-height:1.6;
-}
-
-.skill-alert-detail,
-.skill-alert-timer{
-    margin:0;
-    color:var(--green);
-    font-size:clamp(11px,2vw,14px);
-}
-
-.skill-alert-timer{ color:var(--gold); animation:alert-shine 0.6s steps(1) infinite; }
-
-.skill-alert-actions{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:16px;
-}
-
-.skill-alert-actions button{ min-width:180px; }
-
-.skill-alert-reject{
-    background:var(--panel);
-    box-shadow:4px 4px 0 var(--ink);
-}
-
-@media (max-width:700px){
-    #skill-alert-box{ padding:26px 18px; gap:14px; }
-    .skill-alert-actions{ width:100%; gap:12px; }
-    .skill-alert-actions button{ width:100%; }
-}
 
 @keyframes alert-fade{
     0%{ opacity:0; }
@@ -1602,466 +1516,6 @@ button:disabled{
     100%{ transform:translateY(-150px); opacity:0; }
 }
 
-@media (max-width:700px){
-    #win-alert-box{ padding:28px 18px 24px; gap:12px; }
-    #win-alert-box i{ width:6px; height:6px; }
-}
-
-@media (prefers-reduced-motion:reduce){
-    #win-alert,
-    #win-alert-box,
-    #win-alert-title{ animation:none; }
-    #win-alert-box i{ display:none; }
-}
-
-
-
-/* Personaje en la pantalla de juego (normal, winner y loser) */
-#game-character-image{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    object-position:center;
-}
-
-/* Símbolos de los rodillos: se escalan según el tamaño de cada celda */
-.reel-symbol{
-    padding:clamp(6px,1.2vw,14px);
-}
-
-.reel-symbol img,
-.active-symbol img{
-    width:100%;
-    height:100%;
-    max-width:none;
-    object-fit:contain;
-    object-position:center;
-}
-
-/* Personaje de la pantalla de selección y fotos de perfil */
-#character-image{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    object-position:center;
-}
-
-#name-character-image,
-.character-option img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:center top;
-}
-
-/* ==================================================
-   FONDO AZUL OSCURO EN LOS CUADROS DE IMAGEN
-   Reemplaza el fondo de ajedrez (cuadrille).
-   ================================================== */
-
-:root{
-    --navy:#c6c0d9;
-}
-
-/* Personaje grande (selección), foto de perfil (nombre) y personaje en el juego */
-#character-container,
-#selected-character-profile,
-#game-character{
-    background:var(--navy);
-}
-
-
-/* ==================================================
-   LUCES NEÓN EXTRA · LUDO-MANIA
-   Pegar al FINAL del style.css (o cargar con un <link>
-   después de style.css). Solo suma estilos: no cambia
-   el HTML ni el JavaScript.
-   Cada bloque está rotulado, así podés borrar el que no
-   te guste sin afectar a los demás.
-   ================================================== */
-
-
-/* ==================================================
-   1. FONDO: grilla neón + resplandor ambiental
-   ================================================== */
-
-body{
-    background-image:
-        linear-gradient(rgba(235,0,213,0.10) 4px,transparent 4px),
-        linear-gradient(90deg,rgba(0,193,255,0.10) 4px,transparent 4px);
-}
-
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    z-index:-1;
-    pointer-events:none;
-    background:
-        radial-gradient(circle at 12% 18%,rgba(255,0,85,0.28),transparent 42%),
-        radial-gradient(circle at 88% 78%,rgba(0,193,255,0.26),transparent 42%),
-        radial-gradient(circle at 50% 105%,rgba(235,0,213,0.28),transparent 48%);
-    animation:ambient-glow 8s ease-in-out infinite alternate;
-}
-
-@keyframes ambient-glow{
-    from{ opacity:0.55; transform:scale(1); }
-    to{ opacity:1; transform:scale(1.12); }
-}
-
-
-/* ==================================================
-   2. TIRAS DE LUCES CORRIENDO ARRIBA Y ABAJO
-   de todas las pantallas (rosa, celeste y magenta)
-   ================================================== */
-
-.screen::before,
-.screen::after{
-    content:"";
-    position:absolute;
-    left:0;
-    right:0;
-    height:8px;
-    z-index:2;
-    pointer-events:none;
-    background:
-        linear-gradient(90deg,var(--red) 0 8px,transparent 8px) 0 center / 48px 8px repeat-x,
-        linear-gradient(90deg,var(--green) 0 8px,transparent 8px) 16px center / 48px 8px repeat-x,
-        linear-gradient(90deg,var(--wood) 0 8px,transparent 8px) 32px center / 48px 8px repeat-x;
-    filter:drop-shadow(0 0 6px var(--red)) drop-shadow(0 0 10px var(--green));
-    animation:strip-chase 0.6s steps(3) infinite;
-}
-
-.screen::before{ top:12px; }
-
-.screen::after{
-    bottom:12px;
-    animation-direction:reverse;
-}
-
-@keyframes strip-chase{
-    from{ background-position:0 center,16px center,32px center; }
-    to{ background-position:48px center,64px center,80px center; }
-}
-
-
-/* ==================================================
-   3. MÁQUINA: aura de neón alrededor de los rodillos
-   Cambia de rosa a celeste y se acelera al girar.
-   ================================================== */
-
-#reels::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    z-index:-1;
-    pointer-events:none;
-    box-shadow:
-        0 0 28px 6px rgba(255,0,85,0.65),
-        0 0 70px 18px rgba(235,0,213,0.45),
-        0 0 120px 30px rgba(0,193,255,0.30);
-    animation:aura-cycle 4s ease-in-out infinite alternate;
-}
-
-#reels:has(.reel.spinning)::after{
-    animation-duration:0.5s;
-}
-
-@keyframes aura-cycle{
-    0%{
-        box-shadow:
-            0 0 28px 6px rgba(255,0,85,0.65),
-            0 0 70px 18px rgba(235,0,213,0.45),
-            0 0 120px 30px rgba(0,193,255,0.30);
-    }
-    100%{
-        box-shadow:
-            0 0 28px 6px rgba(0,193,255,0.65),
-            0 0 70px 18px rgba(13,20,255,0.45),
-            0 0 120px 30px rgba(255,0,85,0.30);
-    }
-}
-
-
-/* ==================================================
-   4. LÍNEA DE PAGO: brilla y parpadea rosa / naranja
-   ================================================== */
-
-#reels::before{
-    background:
-        linear-gradient(var(--red),var(--red)) left center / 12px 100% no-repeat,
-        linear-gradient(var(--red),var(--red)) right center / 12px 100% no-repeat,
-        rgba(255,0,85,0.16);
-    box-shadow:
-        0 0 16px 2px rgba(255,0,85,0.8),
-        inset 0 0 18px rgba(255,0,85,0.45);
-    animation:payline-pulse 0.9s steps(2) infinite;
-}
-
-@keyframes payline-pulse{
-    0%{ border-color:var(--red); }
-    100%{ border-color:var(--gold); }
-}
-
-
-/* ==================================================
-   5. RODILLOS: rayas de luz al girar y destello al parar
-   ================================================== */
-
-.reel::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    z-index:8;
-    pointer-events:none;
-    opacity:0;
-}
-
-.reel.spinning::after{
-    opacity:1;
-    background:repeating-linear-gradient(
-        180deg,
-        transparent 0 24px,
-        rgba(0,193,255,0.18) 24px 32px,
-        transparent 32px 56px,
-        rgba(255,0,85,0.16) 56px 64px
-    );
-    background-size:100% 64px;
-    animation:reel-streaks 0.2s steps(4) infinite;
-}
-
-.reel.stopped::after{
-    animation:reel-flash 0.45s steps(5) 1;
-}
-
-@keyframes reel-streaks{
-    from{ background-position:0 0; }
-    to{ background-position:0 64px; }
-}
-
-@keyframes reel-flash{
-    0%{ opacity:1; background-color:rgba(255,255,255,0.75); }
-    100%{ opacity:0; background-color:rgba(255,255,255,0); }
-}
-
-
-/* ==================================================
-   6. LUCES BAJO LOS RODILLOS: latido una vez encendidas
-   ================================================== */
-
-.reel-light.on{
-    animation:
-        lamp-on 0.3s steps(3) 1,
-        lamp-pulse 1s ease-in-out 0.3s infinite alternate;
-}
-
-@keyframes lamp-pulse{
-    from{ filter:brightness(1); }
-    to{ filter:brightness(1.45); }
-}
-
-
-/* ==================================================
-   7. BOTONES PRINCIPALES: aura que late
-   (START, JUGAR y SPIN; el SPIN apagado no brilla)
-   ================================================== */
-
-#start-button::after,
-#prizes-button::after,
-#spin-button::after{
-    content:"";
-    position:absolute;
-    inset:-4px -4px -8px;
-    z-index:-1;
-    pointer-events:none;
-    box-shadow:
-        0 0 22px 6px rgba(255,0,85,0.85),
-        0 0 56px 14px rgba(255,0,85,0.40);
-    animation:button-aura 1.1s ease-in-out infinite alternate;
-}
-
-#spin-button:disabled::after{
-    animation:none;
-    opacity:0;
-}
-
-@keyframes button-aura{
-    from{ opacity:0.45; }
-    to{ opacity:1; }
-}
-
-
-/* ==================================================
-   8. TÍTULOS: resplandor neón
-   El título de inicio cambia de color: rosa, celeste, magenta.
-   ================================================== */
-
-h1{
-    text-shadow:
-        4px 4px 0 var(--red),
-        0 0 22px rgba(255,0,85,0.60);
-}
-
-#warning-screen h1{
-    text-shadow:
-        4px 4px 0 var(--panel),
-        0 0 24px rgba(255,98,0,0.80);
-}
-
-#start-screen h1{
-    animation:title-neon 4.5s linear infinite;
-}
-
-@keyframes title-neon{
-    0%,100%{
-        text-shadow:
-            4px 4px 0 var(--red),
-            8px 8px 0 var(--panel),
-            12px 12px 0 var(--ink),
-            0 0 28px var(--red),
-            0 0 64px rgba(255,0,85,0.55);
-    }
-    33%{
-        text-shadow:
-            4px 4px 0 var(--green),
-            8px 8px 0 var(--panel),
-            12px 12px 0 var(--ink),
-            0 0 28px var(--green),
-            0 0 64px rgba(0,193,255,0.55);
-    }
-    66%{
-        text-shadow:
-            4px 4px 0 var(--wood),
-            8px 8px 0 var(--panel),
-            12px 12px 0 var(--ink),
-            0 0 28px var(--wood),
-            0 0 64px rgba(235,0,213,0.55);
-    }
-}
-
-
-/* ==================================================
-   9. PANELES: resplandor suave con el color de su borde
-   ================================================== */
-
-#character-card,
-#character-selector,
-#character-container,
-#selected-character-profile,
-#game-character,
-#score,
-#credits,
-#chips,
-#ranking-list,
-#prizes-list{
-    animation:panel-glow 3.2s ease-in-out infinite alternate;
-}
-
-@keyframes panel-glow{
-    from{ filter:drop-shadow(0 0 6px color-mix(in srgb,var(--o) 55%,transparent)); }
-    to{ filter:drop-shadow(0 0 18px color-mix(in srgb,var(--o) 90%,transparent)); }
-}
-
-/* Personaje elegido en el selector */
-.character-option.active{
-    box-shadow:
-        0 8px 0 0 var(--ink),
-        0 0 0 4px rgba(255,0,85,0.35),
-        0 0 26px 6px var(--red);
-}
-
-/* Créditos bajos: parpadean como alarma */
-#credits-value.low{
-    animation:low-credits 0.8s steps(1) infinite;
-}
-
-@keyframes low-credits{
-    0%{ opacity:1; }
-    50%{ opacity:0.35; }
-}
-
-
-/* ==================================================
-   10. FICHAS: brillan una detrás de otra
-   ================================================== */
-
-.chip{
-    overflow:visible;
-    animation:chip-glow 1.4s ease-in-out infinite alternate;
-}
-
-.chip:nth-child(2){ animation-delay:0.25s; }
-.chip:nth-child(3){ animation-delay:0.5s; }
-
-@keyframes chip-glow{
-    from{ filter:drop-shadow(0 0 4px rgba(255,98,0,0.5)); }
-    to{ filter:drop-shadow(0 0 14px rgba(255,98,0,1)); }
-}
-
-
-/* ==================================================
-   11. ALERTAS BIG / SUPER / MEGA WIN
-   Rayos giratorios de fondo y borde de pantalla que pulsa.
-   El MEGA late el doble de rápido.
-   ================================================== */
-
-#win-alert{
-    --tc:color-mix(in srgb,var(--sky) 55%,white);
-    overflow:hidden;
-    background:rgba(7,10,22,0.72);
-}
-
-#win-alert[data-tier="super"]{ --tc:var(--green); }
-#win-alert[data-tier="mega"]{ --tc:var(--red); }
-
-#win-alert::before{
-    content:"";
-    position:absolute;
-    inset:-60%;
-    pointer-events:none;
-    background:repeating-conic-gradient(
-        from 0deg,
-        color-mix(in srgb,var(--tc) 38%,transparent) 0 7deg,
-        transparent 7deg 22deg
-    );
-    -webkit-mask-image:radial-gradient(circle,#000 0,transparent 62%);
-    mask-image:radial-gradient(circle,#000 0,transparent 62%);
-    animation:alert-rays 16s linear infinite;
-}
-
-#win-alert::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    pointer-events:none;
-    box-shadow:
-        inset 0 0 0 6px var(--tc),
-        inset 0 0 90px 16px color-mix(in srgb,var(--tc) 55%,transparent);
-    animation:alert-edge 0.9s ease-in-out infinite alternate;
-}
-
-#win-alert[data-tier="mega"]::after{
-    animation-duration:0.4s;
-}
-
-#win-alert-box{
-    z-index:1;
-}
-
-#win-alert-title{
-    text-shadow:
-        4px 4px 0 var(--panel),
-        8px 8px 0 var(--ink),
-        0 0 24px var(--c),
-        0 0 56px var(--c);
-}
-
-#win-alert-credits{
-    text-shadow:
-        4px 4px 0 var(--c),
-        0 0 24px var(--c);
-}
-
 @keyframes alert-rays{
     to{ transform:rotate(360deg); }
 }
@@ -2072,28 +1526,388 @@ h1{
 }
 
 
+/* ----- Alerta de habilidad desbloqueada (la arma el JavaScript) ----- */
+
+#skill-alert{
+    position:fixed;
+    inset:0;
+    z-index:950;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    background:color-mix(in srgb,var(--ink) 82%,transparent);
+    animation:alert-fade 0.2s steps(2) 1;
+}
+
+#skill-alert-box{
+    position:relative;
+    width:min(620px,94vw);
+    padding:32px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:16px;
+    background:var(--bg);
+    text-align:center;
+    box-shadow:
+        -4px 0 0 var(--orange),
+        4px 0 0 var(--orange),
+        0 -4px 0 var(--orange),
+        0 4px 0 var(--orange),
+        0 0 0 12px color-mix(in srgb,var(--orange) 22%,transparent),
+        14px 14px 0 12px var(--ink);
+    animation:alert-pop 0.5s steps(5) 1;
+}
+
+#skill-alert-title{
+    color:var(--orange);
+    font-size:clamp(22px,5vw,38px);
+    font-weight:400;
+    line-height:1.2;
+    text-shadow:
+        4px 4px 0 var(--panel),
+        8px 8px 0 var(--ink);
+}
+
+.skill-alert-name{
+    color:var(--pink);
+    font-size:clamp(14px,2.8vw,20px);
+}
+
+.skill-alert-description{
+    max-width:500px;
+    color:var(--white);
+    font-size:clamp(13px,2.5vw,18px);
+    line-height:1.6;
+}
+
+.skill-alert-detail{
+    color:var(--cyan);
+    font-size:clamp(11px,2vw,14px);
+}
+
+.skill-alert-timer{
+    color:var(--orange);
+    font-size:clamp(11px,2vw,14px);
+    animation:alert-shine 0.6s steps(1) infinite;
+}
+
+.skill-alert-actions{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:16px;
+}
+
+.skill-alert-actions button{
+    min-width:180px;
+}
+
+.skill-alert-reject{
+    background:var(--panel);
+    box-shadow:
+        -4px 0 0 0 var(--ink),
+        4px 0 0 0 var(--ink),
+        0 -4px 0 0 var(--ink),
+        0 4px 0 0 var(--ink),
+        inset 4px 4px 0 0 rgba(255,255,255,0.2),
+        inset -4px -4px 0 0 rgba(0,0,0,0.4),
+        0 8px 0 0 var(--ink);
+}
+
+
 /* ==================================================
-   12. MENOS MOVIMIENTO
+   4. RESPONSIVE
+   De mayor a menor. Cada bloque pisa al anterior:
+     ventana mediana  1051 a 1250 px
+     tablet y celular hasta 1050 px
+     celular          hasta 700 px
+     celular chico    hasta 380 px
+   ================================================== */
+
+/* ----- Ventana mediana: la máquina sigue en 3 columnas, más compacta ----- */
+
+@media (min-width:1051px) and (max-width:1250px){
+    #game-screen{
+        grid-template-columns:210px minmax(440px,1fr) 205px;
+        column-gap:24px;
+        padding:40px 20px 100px;
+    }
+
+    #game-left-panel,
+    #game-character,
+    #score,
+    #credits{ width:210px; }
+
+    #game-character{ height:210px; }
+
+    .score-title{ font-size:12px; }
+    #score{ min-height:105px; }
+    #score-value{ font-size:32px; }
+    #credits{ min-height:90px; }
+    #credits-value{ font-size:22px; }
+
+    #reels{
+        --pad:14px;
+        --reel-gap:10px;
+        --lamp:24px;
+        height:420px;
+    }
+
+    #game-right-panel,
+    #chips,
+    #spin-button{ width:205px; }
+
+    #game-right-panel{ min-height:420px; }
+    #chips{ padding:12px 10px 16px; }
+
+    .chip{ width:88px; height:88px; }
+    .chip + .chip{ margin-top:-40px; }
+
+    #spin-button{ min-height:120px; font-size:22px; }
+}
+
+
+/* ----- Tablet y celular: la máquina pasa a una sola columna ----- */
+
+@media (max-width:1050px){
+    .screen{ padding:32px 20px; }
+
+    #game-screen{
+        display:flex;
+        flex-direction:column;
+        justify-content:flex-start;
+        align-items:center;
+        gap:28px;
+        padding:32px 20px 48px;
+    }
+
+    /* Personaje a la izquierda; puntos y créditos apilados a la derecha */
+    #game-left-panel{
+        order:1;
+        width:auto;
+        display:grid;
+        grid-template-columns:auto auto;
+        align-items:center;
+        justify-items:center;
+        gap:20px 24px;
+    }
+
+    #game-character{
+        grid-row:1 / span 2;
+        width:160px;
+        height:160px;
+    }
+
+    #score,
+    #credits{
+        width:200px;
+        min-height:0;
+        padding:12px;
+    }
+
+    .score-title{ font-size:12px; }
+    #score-value{ font-size:32px; }
+    #credits-value{ font-size:22px; }
+
+    #reels{
+        --pad:16px;
+        --reel-gap:10px;
+        --lamp:24px;
+        order:2;
+        width:min(720px,92vw);
+        height:330px;
+        margin:84px 0 52px;   /* arriba: mensaje · abajo: luces */
+    }
+
+    #reel-lights{ top:calc(100% + 22px); }
+
+    /* Fichas en columna al lado del botón SPIN */
+    #game-right-panel{
+        order:3;
+        width:auto;
+        min-height:0;
+        flex-direction:row;
+        align-items:center;
+        gap:28px;
+    }
+
+    #chips{
+        width:auto;
+        padding:12px 12px 16px;
+    }
+
+    .chip{ width:76px; height:76px; }
+    .chip + .chip{ margin-top:-34px; }
+
+    #spin-button{ width:240px; min-height:100px; font-size:26px; }
+}
+
+
+/* ----- Selección de personaje en una sola columna -----
+   Orden: selector, personaje, habilidad, botón */
+
+@media (max-width:900px){
+    #character-layout{
+        grid-template-columns:1fr;
+        width:min(560px,94vw);
+        gap:24px;
+    }
+
+    #character-side{ display:contents; }
+
+    #character-selector{ order:1; }
+    #character-card{ order:2; }
+    #skill-panel{ order:3; }
+    #character-select-button{ order:4; }
+    #character-instruction{ order:5; justify-self:center; }
+
+    #character-container{ width:min(100%,320px); }
+}
+
+
+/* ----- Celular ----- */
+
+@media (max-width:700px){
+    .screen{ min-height:100svh; padding:28px 16px; gap:20px; }
+    h1{ font-size:clamp(16px,6vw,28px); }
+    p{ font-size:11px; }
+
+    button,
+    #character-select-button{
+        min-height:52px;
+        padding:14px 20px;
+        font-size:14px;
+    }
+
+    #warning-screen p{ padding:16px; }
+
+    /* Selección */
+    #character-selector{ padding:14px 12px; gap:8px; }
+
+    .character-option{
+        width:clamp(48px,16vw,68px);
+        height:clamp(48px,16vw,68px);
+    }
+
+    #character-card{ padding:20px 16px; gap:16px; }
+    #character-container{ width:min(70vw,280px); }
+    #character-description{ font-size:11px; }
+    #character-select-button{ font-size:12px; }
+
+    #skill-panel{ padding:20px 16px; }
+    #skill-panel-avatar{ width:72px; height:72px; }
+
+    /* Alerta de habilidad */
+    #skill-alert-box{ padding:26px 18px; gap:14px; }
+    .skill-alert-actions{ width:100%; gap:12px; }
+    .skill-alert-actions button{ width:100%; }
+
+    /* Nombre */
+    #selected-character-profile{ width:130px; height:130px; }
+    #player-name{ width:210px; height:64px; font-size:26px; }
+
+    /* Premios */
+    #prizes-list{ padding:12px; }
+    #prizes-table{ font-size:11px; }
+    #prizes-table th{ font-size:9px; padding:10px 4px; }
+    #prizes-table td{ padding:10px 4px; }
+    #prizes-table .prize-label{ font-size:9px; }
+    #prizes-table .prize-label img{ width:26px; height:26px; margin-right:2px; }
+    #prizes-table .prize-label small{ font-size:8px; }
+
+    /* Juego */
+    #game-screen{ gap:24px; padding:24px 14px 40px; }
+    #game-left-panel{ gap:14px 16px; }
+    #game-character{ width:120px; height:120px; }
+
+    #score,
+    #credits{ width:150px; padding:8px; }
+
+    #score{ gap:8px; }
+    .score-title{ font-size:10px; }
+    #score-value{ font-size:24px; text-shadow:3px 3px 0 var(--pink); }
+    #credits-value{ font-size:16px; text-shadow:2px 2px 0 var(--panel); }
+
+    #reels{
+        --pad:12px;
+        --reel-gap:6px;
+        --lamp:18px;
+        width:94vw;
+        height:min(62vw,290px);
+        min-height:210px;
+        margin:90px 0 44px;
+    }
+
+    .reel{ border-width:3px; }
+    #reels::before{ border-width:3px; }
+
+    #reel-lights{ top:calc(100% + 18px); }
+    .reel-light{ border-width:3px; }
+
+    .reel-light.on{
+        box-shadow:
+            inset 3px 3px 0 0 rgba(255,255,255,0.6),
+            0 0 0 3px color-mix(in srgb,var(--c) 55%,transparent),
+            0 0 14px 5px var(--c);
+    }
+
+    #game-right-panel{ flex-wrap:nowrap; justify-content:center; gap:16px; }
+    #chips{ padding:8px 8px 12px; }
+
+    .chip{ width:60px; height:60px; }
+    .chip + .chip{ margin-top:-27px; }
+
+    #spin-button{ width:min(56vw,210px); min-height:84px; font-size:20px; }
+
+    #game-message{
+        bottom:calc(100% + 14px);
+        width:100%;
+        min-height:44px;
+        padding:10px 12px;
+        font-size:10px;
+    }
+
+    /* Ranking */
+    #ranking-list{ padding:16px; }
+    #ranking-table{ min-width:460px; font-size:11px; }
+    #ranking-table th,
+    #ranking-table td{ padding:12px 6px; }
+
+    /* Alertas de premio */
+    #win-alert-box{ padding:28px 18px 24px; gap:12px; }
+    #win-alert-box i{ width:6px; height:6px; }
+}
+
+
+/* ----- Celular chico ----- */
+
+@media (max-width:380px){
+    #game-left-panel{ transform:scale(0.92); margin:-6px 0; }
+    .character-option{ width:44px; height:44px; }
+
+    .chip{ width:48px; height:48px; }
+    .chip + .chip{ margin-top:-22px; }
+
+    #spin-button{ font-size:18px; }
+}
+
+
+/* ==================================================
+   5. MENOS MOVIMIENTO
    Quien lo pide en su sistema ve las luces quietas.
+   (Los símbolos de los rodillos siguen girando.)
    ================================================== */
 
 @media (prefers-reduced-motion:reduce){
     body::before,
-    .screen::before,
-    .screen::after,
-    #reels::before,
-    #reels::after,
-    .reel.spinning::after,
-    .reel.stopped::after,
-    .reel-light.on,
-    #start-button::after,
-    #prizes-button::after,
-    #spin-button::after,
     #start-screen h1,
+    #character-instruction,
+    #prizes-instruction,
     #character-card,
     #character-selector,
     #character-container,
-    #selected-character-profile,
     #game-character,
     #score,
     #credits,
@@ -2102,249 +1916,29 @@ h1{
     #prizes-list,
     #credits-value.low,
     .chip,
+    #start-button::after,
+    #prizes-button::after,
+    #spin-button::after,
+    #reels::before,
+    #reels::after,
+    .reel.spinning,
+    .reel.stopped,
+    .reel.spinning::after,
+    .reel.stopped::after,
+    .reel-light.on,
+    #game-message.game-message-visible,
+    #win-alert,
     #win-alert::before,
-    #win-alert::after{
+    #win-alert::after,
+    #win-alert-box,
+    #win-alert-title,
+    #skill-alert,
+    #skill-alert-box,
+    .skill-alert-timer{
         animation:none;
     }
-}
 
-/* ==================================================
-   AJUSTES: SELECTOR SIN CUADRADOS + FICHAS APILADAS
-   Pegar al FINAL del style.css (después de luces-neon.css
-   si también lo tenés pegado).
-   ================================================== */
-
-
-/* ==================================================
-   1. SELECTOR DE PERSONAJES: SOLO CÍRCULOS
-   Sin cuadrado, sin borde y sin barrita negra debajo.
-   El elegido se marca con un aro rosa que brilla.
-   ================================================== */
-
-.character-option{
-    background:transparent;
-    border:none;
-    border-radius:50%;
-    box-shadow:none;
-}
-
-.character-option img{
-    border-radius:50%;
-}
-
-.character-option:hover{
-    box-shadow:0 0 0 4px var(--gold);
-}
-
-.character-option.active{
-    transform:translateY(-8px);
-    box-shadow:
-        0 0 0 4px var(--red),
-        0 0 26px 6px var(--red);
-}
-
-
-/* ==================================================
-   2. FICHAS: UNA SOBRE OTRA Y MÁS GRANDES
-   En todos los tamaños de pantalla quedan en columna.
-   ================================================== */
-
-/* PC */
-#chips{
-    flex-direction:column;
-    min-height:0;
-    padding:16px;
-    gap:14px;
-}
-
-.chip{
-    width:96px;
-    height:96px;
-}
-
-/* Ventanas medianas */
-@media (min-width:1051px) and (max-width:1250px){
-    #chips{
-        min-height:0;
-        padding:12px 10px;
-        gap:10px;
+    #win-alert-box i{
+        display:none;
     }
-
-    .chip{
-        width:76px;
-        height:76px;
-    }
-}
-
-/* Tablet y celular: las fichas en columna al lado del botón SPIN */
-@media (max-width:1050px){
-    #chips{
-        flex-direction:column;
-        width:auto;
-        min-height:0;
-        padding:12px;
-        gap:10px;
-    }
-
-    .chip{
-        width:64px;
-        height:64px;
-    }
-}
-
-/* Celular */
-@media (max-width:700px){
-    #game-right-panel{
-        flex-wrap:nowrap;
-        gap:16px;
-    }
-
-    #chips{
-        padding:8px;
-        gap:8px;
-    }
-
-    .chip{
-        width:52px;
-        height:52px;
-    }
-
-    #spin-button{
-        width:min(56vw,210px);
-        min-height:84px;
-        font-size:20px;
-    }
-}
-
-/* Celulares muy chicos */
-@media (max-width:380px){
-    .chip{
-        width:42px;
-        height:42px;
-    }
-
-    #spin-button{
-        font-size:18px;
-    }
-}
-
-/* ==================================================
-   FICHAS ENCIMADAS (en vertical)
-   Cada ficha tapa un poco a la anterior, como los
-   círculos superpuestos de la imagen de referencia.
-   Pegar al FINAL del style.css, después de
-   ajustes-selector-fichas.css.
-   ================================================== */
-
-/* PC */
-#chips{
-    flex-direction:column;
-    gap:0;
-    padding:16px 16px 22px;
-}
-
-.chip{
-    position:relative;
-    width:112px;
-    height:112px;
-}
-
-/* Desde la segunda ficha: sube y se encima sobre la anterior */
-.chip + .chip{
-    margin-top:-52px;
-}
-
-/* Cada ficha queda por encima de la de arriba */
-.chip:nth-child(1){ z-index:1; }
-.chip:nth-child(2){ z-index:2; }
-.chip:nth-child(3){ z-index:3; }
-
-/* Ventanas medianas */
-@media (min-width:1051px) and (max-width:1250px){
-    #chips{
-        gap:0;
-        padding:12px 10px 16px;
-    }
-
-    .chip{
-        width:88px;
-        height:88px;
-    }
-
-    .chip + .chip{
-        margin-top:-40px;
-    }
-}
-
-/* Tablet y celular */
-@media (max-width:1050px){
-    #chips{
-        flex-direction:column;
-        gap:0;
-        padding:12px 12px 16px;
-    }
-
-    .chip{
-        width:76px;
-        height:76px;
-    }
-
-    .chip + .chip{
-        margin-top:-34px;
-    }
-}
-
-/* Celular */
-@media (max-width:700px){
-    #chips{
-        gap:0;
-        padding:8px 8px 12px;
-    }
-
-    .chip{
-        width:60px;
-        height:60px;
-    }
-
-    .chip + .chip{
-        margin-top:-27px;
-    }
-}
-
-/* Celulares muy chicos */
-@media (max-width:380px){
-    .chip{
-        width:48px;
-        height:48px;
-    }
-
-    .chip + .chip{
-        margin-top:-22px;
-    }
-}
-
-/* ==================================================
-   PANTALLA DE NOMBRE: FOTO SOLO CON CÍRCULO
-   Sin cuadrado ni fondo. Pegar al FINAL del style.css.
-   ================================================== */
-
-#selected-character-profile{
-    background:transparent;
-    border-radius:50%;
-    overflow:hidden;
-    animation:none;
-    filter:none;
-
-    /* Aro rosa circular con brillo (borrá estas 3 líneas si no lo querés) */
-    box-shadow:
-        0 0 0 4px var(--red),
-        0 0 26px 6px var(--red);
-}
-
-#name-character-image{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:center;
-    border-radius:50%;
 }

@@ -35,6 +35,14 @@ const characterOptions = document.querySelectorAll(".character-option");
 const gameCharacterImage = document.getElementById("game-character-image");
 const nameCharacterImage = document.getElementById("name-character-image");
 
+// Panel de habilidad especial (pantalla de selección)
+const skillPanelImage = document.getElementById("skill-panel-image");
+const skillPanelOwner = document.getElementById("skill-panel-owner");
+const skillPanelName = document.getElementById("skill-panel-name");
+const skillPanelDescription = document.getElementById("skill-panel-description");
+const skillPanelDetail = document.getElementById("skill-panel-detail");
+const skillPanelWhen = document.getElementById("skill-panel-when");
+
 // ==================================================
 // ELEMENTOS DEL JUEGO
 // ==================================================
@@ -92,59 +100,16 @@ const symbols = [
 ];
 
 // ==================================================
-// PERSONAJES
-// ==================================================
-
-const characters = [
-    {
-        id: 1,
-        name: "Jeo",
-        description: "Adicto a la emoción de apostar, terminó jugando contra los demonios para saldar sus deudas. Ahora, su alma está en manos de Mammon, Señor de la Codicia.",
-        selection: "assets/images/personaje1.png",
-        profile: "assets/images/logo1.png",
-        normal: "assets/images/personaje1_normal.png",
-        victory: "assets/images/personaje1_victoria.png",
-        bad: "assets/images/personaje1_mala.png"
-    },
-    {
-        id: 2,
-        name: "Juana",
-        description: "Fanática del ocultismo, fue capturada por seguidores de Mammon para ser sacrificada. Ahora, deberá ganar un juego para salvarse y cambiar su destino.",
-        selection: "assets/images/personaje2.png",
-        profile: "assets/images/logo2.png",
-        normal: "assets/images/personaje2_normal.png",
-        victory: "assets/images/personaje2_victoria.png",
-        bad: "assets/images/personaje2_mala.png"
-    },
-    {
-        id: 3,
-        name: "Jazmin",
-        description: "Haría cualquier cosa por proteger a su preciado El Cinco, obtenido mediante un tributo incompleto a Mammon. Para saldar su deuda, apostará su propia vida.",
-        selection: "assets/images/personaje3.png",
-        profile: "assets/images/logo3.png",
-        normal: "assets/images/personaje3_normal.png",
-        victory: "assets/images/personaje3_victoria.png",
-        bad: "assets/images/personaje3_mala.png"
-    },
-    {
-        id: 4,
-        name: "Joaquin",
-        description: "Apostó su vida 56 veces y siempre logró sobrevivir. Ahora, Mammon quiere arrebatarle su suerte, un don divino que podría desencadenar el apocalipsis.",
-        selection: "assets/images/personaje4.png",
-        profile: "assets/images/logo4.png",
-        normal: "assets/images/personaje4_normal.png",
-        victory: "assets/images/personaje4_victoria.png",
-        bad: "assets/images/personaje4_mala.png"
-    }
-];
-
-// ==================================================
-// CRÉDITOS
+// CRÉDITOS Y HABILIDADES
+// (van antes de los personajes porque sus descripciones
+// usan SKILL_OFFER_SPIN)
 // ==================================================
 
 const INITIAL_CREDITS = 7500;
 const SPIN_COST = 2500;
-const SKILL_OFFER_SPIN = 5;
+
+// Número de tirada en la que se ofrece la habilidad especial
+const SKILL_OFFER_SPIN = 10;
 
 const CHARACTER_SKILLS = {
     1: {
@@ -168,10 +133,74 @@ const CHARACTER_SKILLS = {
     4: {
         code: "recuperar_apuesta",
         name: "RECUPERACIÓN",
-        description: "Si tu próxima tirada pierde, recuperás los créditos apostados.",
+        description: "Si tu próxima tirada no gana, recuperás los créditos apostados.",
         detail: "USO ÚNICO"
     }
 };
+
+// ==================================================
+// PERSONAJES
+// Cada descripción incluye la explicación de su habilidad especial.
+// ==================================================
+
+const characters = [
+    {
+        id: 1,
+        name: "Jeo",
+        description:
+            "Adicto a la emoción de apostar, terminó jugando contra los demonios para saldar sus deudas. " +
+            "Ahora, su alma está en manos de Mammon, Señor de la Codicia. " +
+            "En la tirada " + SKILL_OFFER_SPIN + " puede activar PREMIO DOBLE: " +
+            "por 500 créditos, su próxima combinación ganadora duplica puntos y créditos.",
+        selection: "assets/images/personaje1.png",
+        profile: "assets/images/logo1.png",
+        normal: "assets/images/personaje1_normal.png",
+        victory: "assets/images/personaje1_victoria.png",
+        bad: "assets/images/personaje1_mala.png"
+    },
+    {
+        id: 2,
+        name: "Juana",
+        description:
+            "Fanática del ocultismo, fue capturada por seguidores de Mammon para ser sacrificada. " +
+            "Ahora, deberá ganar un juego para salvarse y cambiar su destino. " +
+            "En la tirada " + SKILL_OFFER_SPIN + " recibe TIRADA GRATIS: " +
+            "su próxima tirada no descuenta créditos.",
+        selection: "assets/images/personaje2.png",
+        profile: "assets/images/logo2.png",
+        normal: "assets/images/personaje2_normal.png",
+        victory: "assets/images/personaje2_victoria.png",
+        bad: "assets/images/personaje2_mala.png"
+    },
+    {
+        id: 3,
+        name: "Jazmin",
+        description:
+            "Haría cualquier cosa por proteger a su preciado El Cinco, obtenido mediante un tributo incompleto a Mammon. " +
+            "Para saldar su deuda, apostará su propia vida. " +
+            "En la tirada " + SKILL_OFFER_SPIN + " desbloquea QUINTA GANADORA: " +
+            "desde ahí, cada quinta tirada ganadora suma 500 créditos extra.",
+        selection: "assets/images/personaje3.png",
+        profile: "assets/images/logo3.png",
+        normal: "assets/images/personaje3_normal.png",
+        victory: "assets/images/personaje3_victoria.png",
+        bad: "assets/images/personaje3_mala.png"
+    },
+    {
+        id: 4,
+        name: "Joaquin",
+        description:
+            "Apostó su vida 56 veces y siempre logró sobrevivir. " +
+            "Ahora, Mammon quiere arrebatarle su suerte, un don divino que podría desencadenar el apocalipsis. " +
+            "En la tirada " + SKILL_OFFER_SPIN + " desbloquea RECUPERACIÓN: " +
+            "si su próxima tirada no gana, recupera los créditos apostados.",
+        selection: "assets/images/personaje4.png",
+        profile: "assets/images/logo4.png",
+        normal: "assets/images/personaje4_normal.png",
+        victory: "assets/images/personaje4_victoria.png",
+        bad: "assets/images/personaje4_mala.png"
+    }
+];
 
 // ==================================================
 // PREMIOS (puntos + créditos)
@@ -190,7 +219,6 @@ const DEFAULT_TRIPLE_PRIZE = { points: 150, credits: 5000 };
 // Dos iguales, sin importar el símbolo
 const PAIR_PRIZE = { points: 50, credits: 2500 };
 
-
 // ==================================================
 // ALERTAS DE COMBINACIÓN
 // ==================================================
@@ -208,12 +236,11 @@ const WIN_ALERT_DURATION = 3000;
 // PROBABILIDADES
 // ==================================================
 
-const TRIPLE_CHANCE = 0.12; // 12%: tres iguales
-const PAIR_CHANCE = 0.33;   // 33%: exactamente dos iguales
-                            // el resto (55%): todos distintos
+const TRIPLE_CHANCE = 0.15; // 15%: tres iguales
+const PAIR_CHANCE = 0.35;   // 35%: exactamente dos iguales
+                            // el resto (50%): todos distintos
 
 // Qué tan probable es cada símbolo dentro de un triple
-// (más alto = sale más seguido). Los no listados valen 14.
 const TRIPLE_WEIGHTS = { siete: 8, diamante: 10, trebol: 12 };
 const DEFAULT_TRIPLE_WEIGHT = 14;
 
@@ -249,7 +276,8 @@ function createSkillState() {
         appliedSpins: [],
         effectCredits: 0,
         effectPoints: 0,
-        activationCost: 0
+        activationCost: 0,
+        winningSpinsSinceActivation: 0
     };
 }
 
@@ -277,12 +305,42 @@ function showCharacter(index) {
         return;
     }
 
+    const skill = CHARACTER_SKILLS[character.id];
+
     characterImage.src = character.selection;
     characterImage.alt = character.name;
     characterName.textContent = character.name;
 
     if (characterDescription) {
         characterDescription.textContent = character.description;
+    }
+
+    // Panel de habilidad especial del personaje que se está mostrando
+    if (skill) {
+        if (skillPanelImage) {
+            skillPanelImage.src = character.profile;
+            skillPanelImage.alt = character.name;
+        }
+
+        if (skillPanelOwner) {
+            skillPanelOwner.textContent = character.name.toUpperCase();
+        }
+
+        if (skillPanelName) {
+            skillPanelName.textContent = skill.name;
+        }
+
+        if (skillPanelDescription) {
+            skillPanelDescription.textContent = skill.description;
+        }
+
+        if (skillPanelDetail) {
+            skillPanelDetail.textContent = skill.detail;
+        }
+
+        if (skillPanelWhen) {
+            skillPanelWhen.textContent = "SE OFRECE EN LA TIRADA " + SKILL_OFFER_SPIN;
+        }
     }
 
     characterOptions.forEach((option, i) => {
@@ -857,11 +915,11 @@ function clearGameMessage() {
 }
 
 // ==================================================
-// PUNTAJE
+// PUNTAJE (sin tope: puede superar los 999 puntos)
 // ==================================================
 
 function addScore(points) {
-    score = Math.min(score + points, 999);
+    score += points;
     updateScore();
 }
 
@@ -1013,7 +1071,7 @@ function showWinAlert(tier, prize) {
 
 // ==================================================
 // HABILIDADES DE PERSONAJE
-// Se ofrecen al completar la quinta tirada y se aplican
+// Se ofrecen al completar la tirada SKILL_OFFER_SPIN y se aplican
 // desde la siguiente tirada o resultado correspondiente.
 // ==================================================
 
@@ -1132,7 +1190,6 @@ function showSkillOffer(onResolved) {
     alertBox.appendChild(box);
     document.body.appendChild(alertBox);
     skillAlertElement = alertBox;
-
 }
 
 function hasActiveSkill(code) {
@@ -1190,11 +1247,16 @@ function evaluateCombination(result) {
         message += " · PREMIO DOBLE";
     }
 
-    if (hasActiveSkill("quinta_ganadora") && spinsPlayed % 5 === 0) {
-        prize.credits += 500;
-        skillState.appliedSpins.push(spinsPlayed);
-        skillState.effectCredits += 500;
-        message += " · +500 CRÉDITOS DE HABILIDAD";
+    // Jazmin: cada quinta tirada ganadora desde que aceptó la habilidad
+    if (hasActiveSkill("quinta_ganadora")) {
+        skillState.winningSpinsSinceActivation++;
+
+        if (skillState.winningSpinsSinceActivation % 5 === 0) {
+            prize.credits += 500;
+            skillState.appliedSpins.push(spinsPlayed);
+            skillState.effectCredits += 500;
+            message += " · +500 CRÉDITOS DE HABILIDAD";
+        }
     }
 
     addScore(prize.points);
@@ -1226,8 +1288,11 @@ function spin() {
     clearGameMessage();
 
     if (spinning) return;
+
     const freeSpin = hasActiveSkill("tirada_gratis");
+
     if (credits < SPIN_COST && !freeSpin) return;
+
     hideWinAlert();
     spinning = true;
 
@@ -1245,6 +1310,7 @@ function spin() {
     } else {
         credits -= SPIN_COST;
     }
+
     spinsPlayed++;
     updateCredits();
     updateChips();
@@ -1275,19 +1341,17 @@ function spin() {
         console.log("Resultado:", result);
 
         const prize = checkCombination(result);
-
         const tier = getWinTier(result);
 
         if (tier) {
-        showWinAlert(tier, prize);
+            showWinAlert(tier, prize);
         }
+
         spinHistory.push({
             spin: spinsPlayed,
             symbols: result,
             points: prize.points,
             credits: prize.credits
-
-            
         });
 
         const continueAfterSpin = () => {
@@ -1313,7 +1377,7 @@ function spin() {
             }, 2200);
         };
 
-        // La habilidad se ofrece solo si la quinta tirada dejó créditos
+        // La habilidad se ofrece solo si la tirada SKILL_OFFER_SPIN dejó créditos
         // suficientes para que la partida pueda continuar normalmente.
         if (
             spinsPlayed === SKILL_OFFER_SPIN &&
@@ -1343,6 +1407,7 @@ function returnToStart() {
     score = 0;
     skillState = createSkillState();
     hideSkillAlert();
+    hideWinAlert();
 
     playerName = "";
     playerId = null;
