@@ -101,7 +101,6 @@ def crear_base_datos(ruta=DB_PATH):
         id_uso_habilidad INTEGER PRIMARY KEY AUTOINCREMENT,
         id_partida INTEGER NOT NULL,
         id_habilidad INTEGER NOT NULL,
-        tirada_ofrecida INTEGER NOT NULL,
         decision TEXT NOT NULL CHECK(decision IN ('aceptada', 'rechazada', 'expirada')),
         tiradas_aplicadas TEXT NOT NULL DEFAULT '[]',
         efecto_creditos INTEGER NOT NULL DEFAULT 0,
@@ -112,6 +111,7 @@ def crear_base_datos(ruta=DB_PATH):
         FOREIGN KEY (id_habilidad) REFERENCES Habilidad (id_habilidad)
     )
     ''')
+    _eliminar_columna_tirada_ofrecida(cursor)
 
     # ==========================================
     # TABLA 4: SIMBOLO
@@ -236,6 +236,16 @@ def _asegurar_columnas_partida(cursor):
         cursor.execute(
             "ALTER TABLE Partida ADD COLUMN creditos_finales INTEGER NOT NULL DEFAULT 0"
         )
+
+
+def _eliminar_columna_tirada_ofrecida(cursor):
+    """
+    Elimina la columna tirada_ofrecida de UsoHabilidad en bases
+    creadas antes de la versión 2 del esquema.
+    """
+    columnas = [fila[1] for fila in cursor.execute("PRAGMA table_info(UsoHabilidad)").fetchall()]
+    if "tirada_ofrecida" in columnas:
+        cursor.execute("ALTER TABLE UsoHabilidad DROP COLUMN tirada_ofrecida")
 
 
 def registrar_jugador(nombre_jugador):
@@ -387,14 +397,13 @@ def guardar_partida(
             cursor.execute(
                 '''
                 INSERT INTO UsoHabilidad (
-                    id_partida, id_habilidad, tirada_ofrecida, decision,
+                    id_partida, id_habilidad, decision,
                     tiradas_aplicadas, efecto_creditos, efecto_puntos, costo_creditos
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
                 ''',
                 (
                     id_partida,
                     resultado_habilidad[0],
-                    int(habilidad.get("tirada_ofrecida", 5)),
                     habilidad["decision"],
                     json.dumps(tiradas),
                     int(habilidad.get("efecto_creditos", 0)),

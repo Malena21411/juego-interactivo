@@ -1092,7 +1092,6 @@ function getSkillPayload() {
     if (!skillState.offered) return null;
 
     return {
-        tirada_ofrecida: SKILL_OFFER_SPIN,
         decision: skillState.decision,
         tiradas_aplicadas: skillState.appliedSpins,
         efecto_creditos: skillState.effectCredits,
