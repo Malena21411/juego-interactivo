@@ -14,7 +14,7 @@ HOST = "127.0.0.1"
 PORT = 5000
 URL = f"http://{HOST}:{PORT}"
 
-
+#FUNCION 1: Verifica el puerto 5000, si alguien contesta el servidor esta prendido y devuelve true, si da error devuelve false
 def servidor_encendido():
     try:
         with socket.create_connection((HOST, PORT), timeout=0.5):
@@ -22,7 +22,7 @@ def servidor_encendido():
     except OSError:
         return False
 
-
+#FUNCION 2: Ejecuta app.py en otra ventana
 def iniciar_servidor():
     app_py = os.path.join(ROOT, "backend", "app.py")
     kwargs = {
@@ -33,7 +33,7 @@ def iniciar_servidor():
         kwargs["creationflags"] = subprocess.CREATE_NEW_CONSOLE
     subprocess.Popen(**kwargs)
 
-
+#Funcion 3: Espera a que el servidor este encendido, si no lo esta en 10 segundos devuelve false
 def esperar_servidor():
     for _ in range(40):
         if servidor_encendido():
@@ -41,6 +41,7 @@ def esperar_servidor():
         time.sleep(0.25)
     return False
 
+#Funcion 4: Pregunta si el servidor está prendido, si no lo está lo prende y espera, y cuando está listo abre el navegador.
 
 def main():
     if not servidor_encendido():
